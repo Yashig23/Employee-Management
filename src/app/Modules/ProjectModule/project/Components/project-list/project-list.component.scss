@@ -1,0 +1,162 @@
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 240px;
+    background-color: #2a49e2;
+    color: #fff;
+    padding: 20px;
+  
+    .project-name {
+      h2 {
+        font-size: 1.5em;
+        margin: 0;
+      }
+    }
+  
+    nav {
+      margin-top: 20px;
+      ul {
+        list-style: none;
+        padding: 0;
+        li {
+          margin-bottom: 15px;
+          a {
+            color: #fff;
+            text-decoration: none;
+            &.active {
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+  
+    .teams {
+      margin-top: auto;
+      h3 {
+        font-size: 1.2em;
+      }
+      .team-members {
+        display: flex;
+        margin: 10px 0;
+        /* Style for team members' avatars */
+      }
+      .invite-button {
+        display: block;
+        color: #fff;
+        text-decoration: none;
+        margin-top: 10px;
+      }
+    }
+  }
+  
+  .main-content {
+    flex: 1;
+    background-color: #f4f5f7;
+    padding: 20px;
+  
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  
+      h1 {
+        font-size: 1.8em;
+        margin: 0;
+      }
+  
+      .actions {
+        display: flex;
+        align-items: center;
+  
+        .search-input {
+          margin-right: 15px;
+          padding: 5px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+  
+        .category-filter {
+          margin-right: 15px;
+  
+          label {
+            margin-right: 5px;
+          }
+  
+          select {
+            padding: 5px;
+          }
+        }
+  
+        .filter {
+          margin-right: 15px;
+  
+          button {
+            padding: 5px 10px;
+            border: none;
+            background-color: #2b94f7;
+            color: #fff;
+            border-radius: 4px;
+          }
+        }
+  
+        .import-export {
+          button {
+            padding: 5px 10px;
+            border: none;
+            background-color: #2b94f7;
+            color: #fff;
+            border-radius: 4px;
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  
+    .sales-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      table-layout: fixed;
+    }
+  
+    .sales-table th, .sales-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+  
+    .sales-table th {
+      background-color: #2b94f7;
+      color: #fff;
+    }
+  
+    .sales-table td {
+      background-color: #fff;
+    }
+  
+    .pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+  
+      .page-controls {
+        display: flex;
+        align-items: center;
+  
+        button {
+          padding: 5px 10px;
+          border: none;
+          background-color: #2b94f7;
+          color: #fff;
+          border-radius: 4px;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+  

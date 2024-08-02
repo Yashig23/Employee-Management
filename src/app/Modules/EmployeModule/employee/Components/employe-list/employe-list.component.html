@@ -1,0 +1,95 @@
+<div class="dashboard-container">
+    <div class="sidebar">
+      <div class="project-name">
+        <h2>Project Name</h2>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#">Overview</a></li>
+          <li><a href="#">Reports</a></li>
+          <li><a href="#" class="active">Sales</a></li>
+          <li><a href="#">Traffic</a></li>
+          <li><a href="#">Inventories</a></li>
+          <li><a href="#">Messages</a></li>
+          <li><a href="#">Archive data</a></li>
+        </ul>
+      </nav>
+      <div class="teams">
+        <h3>Teams</h3>
+        <div class="team-members">
+          <!-- Placeholder for team members' avatars -->
+        </div>
+        <a href="#" class="invite-button">+ Invite</a>
+      </div>
+    </div>
+  
+    <div class="main-content">
+      <header>
+        <div>
+        <h1>Employee</h1>
+    </div>
+        <div class="actions">
+          <input type="text" placeholder="Search" class="search-input" [(ngModel)]="searchQuery" (input)="findEmployee()">
+          <!-- <div class="category-filter">
+            <label for="category">Category</label>
+            <select id="category">
+              <option value="">All</option>
+            </select>
+          </div> -->
+          <!-- <div class="filter">
+            <button>Filter</button>
+          </div> -->
+          <div class="import-export">
+            <button class="import" routerLink="/employee/add">Add New Employee</button>
+            <!-- <button class="import">Import</button>
+            <button class="export">Export</button> -->
+          </div>
+        </div>
+      </header>
+  
+      <div class="table-container">
+        <table class="sales-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Employee Name</th>
+              <th>Created At</th>
+              <th>Department Name</th>
+              <th>Role</th>
+              <th>Actions</th>
+              <!-- <th>Update</th> -->
+              <th>View Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let employee of filteredEmployeeData; let i = index">
+              <td>{{i+1}}</td>
+              <td>{{employee.name}}</td>
+              <td>{{employee.createdOn | date}}</td>
+              <td>{{employee.departmentName}}</td>
+              <td>{{employee.role}}</td>
+              <!-- <td><button (click)="deleteEmployee(employee.id!)">Delete</button></td>
+              <td><button [routerLink]="['/employee/edit', employee.id]">Update</button></td> -->
+              <td>
+                <button [routerLink]="['/employee/edit', employee.id]">Update</button>
+                <button (click)="deleteEmployee(employee.id!)">Delete</button>
+              </td>
+              <td><button [routerLink]="['/employee/view', employee.id]">View</button></td>
+              <!-- <td><button routerLink="['/employee/edit',1]">Update</button></td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <span>{{this.employeeListLength}} Results</span>
+        <!-- <span>106 results</span> -->
+        <div class="page-controls">
+          <button>&lt;</button>
+          <!-- <span>{{this.employeeListLength}}</span> -->
+          <button>&gt;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
