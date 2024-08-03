@@ -1,0 +1,55 @@
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 240px;
+    background-color: #2a49e2;
+    color: #fff;
+    padding: 20px;
+  
+    .project-name {
+      h2 {
+        font-size: 1.5em;
+        margin: 0;
+      }
+    }
+  
+    nav {
+      margin-top: 20px;
+      ul {
+        list-style: none;
+        padding: 0;
+        li {
+          margin-bottom: 15px;
+          a {
+            color: #fff;
+            text-decoration: none;
+            &.active {
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+  
+    .teams {
+      margin-top: auto;
+      h3 {
+        font-size: 1.2em;
+      }
+      .team-members {
+        display: flex;
+        margin: 10px 0;
+        /* Style for team members' avatars */
+      }
+      .invite-button {
+        display: block;
+        color: #fff;
+        text-decoration: none;
+        margin-top: 10px;
+      }
+    }
+  }
+  

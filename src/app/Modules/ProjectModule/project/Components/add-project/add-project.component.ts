@@ -34,8 +34,8 @@ export class AddProjectComponent implements OnInit{
     this.ProjectForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
-      createdBy: new FormControl('', [Validators.required]),
-      status: new FormControl('', [Validators.required]),
+      adminId: new FormControl('', [Validators.required]),
+      // status: new FormControl('', [Validators.required]),
       members: new FormArray([])
     });
     this.getEmployeeData();
@@ -68,8 +68,7 @@ export class AddProjectComponent implements OnInit{
         // id: this.employeeForm.value.id,
         name: this.ProjectForm.value.name,
         description: this.ProjectForm.value.description,
-        createdBy: Number(this.ProjectForm.value.createdBy),
-        status: Number(this.ProjectForm.value.status),
+        adminId: Number(this.ProjectForm.value.createdBy),
         members: this.ProjectForm.value.members
       };
       if(body){

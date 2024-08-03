@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DeleteDialogService } from '../../../../SharedModule/shared/Services/delete-dialog.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { EmployeServiceService } from '../../Service/employe-service.service';
-import { Employee, EmployeeResponse } from '../../Models/Employee.model';
+import { DataPage, Employee, EmployeeResponse } from '../../Models/Employee.model';
 
 @Component({
   selector: 'app-employe-list',
@@ -15,15 +15,28 @@ export class EmployeListComponent implements OnInit{
   public searchQuery: string = '';
   public filteredEmployeeData: Employee[] = []; 
   public employeeListLength!: number;
+  public searchEmployee!: string;
+  public dataPage: DataPage = {
+    "pageIndex": 1,
+    "pagedItemsCount": 10,
+    "orderKey": "Name",
+    "sortedOrder": 1,
+    "search": ""
+  };
 
   constructor(
     private employeService: EmployeServiceService,
     private dialogService: DeleteDialogService,
     public dialog: MatDialog
-  ) {}
+  ) {
+    console.log("Moaded");
+  }
 
   ngOnInit(): void {
+    // this.loadEmployeeData();
     this.getEmployeeData();
+    this.FilterChange();
+    console.log("loaded 1")
   }
 
   // Fetch department data and display it
@@ -32,12 +45,8 @@ export class EmployeListComponent implements OnInit{
       next: (response: EmployeeResponse) => {
         this.employeeList = response.data;
         this.employeeListLength = this.employeeList.length;
-        this.filteredEmployeeData = this.employeeList; 
-        console.log(this.employeeList);
-        console.log(response);
       },
       error: (err: string) => {
-        // window.alert('Error occurred while displaying the department list');
         console.log('Error occurred', err);
       }
     });
@@ -82,27 +91,39 @@ export class EmployeListComponent implements OnInit{
     }
   }
 
-  // function for adding a new employee
-  // public addNewEmployee(): void {
-  //   debugger;
-  //   console.log("addNewEmployee");
-  //   const dialogRef = this.dialog.open(EmployeeComponent, {
-  //     width: '400px'
-  //   });
-  //   dialogRef.afterClosed().subscribe({
-  //     next: (result) => {
-  //       if (result) {
-  //         console.log('Find find');
-  //         this.getEmployeeData();
-  //         this.findEmployee(); 
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error("Error:", err);
-  //       window.alert("An error occurred while adding the department.");
-  //     }
-  //   });
-  // }
+  public onPrevious(): void {
+    if (this.dataPage.pageIndex > 0) {
+      this.dataPage.pageIndex--;
+      this.FilterChange();
+    }
+  }
+  public onNext(): void {
+    if (this.dataPage.pageIndex < this.employeeListLength -1) {
+      this.dataPage.pageIndex++;
+      this.FilterChange();
+    }
+  }
+
+  public FilterChange(): void{
+    console.log(this.dataPage);
+    this.employeService.paginationOnEmployee(this.dataPage).subscribe({
+      next: (data)=>{
+        this.employeeList = data.data.data;
+        this.filteredEmployeeData = this.employeeList;
+        console.log(typeof this.employeeList);
+        console.log(typeof this.filteredEmployeeData);
+        console.log(this.filteredEmployeeData);
+         console.log(data);
+      },
+      error: (err)=>{
+        console.log(err);
+        alert("error occured");
+      }
+    })
+  }
+
+
+
 
 }
 

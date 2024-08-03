@@ -138,16 +138,50 @@ export interface AddEmployeeResponse{
 // pagination
 
 export enum SortedOrder {
-    ASC = 1,
-    DESC = 2,
-    OTHER = 3 // Add other values as needed
+    ASC = 0,
+    DESC = 1,
+    OTHER = 2 
   }
 
   export interface DataPage {
     pageIndex: number;
     pagedItemsCount: number;
-    orderKey: string | null; // `orderKey` can be a string or null
-    sortedOrder: SortedOrder; // `sortedOrder` uses the enum
-    search: string | null; // `search` can be a string or null
+    orderKey: string | null; 
+    sortedOrder: SortedOrder; 
+    search: string | null; 
+  }
+
+  export interface PaginationResponse{
+    success: boolean;
+    status: number; 
+    message: string;
+    data: EmployeePagination[];
+  }
+
+  export interface EmployeeResponsePagination {
+    success: boolean;
+    status: number;
+    message: string;
+    data: EmployeeData;
+  }
+  
+  interface EmployeeData {
+    data: Employee[];
+    totalPages: number;
+  }
+  
+  interface EmployeePagination {
+    id: number;
+    name: string;
+    departmentName: string | null;
+    managerName: string | null;
+    role: number;
+    salary: number;
+    departmentId: number | null;
+    managerId: number | null;
+    createdBy: number;
+    updatedBy: number | null;
+    createdOn: string;
+    updatedOn: string | null;
   }
   

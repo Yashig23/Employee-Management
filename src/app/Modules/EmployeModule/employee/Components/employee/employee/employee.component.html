@@ -42,6 +42,14 @@
       <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
         <table>
           <tbody>
+            <tr *ngIf="isEdit == false">
+              <td><label for="name">UserName:</label></td>
+              <td><input id="name" type="text" formControlName="username" placeholder="Employee Username" class="input-field"></td>
+            </tr>
+            <tr *ngIf="isEdit == false">
+              <td><label for="name">Password:</label></td>
+              <td><input id="name" type="text" formControlName="password" placeholder="Employee Password" class="input-field"></td>
+            </tr>
             <tr>
               <td><label for="name">Name:</label></td>
               <td><input id="name" type="text" formControlName="name" placeholder="Employee Name" class="input-field"></td>
@@ -72,9 +80,9 @@
               <td><label for="role">Role:</label></td>
               <td>
                 <select id="role" formControlName="role" class="input-field">
-                  <option value="1">Employee</option>
-                  <option value="2">Admin</option>
-                  <option value="3">SuperAdmin</option>
+                  <option value="0">Employee</option>
+                  <option value="1">Admin</option>
+                  <option value="2">SuperAdmin</option>
                 </select>
               </td>
             </tr>            

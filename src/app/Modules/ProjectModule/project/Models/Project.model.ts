@@ -57,9 +57,9 @@
 
   export interface PostProjectRequest{
     name: string,
-    desription: string,
+    description: string,
     adminId: number,
-    member: Members[]
+    members: Members[]
   }
 
   export interface Members{

@@ -21,7 +21,7 @@ import { SharedModule } from '../../SharedModule/shared/shared.module';
 @NgModule({
   declarations: [
     DepartmentListComponent,
-    DepartmentComponent
+    DepartmentComponent,
   ],
   imports: [
     CommonModule,

@@ -7,17 +7,21 @@ import { EmployeeComponent } from './Components/employee/employee/employee.compo
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../SharedModule/shared/shared.module';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { EmployeeViewComponent } from './Components/employee-view/employee-view.component';
 @NgModule({
   declarations: [
     EmployeListComponent,
-    EmployeeComponent
+    EmployeeComponent,
+    EmployeeViewComponent
   ],
   imports: [
     CommonModule,
     EmployeeRoutingModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatPaginatorModule
   ]
 })
 export class EmployeeModule { }

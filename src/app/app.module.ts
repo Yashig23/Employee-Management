@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import {
   MatDialogActions,
   MatDialogClose,
@@ -18,12 +19,14 @@ import {
 } from '@angular/material/dialog';
 import { LoginComponent } from './Components/Login/login/login.component';
 import { SignupComponent } from './Components/Signup/signup.component';
+import { HomepageComponent } from './Components/Homepage/homepage/homepage.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SignupComponent,
+    HomepageComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,7 +40,8 @@ import { SignupComponent } from './Components/Signup/signup.component';
     MatDialogModule,
     MatButtonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatPaginatorModule
   ],
   providers: [
     provideClientHydration(),

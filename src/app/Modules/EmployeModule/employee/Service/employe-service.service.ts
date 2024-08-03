@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment1, environment2 } from '../../../../../environment/environment';
 // import { AddEmployeeResponse, EmployeResponse, UpdateEmployeeResponse } from '../Models/Employee.model';
-import { AddEmployeeRequest, AddEmployeeResponse, DataPage, Employee, EmployeeResponse, GetEmployeeResponseById, UpdateEmployeeRequest, UpdatedEmployeeResponse } from '../Models/Employee.model';
+import { AddEmployeeRequest, AddEmployeeResponse, DataPage, Employee, EmployeeResponse, EmployeeResponsePagination, GetEmployeeResponseById, UpdateEmployeeRequest, UpdatedEmployeeResponse } from '../Models/Employee.model';
 import { Token } from '@angular/compiler';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class EmployeServiceService {
   public pagination = environment1.apiUrl.Pagination;
 
   constructor(private httpClient: HttpClient) { }
-  public token = "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJQcmluY2UiLCJJZCI6IjEiLCJqdGkiOiI2MTg0MjVmOS1mY2EzLTQ1M2EtYWE3Zi1jODA3NGJhNzM5ZmQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJTdXBlckFkbWluIiwiZXhwIjoxNzIzMDE1NDAyLCJpc3MiOiJKd3RJc3N1ZXIiLCJhdWQiOiJKd3RBdWRpZW5jZSJ9.HXnJjZCYI0b8iHogCsPc96VoUSZANpKLmPVKyOJ7XOs";
+  public token = "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNoaTEyMyIsIklkIjoiNDUiLCJVc2VySWQiOiI3OCIsImp0aSI6ImU3ZDRlNTU0LWY3NWUtNDM4Yi1hM2JiLWM3YjIwYjA1MWVlOCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJleHAiOjE3MjMwOTY3NTUsImlzcyI6Ikp3dElzc3VlciIsImF1ZCI6Ikp3dEF1ZGllbmNlIn0.MtFCaezba9AGhUJhsi4vFbYz24DhWRGm88Zjgf7fBhA";
 
   private headers = new HttpHeaders({
     'Authorization': `Bearer ${this.token}` // Use Bearer token
@@ -90,11 +90,12 @@ export class EmployeServiceService {
     // const headers = new HttpHeaders({
     //   'Authorization': `Bearer ${this.token}` // Use Bearer token
     // });
-    return this.httpClient.get<EmployeeResponse>(`https://192.168.1.5:8081/Employee/department/${data}`, {headers: this.headers})
+    return this.httpClient.get<EmployeeResponse>(`https://192.168.1.15:8081/Employee/department/${data}`, {headers: this.headers})
   } 
 
-  public paginationOnEmployee(data: DataPage): Observable<EmployeeResponse>{
-    return this.httpClient.post<EmployeeResponse>(this.pagination, data, {headers: this.headers})
+  public paginationOnEmployee(data: DataPage): Observable<EmployeeResponsePagination>{
+    console.log(data);
+    return this.httpClient.post<EmployeeResponsePagination>(this.pagination, data, {headers: this.headers})
   }
 
 }

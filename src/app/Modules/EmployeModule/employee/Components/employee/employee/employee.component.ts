@@ -34,8 +34,8 @@ export class EmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.getDepartmentData();
     this.employeeForm = new FormGroup({
-      // username: new FormControl('', [Validators.required]),
-      // password: new FormControl('', [Validators.required]),
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
       name: new FormControl('', [Validators.required]),
       salary: new FormControl(null, [Validators.required, Validators.min(1)]),
       departmentId: new FormControl(''),
@@ -61,12 +61,12 @@ export class EmployeeComponent implements OnInit {
     if (this.employeeForm.value.name && this.employeeForm.value.salary) {
       const  formValue = this.employeeForm.value;
       console.log(formValue);
-      const username1 = localStorage.getItem('username');
-      const password1 = localStorage.getItem('password');
+      // const username1 = localStorage.getItem('username');
+      // const password1 = localStorage.getItem('password');
       const body = {
         // id: this.employeeForm.value.id,
-        username: username1 || '',
-        password: password1 || '',
+        username: this.employeeForm.value.username,
+        password: this.employeeForm.value.password,
         name: this.employeeForm.value.name,
         salary: this.employeeForm.value.salary,
         departmentId: Number(this.employeeForm.value.departmentId),

@@ -5,7 +5,10 @@ import { DepartmentComponent } from './Components/department/department.componen
 
 const routes: Routes = [
   // {path:'', component:DepartmentListComponent},
-  {path:'department/add', component: DepartmentComponent}
+  // {path:'department/add', component: DepartmentComponent}
+
+  { path: '', component: DepartmentListComponent }, // Default route for the module
+  { path: 'add', component: DepartmentComponent }
 ];
 
 @NgModule({

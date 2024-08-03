@@ -138,25 +138,90 @@
       background-color: #fff;
     }
   
-    .pagination {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 20px;
-  
-      .page-controls {
-        display: flex;
-        align-items: center;
-  
-        button {
-          padding: 5px 10px;
-          border: none;
-          background-color: #2b94f7;
-          color: #fff;
-          border-radius: 4px;
-          margin-left: 5px;
-        }
-      }
-    }
+  .pagination{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: end;
+    align-items: center;
   }
   
+  button{
+    border: none;
+    padding: 12px;
+    margin: 5px;
+    background-color: rgb(218, 240, 185);
+    border-radius: 1rem;
+  }
+
+  .deleteBtn{
+    border: none;
+    padding: 12px;
+    margin: 5px;
+    background-color: rgb(240, 195, 185);
+    border-radius: 1rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .import-export {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .import-export .import {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .entries-per-page {
+    display: flex;
+    align-items: center;
+  }
+  
+  .entries-per-page label {
+    font-size: 0.9rem;
+  }
+  
+  .pagination {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .pagination-link {
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  
+  .pagination-link:hover {
+    text-decoration: underline;
+  }
+  
+  .page-number {
+    font-size: 0.9rem;
+  }
+  
+}

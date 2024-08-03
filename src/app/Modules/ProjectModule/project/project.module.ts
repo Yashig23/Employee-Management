@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { ProjectRoutingModule } from './project-routing.module';
 import { ProjectListComponent } from './Components/project-list/project-list.component';
 import { AddProjectComponent } from './Components/add-project/add-project.component';
@@ -10,6 +9,7 @@ import { SharedModule } from '../../SharedModule/shared/shared.module';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import {
   MatDialogActions,
   MatDialogClose,
@@ -20,7 +20,7 @@ import {
 @NgModule({
   declarations: [
     ProjectListComponent,
-    AddProjectComponent
+    AddProjectComponent,
   ],
   imports: [
     CommonModule,
@@ -35,6 +35,7 @@ import {
   MatDialogClose,
   MatDialogContent,
   MatDialogTitle,
+  MatPaginatorModule
   ]
 })
 export class ProjectModule { }

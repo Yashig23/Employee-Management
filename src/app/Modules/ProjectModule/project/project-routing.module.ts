@@ -7,7 +7,7 @@ const routes: Routes = [
   // // {path:'', component: AddProjectComponent},
   // {path:'project/add', component: AddProjectComponent}
   {path:"", component: ProjectListComponent},
-  {path:"project/add", component: AddProjectComponent},
+  {path:"add", component: AddProjectComponent},
   {path:"project/details/:id", component: AddProjectComponent},
 ];
 

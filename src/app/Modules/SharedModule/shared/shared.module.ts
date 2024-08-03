@@ -10,11 +10,13 @@ import {
   MatDialogContent,
   MatDialogTitle,
 } from '@angular/material/dialog';
+import { SideBarComponent } from './Components/side-bar/side-bar.component';
 
 
 @NgModule({
   declarations: [
     DeleteDialogComponent,
+    SideBarComponent,
   ],
   imports: [
     CommonModule,
@@ -25,6 +27,9 @@ import {
     MatDialogTitle,
     MatSlideToggle,
     MatDialogModule
+  ],
+  exports: [
+    SideBarComponent
   ]
 })
 export class SharedModule { }
