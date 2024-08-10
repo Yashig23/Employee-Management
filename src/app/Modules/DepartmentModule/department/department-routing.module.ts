@@ -7,7 +7,7 @@ const routes: Routes = [
   // {path:'', component:DepartmentListComponent},
   // {path:'department/add', component: DepartmentComponent}
 
-  { path: '', component: DepartmentListComponent }, // Default route for the module
+  { path: '', component: DepartmentListComponent }, 
   { path: 'add', component: DepartmentComponent }
 ];
 

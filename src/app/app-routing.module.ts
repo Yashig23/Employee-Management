@@ -25,11 +25,10 @@ const routes: Routes = [
     path: 'employees',
     loadChildren: () => import('./Modules/EmployeModule/employee/employee.module').then(m => m.EmployeeModule)
   },
- 
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
-  {path: 'homepage', component: HomepageComponent},
-  { path: '', redirectTo: '/department-list', pathMatch: 'full' },
+  { path: 'homepage', component: HomepageComponent },
+  { path: '', redirectTo: '/homepage', pathMatch: 'full' },
   { path: '**', redirectTo: '/homepage' }
 ];
 

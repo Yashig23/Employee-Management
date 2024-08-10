@@ -19,5 +19,4 @@ export class DeleteDialogService {
       data: dialogData
     });
   }
-
 }

@@ -1,0 +1,72 @@
+<div class="parent">
+<div class="project-container">
+    <form [formGroup]="ProjectData" >
+        <div *ngIf="progressSpinner === true" class="spinner">
+            <mat-spinner></mat-spinner>
+          </div>
+      <div class="project-header">
+        <h1 formControlName="name">{{ ProjectData.get('name')?.value }}</h1>
+        <p class="project-description">{{ ProjectData.get('description')?.value }}</p>
+      </div>
+  
+      <div class="project-details">
+        <div class="project-info">
+          <p><strong>Created By:</strong> {{ ProjectData.get('createdBy')?.value }}</p>
+          <p><strong>Created On:</strong> {{ ProjectData.get('createdOn')?.value | date:'fullDate' }}</p>
+          <p *ngIf="ProjectData.get('updatedBy')?.value">
+            <strong>Updated By:</strong> {{ ProjectData.get('updatedBy')?.value }}
+          </p>
+          <p *ngIf="ProjectData.get('updatedOn')?.value">
+            <strong>Updated On:</strong> {{ ProjectData.get('updatedOn')?.value | date:'fullDate' }}
+          </p>
+        </div>
+  
+        <div class="members-list">
+          <h2>Members</h2>
+          <ul>
+            <li *ngFor="let member of ProjectData.get('members')?.value">
+              {{ member.employeeeName }} (ID: {{ member.employeeId }})
+            </li>
+          </ul>
+        </div>
+      </div>
+  
+      <!-- Form controls for editing -->
+      <div class="form-controls">
+        <label for="name">Name:</label>
+        <input id="name" formControlName="name" />
+  
+        <label for="description">Description:</label>
+        <textarea id="description" formControlName="description"></textarea>
+  
+        <label>Members:</label>
+        <!-- <div formArrayName="members">
+          <div *ngFor="let member of ProjectData.get('members')['controls']; let i = index" [formGroupName]="i">
+            <label for="employeeId-{{i}}">Member ID:</label>
+            <input id="employeeId-{{i}}" formControlName="employeeId" />
+  
+            <label for="employeeName-{{i}}">Member Name:</label>
+            <input id="employeeName-{{i}}" formControlName="employeeeName" />
+          </div>
+        </div> -->
+  
+        <label for="createdOn">Created On:</label>
+        <input id="createdOn" type="date" formControlName="createdOn" />
+  
+        <label for="createdBy">Created By:</label>
+        <input id="createdBy" formControlName="createdBy" />
+  
+        <label for="updatedOn">Updated On:</label>
+        <input id="updatedOn" type="date" formControlName="updatedOn" />
+  
+        <label for="updatedBy">Updated By:</label>
+        <input id="updatedBy" formControlName="updatedBy" />
+  
+        <label>Tasks:</label>
+        <!-- Tasks form controls can be added here -->
+  
+        <!-- <button type="submit">Save</button> -->
+      </div>
+    </form>
+  </div>
+</div>  

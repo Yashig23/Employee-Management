@@ -1,1 +1,74 @@
-<p>employee-view works!</p>
+<div class="dashboard-container">
+  <div class="sidebar" style="position: sticky;">
+    <app-side-bar></app-side-bar>
+  </div>
+
+  <div class="main-content">
+    <section class="Formsection">
+      <div *ngIf="progressSpinner === true" class="spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+      <div class="ParentDiv">
+        <div class="div1">
+          <div>
+            <img [src]='EmployeeData.imageUrl' alt="Employee Avatar" style="width: 5.5rem; height: 5.5rem; border-radius: 100%; display: flex; align-items: center; " />
+          </div>
+          <div class="employeeName">{{EmployeeData.name}}</div>
+          <div class="departmentName">{{EmployeeData.role | role}}</div>
+        </div>
+        <div class="div2">
+          <div class="NameSec">
+            <div>Email : </div>
+            <div class="data">{{EmployeeData.email}}</div>
+          </div>
+          <div class="NameSec">
+            <div>Phone No : </div>
+            <div class="data">{{EmployeeData.phone}}</div>
+          </div>
+          <div class="NameSec">
+            <div>Address : </div>
+            <div class="data">{{EmployeeData.address}}</div>
+          </div>
+          <div class="NameSec">
+            <div>Department Name : </div>
+            <div class="data" *ngIf="EmployeeData.departmentName === null">Department Not allotted</div>
+            <div class="data">{{EmployeeData.departmentName}}</div>
+          </div>
+          <div class="NameSec">
+            <div>Manager Name : </div>
+            <div class="data" *ngIf="EmployeeData.departmentName === null">Manager Not allotted</div>
+            <div class="data">{{EmployeeData.managerName}}</div>
+          </div>
+          <div class="NameSec">
+            <div>Created By : </div>
+            <div class="data">{{EmployeeData.createdBy}}</div>
+          </div>
+          <div class="NameSec">
+            <div>Created On : </div>
+            <div class="data">{{EmployeeData.createdOn | date: 'short' }}</div>
+          </div>
+          <div class="NameSec">
+            <div>Salary : </div>
+            <div class="data">{{EmployeeData.salary}}</div>
+          </div>
+
+          <div class="BTnSec">
+            <!-- <div>
+              <button class="btn1" [routerLink]="['/Employee-projects', paramId]">View Projects</button>
+            </div>
+            <div>
+              <button class="btn1" [routerLink]="['/Employee-tasks', paramId]">View Tasks</button>
+            </div> -->
+            <div>
+              <button class="btn1" [routerLink]="['projectss', paramId]">View Projects</button>
+            </div>
+            <div>
+              <button class="btn1" [routerLink]="['taskss', paramId]">View Tasks</button>
+            </div>
+          </div>
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

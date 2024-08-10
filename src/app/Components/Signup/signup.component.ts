@@ -3,6 +3,7 @@ import { LoginService } from '../Services/login.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Form } from 'react-router-dom';
 import { ApiResponse } from '../Models/Login.model';
+import { ToastService } from '../../Modules/SharedModule/shared/Services/toast.service';
 
 @Component({
   selector: 'app-signup',
@@ -14,7 +15,7 @@ export class SignupComponent {
   public SignupForm!: FormGroup;
   public token?: string|null;
 
-  constructor(public loginService: LoginService){
+  constructor(public loginService: LoginService, private toaster: ToastService){
    this.SignupForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
@@ -33,7 +34,8 @@ export class SignupComponent {
       next: (response: ApiResponse)=>{
         console.log(response);
         this.token = response.data?.token;
-        alert("Signup Completed successfully");
+        this.toaster.showSuccess("Signup Completed Successfully");
+        // alert("Signup Completed successfully");
         console.log("signup success");
 
         // setting up the local storage for username and password.
@@ -44,7 +46,8 @@ export class SignupComponent {
       },
       error: (err)=>{
         console.log(err);
-        alert("Error occured while signup");
+        this.toaster.showWarning("Error occured while signUp");
+        // alert("Error occured while signup");
       }
     })
   }

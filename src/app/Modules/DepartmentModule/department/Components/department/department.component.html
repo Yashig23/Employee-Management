@@ -1,20 +1,31 @@
-<section class="department-section">
-  <div class="container">
-    <div class="header">
-      <h1>Add New Department</h1>
-    </div>
-    <form [formGroup]="departmentForm" (ngSubmit)="submit()">
-      <div class="input-field">
-        <input type="text" placeholder="Department Name" formControlName="name">
-        <div *ngIf="departmentForm.get('name')!.invalid && departmentForm.get('name')!.touched" class="error-message">
-          Department Name is required
-        </div>
-      </div>
-      <div class="submit-button">
-        <button type="submit">Submit</button>
-        <button type="button" mat-button mat-dialog-close>Cancle</button>
-      </div>
-    </form>
+<!-- <div class="dashboard-container">
+  <div class="sidebar" style="position: sticky;">
+    <app-side-bar></app-side-bar>
   </div>
-</section>
 
+  <div class="main-content">
+    <div *ngIf="progressSpinner === true" class="spinner">
+      <mat-spinner></mat-spinner>
+    </div> -->
+    <section class="department-section">
+      <div class="container">
+        <div class="header">
+          <h1>Add New Department</h1>
+        </div>
+        <form [formGroup]="departmentForm" >
+          <div class="input-field">
+            <input type="text" placeholder="Department Name" formControlName="name">
+            <div *ngIf="departmentForm.controls['name']!.invalid && departmentForm.controls['name']!.touched"
+              class="error-message">
+              Department Name is required
+            </div>
+          </div>
+          <div class="submit-button">
+            <button type="submit" (click)="submit()" mat-dialog-close="true">Submit</button>
+            <button type="button" mat-button mat-dialog-close>Cancle</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  <!-- </div> 
+</div>    -->

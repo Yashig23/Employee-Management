@@ -5,7 +5,7 @@
 .sidebar {
   width: 250px;
   background-color: #2a49e2;
-  padding: 20px;
+  // padding: 20px;
   height: 100vh;
   position: fixed;
 }
@@ -113,6 +113,19 @@ header {
   }
 }
 
+.submit-button1 {
+  background-color: #4d9ee1;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #218838;
+  }
+}
+
 .cancel-button {
   background-color: #dc3545;
   color: white;
@@ -135,4 +148,41 @@ header {
 
 .ulClass{
   color: white;
+}
+
+.Addbtn{
+  padding-left: 4rem;
+  padding-right: 4rem;
+  padding-top: 1rem;
+  padding-right: 1rem;
+  margin: 1rem;
+  background-color: #62adfd;
+  border: none;
+  border-radius: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: large;
+}
+
+.BtnSection{
+  display: flex;
+  justify-content: space-between;
+}
+
+.Editbtn{
+  padding-left: 4rem;
+  padding-right: 4rem;
+  padding-top: 1rem;
+  padding-right: 1rem;
+  margin: 1rem;
+  background-color: #7aff92;
+  border: none;
+  border-radius: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: large;
 }

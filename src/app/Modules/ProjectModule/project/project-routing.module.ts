@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProjectListComponent } from './Components/project-list/project-list.component';
 import { AddProjectComponent } from './Components/add-project/add-project.component';
+import { ViewProjectComponent } from './Components/ViewProject/view-project/view-project.component';
 
 const routes: Routes = [
   // // {path:'', component: AddProjectComponent},
   // {path:'project/add', component: AddProjectComponent}
   {path:"", component: ProjectListComponent},
   {path:"add", component: AddProjectComponent},
-  {path:"project/details/:id", component: AddProjectComponent},
+  {path:"view/:id", component: ViewProjectComponent},
 ];
 
 @NgModule({

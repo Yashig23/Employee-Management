@@ -3,6 +3,7 @@ import { DepartmentServiceService } from '../../Service/department-service.servi
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ToastService } from '../../../../SharedModule/shared/Services/toast.service';
 
 @Component({
   selector: 'app-department',
@@ -11,12 +12,13 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class DepartmentComponent implements OnInit{
 
-  constructor(private departmentService: DepartmentServiceService, private router: Router,   private dialogRef: MatDialogRef<DepartmentComponent>){}
+  constructor(private departmentService: DepartmentServiceService, private router: Router, private toaster: ToastService){}
   // public departmentName!: string;
   // public requesting = true;
   public departmentForm! : FormGroup;
   public name = new FormControl('', [Validators.required]);
   public requesting!: boolean;
+  public progressSpinner!: boolean;
 
 
   ngOnInit(): void {
@@ -26,6 +28,7 @@ export class DepartmentComponent implements OnInit{
   }
 
   public submit(): void{
+    this.progressSpinner = true;
     console.log("submitted");
     if(this.departmentForm.valid){
       const formData = this.departmentForm.value;
@@ -34,12 +37,16 @@ export class DepartmentComponent implements OnInit{
         this.departmentService.AddDepartment(formData).subscribe({
           next: (response)=>{
             console.log(response);
-            window.alert("Submitted successfully");
-            this.dialogRef.close(true);
+            this.progressSpinner = false;
+            this.toaster.showSuccess("Submitted successfully");
+            // window.alert("Submitted successfully");
+            // this.dialogRef.close(true);
           },
           error: (err)=>{
             console.log(err);
-            window.alert("Error occured while submitting");
+            this.progressSpinner = false;
+            this.toaster.showWarning("Error occured while submitting");
+            // window.alert("Error occured while submitting");
           }
         })
       }

@@ -3,8 +3,11 @@
       <div class="header">
         <h1>Add New Project</h1>
       </div>
-      <form [formGroup]="ProjectForm" (ngSubmit)="submit()">
+      <form [formGroup]="ProjectForm" >
         <div class="input-field">
+          <div *ngIf="progressSpinner === true" class="spinner">
+            <mat-spinner></mat-spinner>
+          </div>
           <input type="text" placeholder="Project Name" formControlName="name">
           <div *ngIf="ProjectForm.get('name')!.invalid && ProjectForm.get('name')!.touched" class="error-message">
             Project Name is required
@@ -15,22 +18,21 @@
           </div>
           <div>
             <label for="role">Role:</label>
-            <select id="role" formControlName="role" class="input-field">
-              <option value="1">Pending</option>
-              <option value="2">Running</option>
-              <option value="3">Completed</option>
+            <select id="role" formControlName="status" class="input-field">
+              <option [ngValue]="0">Pending</option>
+              <option [ngValue]="1">Active</option>
+              <option [ngValue]="2">Complete</option>
             </select>
           </div>
           <div>
-            <label for="role">Members:</label>
-            <select id="role" formControlName="members" class="input-field">
-              <option *ngFor="let employe of employeeList" [value]="employe.id">{{employe.name}}</option>
-            </select>
+            <button (click)="addMembers()">Add Members</button>
+          </div>
+          <div>
           </div>
         </div>
 
         <div class="submit-button">
-          <button type="submit">Submit</button>
+          <button type="submit" [disabled]="!ProjectForm.valid" (click)="submit()">Submit</button>
           <button type="button" mat-button mat-dialog-close>Cancel</button>
         </div>
       </form>

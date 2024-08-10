@@ -1,88 +1,116 @@
 <div class="dashboard-container">
-   <app-side-bar></app-side-bar>
-  
-    <div class="main-content">
-      <header>
+  <div style="background-color: #2a49e2; position: sticky;" *ngIf="!data?.isActive">
+    <app-side-bar></app-side-bar>
+  </div>
+
+  <div class="main-content">
+    <header>
+      <div class="headerSec">
         <div>
-        <h1>Employee</h1>
-    </div>
-    <div class="actions">
-      <input type="text" placeholder="Search" class="search-input" [(ngModel)]="dataPage.search" (input)="FilterChange()">
-    
-      <div class="import-export">
-        <button class="import" routerLink="add">Add New Employee</button>
+          <h1>Employee</h1>
+        </div>
+        <div class="import-export" *ngIf="!data?.isActive">
+          <button class="import" routerLink="add">Add New Employee</button>
+        </div>
+        <div style="display: flex; justify-content: end;">
+        <div class="import-export" *ngIf="data?.isActive">
+          <button class="import" [mat-dialog-close]="projectEmployees">Save</button>
+        </div>
+        <div class="import-export" *ngIf="data?.isActive">
+          <button class="importClose" mat-dialog-close="true">Cancle</button>
+        </div>
       </div>
-    
+      </div>
+      <div class="searchParent">
+        <div class="SearchingSec">
+          <div class="inputSec">
+            <input type="text" placeholder="Search" class="search-input" [(ngModel)]="dataPage.search"
+              (keydown.enter)="searchEmployeeNew()">
+          </div>
+          <div><button (click)="searchEmployeeNew()" class="submit">Submit</button></div>
+        </div>
+        <div class="employeeNo">
+          <label style="color: rgb(117, 116, 116);">Total Employees:</label>
+          <div class="length" style=" color: rgb(117, 116, 116); padding: 2px">{{employeeListLength}}</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="table-container">
+      <table mat-table matSort (matSortChange)="sortData($event)" class="sales-table">
+        <thead>
+          <tr>
+            <th>Serial No.</th>
+            <th mat-sort-header="Name">Employee Name</th>
+            <th mat-sort-header="CreatedOn">Created On</th>
+            <th mat-sort-header="DepartmentName">Department Name</th>
+            <th mat-sort-header="Salary">Salary</th>
+            <th mat-sort-header="Role">Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <div *ngIf="progressSpinner === true" class="spinner">
+            <mat-spinner></mat-spinner>
+          </div>
+          <tr *ngFor="let employee of filteredEmployeeData; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.createdOn | date: 'short' }}</td>
+            <td>{{ employee.departmentName }}</td>
+            <td>{{ employee.salary }}</td>
+            <td>{{ employee.role | role }}</td>
+            <td>
+              <button *ngIf="data?.isActive && !existInArray(employee.id)" (click)="addEmployeeInProject(employee.id, employee.name)">
+                <mat-icon class="small-icon">add</mat-icon>
+              </button>
+              <button *ngIf="data?.isActive && existInArray(employee.id)" (click)="removeEmployeeInProject(employee.id)"  class="small-icond">
+                <mat-icon class="small-icond">remove</mat-icon>
+              </button>              
+              <button [routerLink]="['edit', employee.id]" *ngIf="!data?.isActive">
+                <mat-icon class="small-icon">update</mat-icon></button>
+              <button (click)="deleteEmployee(employee.id!)" class="deleteBtn" *ngIf="!data?.isActive">
+                <mat-icon class="small-icon">delete</mat-icon></button>
+              <button [routerLink]="['view', employee.id]" class="viewBtn" *ngIf="!data?.isActive">
+                <mat-icon class="small-icon">visibility</mat-icon>
+                 </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer>
       <div class="pagination-controls">
         <div class="entries-per-page">
-          <label for="entries">Show
-            <select id="entries" [(ngModel)]="dataPage.pagedItemsCount" (change)="FilterChange()">
-              <option [ngValue]="5">5</option>
-              <option [ngValue]="10">10</option>
-              <option [ngValue]="20">20</option>
-              <option [ngValue]="50">50</option>
-              <option [ngValue]="100">100</option>
-            </select> entries
+          <label for="entries" class="labelOption">Items per page
+            <select id="entries" [(ngModel)]="dataPage.pagedItemsCount" (change)="onPageSizeChange($event)" >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
           </label>
         </div>
-    
-        <div class="pagination">
-          <button class="pagination-link" (click)="onPrevious()">Previous</button>
-          <span class="page-number">{{dataPage.pageIndex + 1}}</span>
-          <button class="pagination-link" (click)="onNext()">Next</button>
-        </div>
-      </div>
-    </div>
 
         <div>
-          <div>
-            <label>Order Key</label>
-            <select [(ngModel)]="dataPage.orderKey" (change)="FilterChange()">
-              <option value="Name">EmployeeName</option>
-              <option value="">Id</option>
-              <option value="CreatedAt">Created At</option>
-              <option value="Salary">Salary</option>
-              <option value="Role">Role</option>
-              <!-- <option value="20">20</option>
-              <option value="50">50</option>
-              <option value="100">100</option> -->
-            </select>
+          <div class="pagination">
+            <div (click)="onPrevious()"   [ngClass]="{'disabled': dataPage.pageIndex <= 1}" >
+              <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m13.789 7.155c.141-.108.3-.157.456-.157.389 0 .755.306.755.749v8.501c0 .445-.367.75-.755.75-.157 0-.316-.05-.457-.159-1.554-1.203-4.199-3.252-5.498-4.258-.184-.142-.29-.36-.29-.592 0-.23.107-.449.291-.591 1.299-1.002 3.945-3.044 5.498-4.243z"/></svg>
+          </div>
+            <span class="page-number">{{dataPage.pageIndex}}</span>
+            <div (click)="onNext()"    [ngClass]="{'disabled': dataPage.pageIndex >= getTotalPages()}">
+              <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" width="20px" height="20px" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m10.211 7.155c-.141-.108-.3-.157-.456-.157-.389 0-.755.306-.755.749v8.501c0 .445.367.75.755.75.157 0 .316-.05.457-.159 1.554-1.203 4.199-3.252 5.498-4.258.184-.142.29-.36.29-.592 0-.23-.107-.449-.291-.591-1.299-1.002-3.945-3.044-5.498-4.243z"/></svg>
+          </div>
+          </div> 
+
+          <div class="parentList">
+            <div class="pagesList" *ngFor="let i of totalPagesList" (click)="goToPage(i)">{{i}}</div>
           </div>
         </div>
-      </header>
-  
-      <div class="table-container">
-        <table class="sales-table">
-          <thead>
-            <tr>
-              <th>Serial No.</th>
-              <th>Employee Name</th>
-              <th>Created At</th>
-              <th>Department Name</th>
-              <th>Salary</th>
-              <th>Role</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let employee of filteredEmployeeData; let i = index">
-              <td>{{i+1}}</td>
-              <td>{{employee.name}}</td>
-              <td>{{employee.createdOn | date}}</td>
-              <td>{{employee.departmentName}}</td>
-              <td>{{employee.salary}}</td>
-              <td>{{employee.role}}</td>
-              <td>
-                <button [routerLink]="['edit', employee.id]">Update</button>
-                <button (click)="deleteEmployee(employee.id!)" class="deleteBtn">Delete</button>
-                <button [routerLink]="['view', employee.id]">View</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
+    </footer>
 
-    </div>
   </div>
-  
-
+</div>

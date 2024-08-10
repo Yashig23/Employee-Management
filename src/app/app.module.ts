@@ -20,13 +20,18 @@ import {
 import { LoginComponent } from './Components/Login/login/login.component';
 import { SignupComponent } from './Components/Signup/signup.component';
 import { HomepageComponent } from './Components/Homepage/homepage/homepage.component';
-
+import { AddTasksComponent } from './Components/Tasks/add-tasks/add-tasks.component';
+import { ToastrModule } from 'ngx-toastr';
+import { TaskModule } from './Modules/TaskModule/task/task.module';
+import { MatIconModule } from '@angular/material/icon';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SignupComponent,
     HomepageComponent,
+    AddTasksComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +46,16 @@ import { HomepageComponent } from './Components/Homepage/homepage/homepage.compo
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    TaskModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-upper-right',
+      timeOut: 3000,
+      extendedTimeOut: 1000,
+      closeButton: true
+    })
   ],
   providers: [
     provideClientHydration(),
