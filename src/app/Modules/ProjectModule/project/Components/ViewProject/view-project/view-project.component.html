@@ -1,72 +1,62 @@
-<div class="parent">
-<div class="project-container">
-    <form [formGroup]="ProjectData" >
-        <div *ngIf="progressSpinner === true" class="spinner">
-            <mat-spinner></mat-spinner>
-          </div>
-      <div class="project-header">
-        <h1 formControlName="name">{{ ProjectData.get('name')?.value }}</h1>
-        <p class="project-description">{{ ProjectData.get('description')?.value }}</p>
-      </div>
-  
-      <div class="project-details">
-        <div class="project-info">
-          <p><strong>Created By:</strong> {{ ProjectData.get('createdBy')?.value }}</p>
-          <p><strong>Created On:</strong> {{ ProjectData.get('createdOn')?.value | date:'fullDate' }}</p>
-          <p *ngIf="ProjectData.get('updatedBy')?.value">
-            <strong>Updated By:</strong> {{ ProjectData.get('updatedBy')?.value }}
-          </p>
-          <p *ngIf="ProjectData.get('updatedOn')?.value">
-            <strong>Updated On:</strong> {{ ProjectData.get('updatedOn')?.value | date:'fullDate' }}
-          </p>
-        </div>
-  
-        <div class="members-list">
-          <h2>Members</h2>
-          <ul>
-            <li *ngFor="let member of ProjectData.get('members')?.value">
-              {{ member.employeeeName }} (ID: {{ member.employeeId }})
-            </li>
-          </ul>
-        </div>
-      </div>
-  
-      <!-- Form controls for editing -->
-      <div class="form-controls">
-        <label for="name">Name:</label>
-        <input id="name" formControlName="name" />
-  
-        <label for="description">Description:</label>
-        <textarea id="description" formControlName="description"></textarea>
-  
-        <label>Members:</label>
-        <!-- <div formArrayName="members">
-          <div *ngFor="let member of ProjectData.get('members')['controls']; let i = index" [formGroupName]="i">
-            <label for="employeeId-{{i}}">Member ID:</label>
-            <input id="employeeId-{{i}}" formControlName="employeeId" />
-  
-            <label for="employeeName-{{i}}">Member Name:</label>
-            <input id="employeeName-{{i}}" formControlName="employeeeName" />
-          </div>
-        </div> -->
-  
-        <label for="createdOn">Created On:</label>
-        <input id="createdOn" type="date" formControlName="createdOn" />
-  
-        <label for="createdBy">Created By:</label>
-        <input id="createdBy" formControlName="createdBy" />
-  
-        <label for="updatedOn">Updated On:</label>
-        <input id="updatedOn" type="date" formControlName="updatedOn" />
-  
-        <label for="updatedBy">Updated By:</label>
-        <input id="updatedBy" formControlName="updatedBy" />
-  
-        <label>Tasks:</label>
-        <!-- Tasks form controls can be added here -->
-  
-        <!-- <button type="submit">Save</button> -->
-      </div>
-    </form>
+<div class="dashboard-container">
+  <div class="sidebar" style="position: sticky;">
+    <app-side-bar></app-side-bar>
   </div>
-</div>  
+
+  <div class="main-content">
+    <section class="Formsection">
+      <div class="ParentDiv">
+        <div *ngIf="progressSpinner === true" class="spinner">
+          <mat-spinner></mat-spinner>
+        </div>
+        <div class="div1">
+          <div class="employeeName">{{ProjectData.name}}</div>
+          <div class="departmentName">{{ProjectData.description}}</div>
+          <div>
+            <button  [routerLink]="['/projects/edit', this.paramId]">Update</button>
+          </div>
+        </div>
+        <div class="div2">
+          <div class="MembersSec">
+            <div>Members : </div>
+            <!-- <button (click)="openEmployeeDialog()">Add Members</button> -->
+            <div *ngFor="let members of addedMembersList" class="subSec">
+            <div class="data1">{{members.employeeName}}</div>
+            <!-- <div class="removeBtn" (click)="removeMember(members.employeeId, members.employeeName)">Remove</div> -->
+          </div>
+          </div>
+          <div class="NameSec">
+            <div>Tasks : </div>
+            <div *ngIf="ProjectData.totalTask != null" class="DivSec">
+              <div> Total Task</div>
+              <div>{{ProjectData.totalTask}}</div>
+            </div>
+            <div *ngIf="ProjectData.pendingTask != null" class="DivSec">
+              <div> Pending Task</div>
+              <div>{{ProjectData.pendingTask}}</div>
+            </div>
+            <div class="data" *ngIf="ProjectData.tasks?.length">
+              <div *ngFor="let task of taskList">
+                {{task.name}}
+              </div>
+              </div>
+            <div class="data" *ngIf="ProjectData.tasks?.length === 0">
+              <button class="addTask" routerLink="/tasks/Ports">View Tasks</button>
+              <!-- <button (click)="openAddTaskDialog()" class="addTask" >Add Task</button> -->
+            </div>
+          </div>
+          <div class="NameSec">
+            <div>Created By : </div>
+            <div *ngIf="ProjectData.createdBy === null">null</div>
+            <div class="data">{{ProjectData.createdBy}}</div>
+          </div>
+          <div class="NameSec">
+            <div>Created On : </div>
+            <div class="data">{{ProjectData.createdOn | date: 'short'}}</div>
+          </div>
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

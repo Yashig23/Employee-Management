@@ -26,12 +26,14 @@ import {
 } from '@angular/material/dialog';
 import { ViewProjectComponent } from './Components/ViewProject/view-project/view-project.component';
 import { MatSortModule } from '@angular/material/sort';
+import { EditProjectComponent } from './Components/edit-project/edit-project.component';
 
 @NgModule({
   declarations: [
     ProjectListComponent,
     AddProjectComponent,
     ViewProjectComponent,
+    EditProjectComponent,
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,67 @@
+/* Parent container styling */
+.parent {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .subParent {
+    width: 100%;
+    max-width: 1200px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  /* Table styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .addBtn{
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: rgb(71, 211, 71);
+    color: white;
+    border-radius: 5px;
+  }
+  
+  thead {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    font-size: 1.1rem;
+  }
+  
+  td {
+    font-size: 1rem;
+  }
+  
+  /* Row styling */
+  .project-row:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Specific cell styling */
+  .project-name {
+    font-size: 1.1rem;
+    margin-bottom: 3px;
+  }
+  
+  .project-description, .project-status, .project-date {
+    font-size: 1rem;
+  }
+  

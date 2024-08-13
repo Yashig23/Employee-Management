@@ -5,12 +5,7 @@ import { DepartmentServiceService } from '../../../../../DepartmentModule/depart
 import { Department, DepartmentResponse } from '../../../../../DepartmentModule/department/Models/department.model';
 import { EmployeServiceService } from '../../../Service/employe-service.service';
 import { ToastService } from '../../../../../SharedModule/shared/Services/toast.service';
-
-// export enum EmployeeRole {
-//   Admin = 1,
-//   Employee = 2,
-//   SuperAdmin = 3
-// }
+import { OnlyEmployeeData } from '../../../Models/Employee.model';
 
 export enum EmployeeRole {
   Admin = 1,
@@ -29,8 +24,9 @@ export class EmployeeComponent implements OnInit {
   public paramId!: number;
   public progressSpinner!: boolean;
   public showManagerList: boolean = false;
+  public departmentName!: string | null;
   public departmentList: Department[]=[];
-  public adminNameList: Department[]=[];
+  public adminNameList: OnlyEmployeeData[]=[];
   constructor(public router: Router, private activatedRoute: ActivatedRoute, private departmentService: DepartmentServiceService, private employeeService: EmployeServiceService,
     public toaster: ToastService,
   ) {}
@@ -41,7 +37,6 @@ export class EmployeeComponent implements OnInit {
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
       name: new FormControl('', [Validators.required]),
-      // lastname: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required]),
       phone: new FormControl('', [Validators.required]),
       address: new FormControl('', [Validators.required]),
@@ -56,23 +51,18 @@ export class EmployeeComponent implements OnInit {
       this.paramId = Number(paramMap.get('id'));
       if(this.paramId){
         this.isEdit = true;
-        this.getAdminById(this.paramId);
+        this.getEmployeeNamesById(this.paramId);
         this.getEditData();
       }
     });
   }
 
   public onSubmit(): void {
-    console.log("submitted");
-    console.log(this.employeeForm.value)
     if(this.employeeForm.valid){
     if (this.employeeForm.value.name && this.employeeForm.value.salary) {
       const  formValue = this.employeeForm.value;
       console.log(formValue);
-      // const username1 = localStorage.getItem('username');
-      // const password1 = localStorage.getItem('password');
       const body = {
-        // id: this.employeeForm.value.id,
         username: this.employeeForm.value.username,
         password: this.employeeForm.value.password,
         name: this.employeeForm.value.name,
@@ -88,15 +78,12 @@ export class EmployeeComponent implements OnInit {
       if(this.isEdit == true){
         this.employeeService.updatedEmployee(body, this.paramId).subscribe({
           next: (data)=>{
-            console.log(data);
-            // alert('Employee updated successfully');
             this.toaster.showSuccess("Employee updated successfully");
             this.employeeForm.reset();
           },
           error: (err)=>{
             console.log(err);
             this.toaster.showWarning("Error while updating the employee");
-            // window.alert('Error while updating the employee');
           }
         })
       }
@@ -105,13 +92,11 @@ export class EmployeeComponent implements OnInit {
         next: (data)=>{
           console.log(data);
           this.toaster.showSuccess('Employee added successfully');
-          //  alert('Employee added successfully');
            this.employeeForm.reset();
         },
         error: (err)=>{
           console.log(err);
           this.toaster.showWarning('Error while adding employee')
-          // window.alert('Error while adding the employee');
         }
       })
     }
@@ -123,13 +108,9 @@ export class EmployeeComponent implements OnInit {
     this.departmentService.getDepartmentList().subscribe({
       next: (response: DepartmentResponse) => {
         this.departmentList = response.data || [];
-        console.log(this.departmentList);
-        console.log(response);
       },
       error: (err: string) => {
         this.toaster.showWarning("Error occured while displaying the list");
-        // window.alert('Error occurred while displaying the department list');
-        console.log('Error occurred', err);
       }
     });
   } 
@@ -141,12 +122,12 @@ export class EmployeeComponent implements OnInit {
         this.progressSpinner = false;
         const employeeDataOfId = response.data;
         console.log(employeeDataOfId);
-        this.getAdminById(this.paramId);
+        this.departmentName = employeeDataOfId.departmentName;
+        this.getEmployeeNamesById(this.paramId);
         this.employeeForm.patchValue(employeeDataOfId)
       },
       error: (err)=>{
         this.progressSpinner = false;
-        // window.alert("Error while getting employee details");
         console.log("Error while showing employee details",err);
       }
     })
@@ -156,14 +137,9 @@ export class EmployeeComponent implements OnInit {
     const target = event.target as HTMLSelectElement;
     const selectedDepartmentId = target.value;
     const departmentId = Number(selectedDepartmentId);
-    // const departmentId = event.target.value;
     if (departmentId) {
       console.log(departmentId);
-      debugger;
-      console.log("Loaded....")
-      // this.showManagerList = true; 
-      // this.getManagerByDepartment(departmentId);
-      this.getAdminById(departmentId);
+      this.getEmployeeNamesById(departmentId);
     } else {
       this.showManagerList = false; 
     }
@@ -174,42 +150,29 @@ export class EmployeeComponent implements OnInit {
       next: (response)=>{
         console.log(response)
         if(this.adminNameList == null){
-          console.log("null admin list");
-          // alert("No manager found");
           this.toaster.showWarning("No Manager found");
           this.showManagerList = false;
         }
         else{
-          console.log('Managers found');
-          // this.adminNameList = response.data;
           this.showManagerList = true;
-          console.log(this.adminNameList);
         }
       }
     })
   }
 
-// TODO Check this function
-public getAdminById(id: number): void {
-  console.log("get admin data");
-  console.log(id);
-  this.departmentService.getDepartmentById(id).subscribe({
-    next: (response) => {
-      console.log(response);
-      if (response.data === null || response.data === undefined) {
-        this.adminNameList = []; 
-        this.toaster.showInfo("No Manager available in this department");
-        // alert("Manager list is empty");
-      } else {
-        this.adminNameList = response.data;
-      }
+public getEmployeeNamesById(id: number): void{
+  this.employeeService.getEmployeeNamesByDepartmentId(id).subscribe({
+    next: (data) =>{
+      this.showManagerList = true;
+      const Data = data.data;
+      this.adminNameList = Data;
     },
-    error: (err) => {
+    error: (err)=>{
       console.log(err);
-      this.toaster.showWarning("Error while getting Managers list");
-      // window.alert("Error occurred");
+      this.showManagerList = false;
+      this.toaster.showWarning("Error while fetching the employee Names");
     }
-  });
+  })
 }
 
 }

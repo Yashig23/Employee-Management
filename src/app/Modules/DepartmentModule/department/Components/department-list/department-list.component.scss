@@ -199,6 +199,11 @@ button{
   align-items: center;
 }
 
+.spinner{
+  display: flex;
+  justify-content: center;
+}
+
 .entries-per-page label {
   font-size: 0.9rem;
 }

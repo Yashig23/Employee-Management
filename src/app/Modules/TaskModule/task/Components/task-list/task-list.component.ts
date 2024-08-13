@@ -46,7 +46,7 @@ export class TaskListComponent implements OnInit{
       next: (response: TaskList) => {
         console.log(response.data);
         if(response.data == null || response.data == undefined){
-          this.toaster.showInfo("No projects found")
+          this.toaster.showInfo("No tasks found")
           this.taskList = [];
         }
         else{

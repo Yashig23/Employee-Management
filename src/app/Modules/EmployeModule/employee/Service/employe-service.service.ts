@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment1} from '../../../../../environment/environment';
 // import { AddEmployeeResponse, EmployeResponse, UpdateEmployeeResponse } from '../Models/Employee.model';
-import { AddEmployeeRequest, AddEmployeeResponse, DataPage, Employee, EmployeeResponse, EmployeeResponsePagination, GetEmployeeResponseById, ProjectListOfEmployee1, TasksListOfEmployees, UpdateEmployeeRequest, UpdatedEmployeeResponse } from '../Models/Employee.model';
+import { AddEmployeeRequest, AddEmployeeResponse, DataPage, Employee, EmployeeResponse, EmployeeResponsePagination, GetEmployeeDepartmentById, GetEmployeeResponseById, ProjectListOfEmployee1, TasksListOfEmployees, UpdateEmployeeRequest, UpdatedEmployeeResponse } from '../Models/Employee.model';
 // import {CacheService} from '../Service/cache.service'
 
 @Injectable({
@@ -17,7 +17,7 @@ export class EmployeServiceService {
   public pagination = environment1.apiUrl.Pagination;
 
   constructor(private httpClient: HttpClient) { }
-  public token = "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNoaTEyMyIsIklkIjoiNDUiLCJVc2VySWQiOiI3OCIsImp0aSI6IjJjZGM1Y2RlLTE1MDUtNDA0ZS04OTgzLTNjYTYyMTBiMjkzYSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJleHAiOjE3MjM1Mjk2NTYsImlzcyI6Ikp3dElzc3VlciIsImF1ZCI6Ikp3dEF1ZGllbmNlIn0.7_DPpjGLEdmyStL6nfaP4e2qxOxp-evT1LeMIsHfDRI";
+  public token = "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNoaTEyMyIsIklkIjoiNDUiLCJVc2VySWQiOiI3OCIsImp0aSI6IjNmZmIzOWQzLWQxZTUtNGQ1Yi04ZWU5LTI1OTI1Yjc5MzZhMyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJEYXRlIjoiOC8xMy8yMDI0IDY6NTk6NDIgQU0iLCJleHAiOjE3MjM5NjQzODIsImlzcyI6Ikp3dElzc3VlciIsImF1ZCI6Ikp3dEF1ZGllbmNlIn0.b-gkVJMxcYGWCCpkfY6ytfBrFx4SngHWd60z-LOQUQQ";
 
   private headers = new HttpHeaders({
     'Authorization': `Bearer ${this.token}` // Use Bearer token
@@ -49,6 +49,10 @@ export class EmployeServiceService {
   public getDepartmentDetailsByName(data: number): Observable<EmployeeResponse>{
     return this.httpClient.get<EmployeeResponse>(`https://192.168.1.34:8081/Employee/department/${data}`, {headers: this.headers})
   } 
+
+  public getEmployeeNamesByDepartmentId(id: number): Observable<GetEmployeeDepartmentById>{
+    return this.httpClient.get<GetEmployeeDepartmentById>(`https://emp-mgmt-dev.azurewebsites.net/Employee/department/${id}`, {headers: this.headers})
+  }
 
   public paginationOnEmployee(data: DataPage): Observable<EmployeeResponsePagination>{
     console.log(data);

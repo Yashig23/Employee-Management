@@ -9,9 +9,9 @@
               <div>
                 <h1>Task</h1>
               </div>
-              <div class="import-export">
+              <!-- <div class="import-export">
                 <button class="import" routerLink="add">Add New Task</button>
-              </div>
+              </div> -->
             </div>
             <div class="searchParent">
               <div class="SearchingSec">
@@ -34,9 +34,9 @@
             <tr>
               <th>Serial No.</th>
               <th mat-sort-header="Name">Task Name</th>
-              <th>Description</th>
+              <th>Assigned To</th>
               <th mat-sort-header="CreatedOn">Created On</th>
-              <th>Status</th>
+              <th mat-sort-header="Status">Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -47,16 +47,16 @@
               </div>
               <td>{{ i + 1 }}</td>
               <td>{{ task.name }}</td>
-              <td>{{ task.description }}</td>
+              <td>{{ task.assigneeName }}</td>
               <td>{{ task.createdOn | date: 'short' }}</td>
               <td>{{ task.status | task }}</td>
               <td>
-                <button [routerLink]="['edit', task.id]">
-                    <mat-icon class="mat-icon">update</mat-icon></button>
+                <!-- <button [routerLink]="['edit', task.id]">
+                    <mat-icon class="mat-icon">update</mat-icon></button> -->
                   <button (click)="deleteTask(task.id!)" class="deleteBtn">
                     <mat-icon>delete</mat-icon></button>
-                  <button [routerLink]="['view', task.id]" class="viewBtn">
-                    <mat-icon>visibility</mat-icon> </button>
+                  <!-- <button [routerLink]="['view', task.id]" class="viewBtn">
+                    <mat-icon>visibility</mat-icon> </button> -->
               </td>
             </tr>
           </tbody>

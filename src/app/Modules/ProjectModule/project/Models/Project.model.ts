@@ -1,34 +1,4 @@
-// project-employee.model.ts
-// export interface ProjectEmployee {
-//     id: number;
-//     name: string;
-//   }
-  
-  // project-data.model.ts
-  // export interface ProjectData {
-  //   name: string;
-  //   description: string;
-  //   createdBy: string;
-  //   createdOn: Date; 
-  //   status: number;
-  //   projectEmployee: ProjectEmployee[];
-  // }
-  
-//   export interface ProjectResponse {
-//     success: boolean;
-//     message: string;
-//     data: ProjectData;
-//   }
 
-
-// export interface ProjectRequest {
-//     name: string;
-//     description: string;
-//     createdBy: number; 
-//     status: number;    
-//     members: number[];
-//   }
-  
   // prince interface
 
   export interface ProjectResponse{
@@ -76,24 +46,29 @@
       success: boolean,
       status: number,
       message: string,
-      data: {
-        createdBy: number,
-        updatedBy: number,
-        createdOn: string,
-        updatedOn: string,
-        id: number,
-        name: string,
-        description: string
-        tasks: Tasks[],
-        members: EmployeeForProjects[]
-      }
+      data: projectData;
+  }
 
+  export interface projectData{
+    name: string,
+    createdBy: number,
+    updatedBy: number,
+    createdOn: string,
+    updatedOn: string,
+    status: number,
+    id: number,
+    description: string,
+    pendingTask: number | null,
+    totalTask: number | null,
+    tasks: Tasks[] | null,
+    members: EmployeeForProjects[]
   }
 
   export interface Tasks{
     id: number,
     name: string,
-    description: string
+    description: string,
+    status: number
   }
 
   export interface EmployeeForProjects{
@@ -170,4 +145,22 @@ export interface ProjectListOfEmployee{
   assignerName: string;
   assigneeName: string;
   createdOn: string;
+}
+
+export interface employeeUpdate{
+  employeeId: number
+}
+
+export interface updateProjectByIdRequest{
+  name: string,
+  description: string,
+  status: number,
+  members: employeeUpdate[]
+}
+
+export interface updateProjectByIdResponse{
+  success: boolean,
+  status: number,
+  message: string,
+  data: number
 }

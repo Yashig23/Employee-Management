@@ -57,6 +57,10 @@
   flex: 1;
   background-color: #f4f5f7;
   padding: 20px;
+  overflow-y: auto; 
+  overflow-x: hidden;
+  scroll-behavior: smooth; 
+  // max-height: calc(100vh - 60px);
 
   header {
     // display: flex;

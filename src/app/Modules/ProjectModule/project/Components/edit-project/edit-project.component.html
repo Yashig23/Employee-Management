@@ -1,7 +1,7 @@
 <section class="department-section">
     <div class="container">
       <div class="header">
-        <h1>{{ isEdit ? 'Edit Project' : 'Add Project' }}</h1>
+        <h1>Edit Project</h1>
       </div>
       <form [formGroup]="ProjectForm" >
         <div class="input-field">
@@ -24,6 +24,18 @@
               <option [ngValue]="2">Complete</option>
             </select>
           </div>
+          <div class="members-list">
+            <h3>Members:</h3>
+            <div *ngIf="ProjectForm.controls['members'].value && ProjectForm.controls['members'].value.length > 0">
+              <div *ngFor="let member of ProjectForm.controls['members'].value" class="member-item">
+                <span>{{ member.employeeName }}</span>
+                <button (click)="removeMember(member.employeeId, member.employeeName)" class="removeBtn">Remove</button>
+              </div>
+            </div>
+            <div *ngIf="!(ProjectForm.controls['members'].value && ProjectForm.controls['members'].value.length > 0)">
+              No members added.
+            </div>
+          </div>
           <div >
             <button (click)="addMembers()">Add Members</button>
           </div>
@@ -32,7 +44,7 @@
         </div>
 
         <div class="submit-button">
-          <button type="submit" [disabled]="!ProjectForm.valid" (click)="submit()">{{isEdit? 'Update': 'Submit'}}</button>
+          <button type="submit" [disabled]="!ProjectForm.valid" (click)="submit()">Update</button>
           <button type="button" mat-button mat-dialog-close routerLink="/projects">Cancel</button>
         </div>
       </form>

@@ -5,6 +5,7 @@ import { EmployeServiceService } from '../../Service/employe-service.service';
 import { EmployeeDto } from '../../../../../Components/Models/Login.model';
 import { GetEmployeeResponseById } from '../../Models/Employee.model';
 import { ToastService } from '../../../../SharedModule/shared/Services/toast.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-employee-view',
@@ -32,7 +33,7 @@ export class EmployeeViewComponent implements OnInit{
     imageUrl: ''
   }
  
-  constructor(public router: Router, private activatedRoute: ActivatedRoute, private employeeService: EmployeServiceService, private toster: ToastService){}
+  constructor(public router: Router, private activatedRoute: ActivatedRoute, private employeeService: EmployeServiceService, private toster: ToastService,   public dialog: MatDialog,){}
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(paramMap => {

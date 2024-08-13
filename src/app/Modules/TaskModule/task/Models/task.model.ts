@@ -98,3 +98,50 @@ export interface taskByIdResponse{
     message: string,
     data: Task
 }
+
+// get epic task api interface
+
+// // Define the interface for sub-items
+//  export interface SubItem {
+//     id: number;
+//     name: string;
+//     taskType: number;
+//     subItems: SubItem[] | null; 
+//   }
+  
+  // Define the interface for the data item
+  export interface DataItem {
+    id: number;
+    name: string;
+    taskType: TaskType;
+    createdOn: string;
+    status:number,
+    assignedTo: string,
+    subItems: DataItem[] | null; 
+  }
+  
+  // Define the main response interface
+  export interface ApiResponse {
+    success: boolean;
+    status: number;
+    message: string;
+    data: DataItem[];
+  }
+
+  export interface ExampleFlatNode {
+    expandable: boolean;
+    name: string;
+    // status: number,
+    // createdOn: string,
+    // assignedTo: string,
+    level: number;
+  }
+  
+   export enum TaskType {
+    Epic = 0,
+    Features = 1,
+    Userstory = 2,
+    Task = 3,
+    Bug = 4
+  }
+  

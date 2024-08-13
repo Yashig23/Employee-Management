@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment1 } from '../../../../../environment/environment';
-import { DataPage, DeleteProjectResponse, PostProjectRequest, PostProjectResponse, ProjectByEmployeeId, ProjectByIdResponse, ProjectResponse, ProjectResponsePagination } from '../Models/Project.model';
+import { DataPage, DeleteProjectResponse, PostProjectRequest, PostProjectResponse, ProjectByEmployeeId, ProjectByIdResponse, ProjectResponse, ProjectResponsePagination, updateProjectByIdRequest, updateProjectByIdResponse } from '../Models/Project.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +43,10 @@ export class ProjectService {
   }
    
   public getProjectListOfEmployee(id: number): Observable<ProjectByEmployeeId>{
-    return this.httpClient.get<ProjectByEmployeeId>(`${this.url.Project}/${id}`)
+    return this.httpClient.get<ProjectByEmployeeId>(`${this.url.Project}/${id}`, {headers: this.headers})
+  }
+
+  public updateProjectById(data: updateProjectByIdRequest, id: number): Observable<updateProjectByIdResponse>{
+    return this.httpClient.post<updateProjectByIdResponse>(`${this.url.Project}/${id}`, data, {headers: this.headers})
   }
 }

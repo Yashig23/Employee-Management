@@ -112,77 +112,41 @@
       background-color: #218838;
     }
   }
-  
-  .submit-button1 {
-    background-color: #4d9ee1;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-  
-    &:hover {
-      background-color: #218838;
-    }
-  }
-  
-  .cancel-button {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-  
-    &:hover {
-      background-color: #c82333;
-    }
-  }
-  
-  .Formsection{
-    flex: 1;
-    background-color: #f4f5f7;
-    padding: 40px;
-    margin: 20px;
-  }
-  
-  .ulClass{
-    color: white;
-  }
-  
-  .Addbtn{
-    padding-left: 4rem;
-    padding-right: 4rem;
-    padding-top: 1rem;
-    padding-right: 1rem;
+
+  .parentDiv{
+    padding: 1rem;
     margin: 1rem;
-    background-color: #62adfd;
-    border: none;
-    border-radius: 3rem;
+    // border: 1px solid grey;
+    overflow-y: auto;
+    // width: 200px;
+  }
+
+  .subParent{
+    border-bottom: 1px solid grey;
+  }
+
+  .addBTn{
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px;
+    width: 24px;
+    height: 24px;
+    background-color: #99fab1;
+    border-radius: 1rem;
+    margin: 5px;
+  }
+
+  .AddEpic{
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    background-color: #007bff;
+    border-radius: 7px;
+    margin: 5px;
     color: white;
-    font-size: large;
+
   }
+
   
-  .BtnSection{
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .Editbtn{
-    padding-left: 4rem;
-    padding-right: 4rem;
-    padding-top: 1rem;
-    padding-right: 1rem;
-    margin: 1rem;
-    background-color: #7aff92;
-    border: none;
-    border-radius: 3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: large;
-  }

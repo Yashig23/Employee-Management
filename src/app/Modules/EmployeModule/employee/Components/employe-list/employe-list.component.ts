@@ -211,7 +211,7 @@ public addEmployeeInProject(id: number, name: string) {
   if (!this.existInArray(id)) {
     this.projectEmployees.push({
       employeeId: id,
-      employeeName: 'string',
+      employeeName: name,
   });
   }
   // this.addMembers(id); 

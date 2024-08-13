@@ -1,1 +1,71 @@
-<p>task works!</p>
+<div class="dashboard-container">
+    <div class="sidebar" style="position: sticky;" *ngIf="!projectDialog.projectId">
+     <app-side-bar></app-side-bar>
+    </div>
+  
+    <div class="main-content">
+      <div *ngIf="progressSpinner === true" class="spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+      <header>
+        <div class="Formsection">
+          <div *ngIf="projectDialog?.projectName">
+            <h2>{{projectDialog.projectName}}</h2>
+          </div>
+          <div>
+          <h1>{{ isEdit ? 'Edit Task' : 'Add Epic' }}</h1>
+        </div>
+        </div>
+      </header>
+  
+      <section class="Formsection">
+        <form [formGroup]="taskForm">
+          <table>
+            <tbody>
+              <tr>
+                <td><label for="name">Name:</label></td>
+                <td><input id="name" type="text" formControlName="name" placeholder="Task Name" class="input-field"></td>
+              </tr>
+              <tr>
+                <td><label for="description">Description:</label></td>
+                <td><input id="description" type="text" formControlName="description" placeholder="Description" class="input-field"></td>
+              </tr>
+              <tr>
+                <td><label for="employeeName">Assigned To:</label></td>
+                <select formControlName="assignedTo" class="input-field">
+                  <option *ngFor="let employee of employeeList" [value]="employee.employeeId">{{employee.employeeName}}</option>
+                </select>
+              </tr>
+              <tr>
+                <!-- <td><label for="projectId">Project Name:</label></td>
+                <td><div id="projectId" class="input-field">{{projectDialog.projectName}}</div></td> -->
+                <!-- <select formControlName="projectId" class="input-field">
+                  <option *ngFor="let project of projectList" [value]="project.id">{{project.name}}</option>
+                </select> -->
+              </tr>            
+              <tr>
+                <td><label for="status">Status:</label></td>
+                <td>
+                  <select id="status" formControlName="status" class="input-field">
+                    <option value="0">Pending</option>
+                    <option value="1">Running</option>
+                    <option value="2">Completed</option>
+                  </select>
+                </td>
+              </tr>            
+              <tr>
+                <td colspan="2" class="form-buttons">
+                  <button type="submit" [disabled]="!taskForm.valid" class="submit-button" style="margin-right: 1rem; margin-top: 7px" (click)="submit()">
+                    {{ isEdit ? 'Update' : 'Submit' }}
+                  </button>
+                  <!-- <button type="button" (click)="router.navigate(['/tasks'])" class="cancel-button" style="margin-left: 1rem; margin-top: 7px">Cancel</button> -->
+                  <button type="button" mat-dialog-close class="cancel-button" style="margin-left: 1rem; margin-top: 7px">Cancel</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </section>
+    </div>
+  </div>
+  

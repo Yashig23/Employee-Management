@@ -20,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { EmployeeProjectComponent } from './Components/employee-project/employee-project.component';
 import { EmployeeTasksComponent } from './Components/employee-tasks/employee-tasks.component';
+import { StatusPipe } from './Pipes/status.pipe';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { EmployeeTasksComponent } from './Components/employee-tasks/employee-tas
     EmployeeViewComponent,
     RolePipe,
     EmployeeProjectComponent,
-    EmployeeTasksComponent
+    EmployeeTasksComponent,
+    StatusPipe
   ],
   imports: [
     MatProgressSpinnerModule,

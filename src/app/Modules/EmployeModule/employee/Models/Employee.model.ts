@@ -38,6 +38,13 @@ export enum EmployeeRole {
     data: EmployeeIdData;
   }
 
+  export interface GetEmployeeDepartmentById{
+    success: boolean;
+    status: number,
+    message: string,
+    data: OnlyEmployeeData[]
+  }
+
   export interface EmployeeIdData{
     createdBy: number// Nullable integer
     // updatedBy: number | null; // Nullable integer
@@ -89,6 +96,12 @@ export interface UpdatedEmployeeResponse{
     status: number,
     message: string,
     data: Employee;
+}
+
+export interface OnlyEmployeeData{
+  id: number,
+  name: string,
+  departmentName: string | null, 
 }
 
 export interface UpdateEmployeeRequest{
@@ -211,4 +224,9 @@ export enum SortedOrder {
     assignerName: string,
     assigneeName: string,
     createdOn: string
+  }
+
+  export interface projectDialogData{
+    projectName: string,
+    projectId: number
   }

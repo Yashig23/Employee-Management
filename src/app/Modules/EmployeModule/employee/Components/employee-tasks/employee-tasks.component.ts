@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { TasksListOfEmployees } from '../../Models/Employee.model';
+import { projectDialogData, TaskDetails, TasksListOfEmployees } from '../../Models/Employee.model';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { EmployeServiceService } from '../../Service/employe-service.service';
+import { TaskComponent } from '../../../../TaskModule/task/Components/task/task.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-employee-tasks',
@@ -12,9 +14,12 @@ import { EmployeServiceService } from '../../Service/employe-service.service';
 export class EmployeeTasksComponent {
   public paramId!: number;
   public isEdit!: boolean;
-  public projectList: TasksListOfEmployees[]=[];
+  public taskList: TaskDetails[]=[];
+  public projectName!: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private httpClient: HttpClient, private employeeService: EmployeServiceService){
+  constructor(private activatedRoute: ActivatedRoute, private httpClient: HttpClient, private employeeService: EmployeServiceService
+    , public dialog: MatDialog
+  ){
     console.log("Employee Project");
   }
 
@@ -34,10 +39,33 @@ export class EmployeeTasksComponent {
   public getTasksListOfEmployee(id: number){
     this.employeeService.getTasksOfEmployeeById(id).subscribe({
       next: (data: TasksListOfEmployees)=>{
+        const Data = data.data;
+        this.taskList = Data;
         console.log(data);
       },
       error: (err)=>{
       console.log(err);
+      }
+    })
+  }
+
+  public openAddTaskDialog(): void{
+    const taskDialog: projectDialogData ={projectName: this.projectName, projectId: this.paramId }
+    const dialogRef = this.dialog.open(TaskComponent, {
+      width: '1000px',
+      height: '600px',
+      disableClose: false,
+
+    }); 
+    dialogRef.componentInstance.projectDialog = taskDialog
+    dialogRef.afterClosed().subscribe({
+      next: (data)=>{
+        console.log("Task added successfully");
+        // this.taskList = data;
+        // console.log(data)
+      },
+      error: (err)=>{
+        console.log(err);
       }
     })
   }

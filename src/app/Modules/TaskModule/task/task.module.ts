@@ -16,12 +16,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FullTaskListComponent } from './Components/full-task-list/full-task-list.component';
+import {MatTreeModule} from '@angular/material/tree';
 @NgModule({
   declarations: [
     TaskListComponent,
     TaskComponent,
     TaskViewComponent,
-    TaskPipe
+    TaskPipe,
+    FullTaskListComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +38,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatIconModule,
     MatPaginatorModule,
     HttpClientModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTreeModule
+  ],
+  exports: [
+    TaskComponent,
   ]
 })
 export class TaskModule { }

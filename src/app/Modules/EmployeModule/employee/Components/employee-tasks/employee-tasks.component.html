@@ -1,1 +1,35 @@
-<p>employee-tasks works!</p>
+
+<div class="parent">
+    <div class="subParent">
+        <div *ngIf="taskList.length == 0" style=" display: flex; align-items: center;">
+            <div style="color: red; margin: 7px">
+            No Tasks Present
+        </div>
+        <div>
+            <button class="taskBtn" (click)="openAddTaskDialog()">Create Task</button>
+        </div>
+
+        </div>
+      <table *ngIf="taskList.length > 0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Assignee Name</th>
+            <th>Status</th>
+            <th>Created On</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let task of taskList" class="task-row">
+            <td class="task-name">{{task.name}}</td>
+            <td class="task-description">{{task.description}}</td>
+            <td class="task-status">{{task.assigneeName}}</td>
+            <td class="task-status">{{task.status | status}}</td>
+            <td class="task-date">{{task.createdOn | date: 'short'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

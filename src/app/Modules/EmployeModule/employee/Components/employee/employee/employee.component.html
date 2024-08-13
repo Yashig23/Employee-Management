@@ -13,22 +13,16 @@
         <h1>{{ isEdit ? 'Edit Employee' : 'Add Employee' }}</h1>
       </div>
       <div class="BtnSection">
-        <button *ngIf="isEdit == true" routerLink="/employee/add" class="submit-button1">
+        <button *ngIf="isEdit == true" routerLink="/employees/add" class="submit-button1">
           Add New Employee
         </button>
         <button type="button" (click)="router.navigate(['/employees'])" class="submit-button1">Get Employee List</button>
-      <!-- <div *ngIf="isEdit == true" class="Addbtn">
-        <button class="import" routerLink="/employee/add" style="display: flex; justify-content: center; align-items: center;">Add New Employee</button>
-      </div>
-      <div class="Editbtn">
-        <button class="import" routerLink="/employee-list" style="display: flex; justify-content: center; align-items: center;">Get Employee List</button>
-      </div> -->
     </div>
       </div>
     </header>
 
     <section class="Formsection">
-      <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="employeeForm">
         <table>
           <tbody>
             <tr *ngIf="isEdit == false">
@@ -43,10 +37,6 @@
               <td><label for="name">Name:</label></td>
               <td><input id="name" type="text" formControlName="name" placeholder="Employee Name" class="input-field"></td>
             </tr>
-            <!-- <tr>
-              <td><label for="name">Last Name:</label></td>
-              <td><input id="name" type="text" formControlName="lastname" placeholder="Employee LastName" class="input-field"></td>
-            </tr> -->
             <tr>
               <td><label for="name">Email:</label></td>
               <td><input id="name" type="text" formControlName="email" placeholder="Employee Email" class="input-field"></td>
@@ -59,19 +49,18 @@
               <td><label for="salary">Salary:</label></td>
               <td><input id="salary" type="number" formControlName="salary" placeholder="Salary" class="input-field"></td>
             </tr>
-            <!-- <tr>
-              <td><label for="departmentName">Department Name:</label></td>
-              <select formControlName="departmentId" (change)="onDepartmentChange($event)">
-                <option *ngFor="let department of departmentList" [value]="department.id">{{department.name}}</option>
-              </select>
-            </tr> -->
             <tr>
               <td><label for="departmentName">Department Name:</label></td>
               <select formControlName="departmentId" (change)="onDepartmentChange($event)" class="input-field">
+                <!-- <div *ngIf="isEdit == false"> -->
                 <option *ngFor="let department of departmentList" [value]="department.id">{{department.name}}</option>
+              <!-- </div> -->
+                <!-- <div *ngIf="isEdit == true">
+                <option *ngFor="let department of departmentList" [value]="department.id">{{departmentName}}</option>
+              </div> -->
               </select>
             </tr>
-            <tr *ngIf="showManagerList">
+            <tr *ngIf="showManagerList == true">
               <td><label for="adminName">Admin Name:</label></td>
               <select formControlName="managerId" class="input-field">
                 <option *ngFor="let admin of adminNameList" [value]="admin.id">{{admin.name}}</option>
@@ -89,7 +78,7 @@
             </tr>            
             <tr>
               <td colspan="2" class="form-buttons">
-                <button type="submit" [disabled]="!employeeForm.valid" class="submit-button" style="margin-right: 1rem; margin-top: 7px">
+                <button type="submit" [disabled]="!employeeForm.valid" class="submit-button" style="margin-right: 1rem; margin-top: 7px" (click)="onSubmit()">
                   {{ isEdit ? 'Update' : 'Submit' }}
                 </button>
                 <button type="button" (click)="router.navigate(['/employees'])" class="cancel-button" style="margin-left: 1rem; margin-top: 7px">Cancel</button>

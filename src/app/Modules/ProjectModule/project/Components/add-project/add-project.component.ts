@@ -9,7 +9,7 @@ import { ToastService } from '../../../../SharedModule/shared/Services/toast.ser
 import { EmployeeComponent } from '../../../../EmployeModule/employee/Components/employee/employee/employee.component';
 import { EmployeListComponent } from '../../../../EmployeModule/employee/Components/employe-list/employe-list.component';
 import { DialogData } from '../../../../SharedModule/shared/Model/delete.model';
-import { EmployeeForProjects } from '../../Models/Project.model';
+import { EmployeeForProjects, ProjectByIdResponse, projectData } from '../../Models/Project.model';
 import { redirect } from 'react-router-dom';
 
 export enum ProjectStatus {
@@ -40,6 +40,8 @@ export class AddProjectComponent implements OnInit {
   public DialogDataFlag!: boolean;
   public addedMembersList: string[]=[];
   public progressSpinner!: boolean;
+  public projectDataById: projectData[]=[];
+  public isEdit!: boolean;
 
   ngOnInit(): void {
     this.ProjectForm = new FormGroup({
@@ -48,28 +50,67 @@ export class AddProjectComponent implements OnInit {
       status: new FormControl('', [Validators.required]),
       members: new FormControl([])
     });
-    this.getEmployeeData();
     this.activatedRoute.paramMap.subscribe(paramMap => {
-      console.log(paramMap);
       this.paramId = Number(paramMap.get('id'));
-    });
-  }
-
-  public getEmployeeData(): void {
-    this.progressSpinner = true;
-    this.employeService.getEmployeeList().subscribe({
-      next: (response: EmployeeResponse) => {
-        this.progressSpinner = false;
-        this.employeeList = response.data;
-        console.log(this.employeeList);
-        console.log(response);
-      },
-      error: (err: string) => {
-        this.progressSpinner = false;
-        console.log('Error occurred', err);
+      if (this.paramId) {
+        this.isEdit = true;
+        // this.getProjectDataById();
       }
     });
   }
+
+  // public getProjectDataById(): void{
+  //   this.progressSpinner = true;
+  //   this.projectService.getProjectById(this.paramId).subscribe({
+  //     next: (data: ProjectByIdResponse) =>{
+  //       console.log(data);
+  //       this.progressSpinner = false;
+  //       this.ProjectForm.patchValue(data.data);
+  //     },
+  //     error: (err: string)=>{
+  //       console.log(err);
+  //       this.toaster.showWarning("Error occured while getting project data")
+  //     }
+  //   })
+  // }
+
+  // getProjectDataById(): void {
+  //   this.progressSpinner = true;
+  //   this.projectService.getProjectById(this.paramId!).subscribe({
+  //     next: (data: ProjectByIdResponse) => {
+  //       const projectData = data.data;
+  //       this.ProjectForm.patchValue({
+  //         name: projectData.name,
+  //         description: projectData.description,
+  //         status: projectData.status,
+  //         members: projectData.members
+  //       });
+  //       this.progressSpinner = false;
+  //     },
+  //     error: (err) => {
+  //       console.error(err);
+  //       this.progressSpinner = false;
+  //     }
+  //   });
+  // }
+
+  // private getEditData(): void {
+  //   this.progressSpinner = true;
+  //   this.employeeService.getEmployeeById(this.paramId).subscribe({
+  //     next: (response)=>{
+  //       this.progressSpinner = false;
+  //       const employeeDataOfId = response.data;
+  //       console.log(employeeDataOfId);
+  //       this.getAdminById(this.paramId);
+  //       this.employeeForm.patchValue(employeeDataOfId)
+  //     },
+  //     error: (err)=>{
+  //       this.progressSpinner = false;
+  //       // window.alert("Error while getting employee details");
+  //       console.log("Error while showing employee details",err);
+  //     }
+  //   })
+  // }
 
   public submit(): void {
     if (this.ProjectForm.valid) {
