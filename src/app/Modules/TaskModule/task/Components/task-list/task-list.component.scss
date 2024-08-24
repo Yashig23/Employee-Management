@@ -1,0 +1,55 @@
+.task-log-container {
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-bottom: 16px;
+  color: #333;
+  font-size: 24px;
+}
+
+.task-log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Arial', sans-serif;
+}
+
+.task-log-table th, 
+.task-log-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.task-log-table th {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
+
+.task-log-table td {
+  background-color: #fff;
+}
+
+.task-log-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.task-log-table tr:hover {
+  background-color: #ddd;
+}
+
+p {
+  color: #999;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .task-log-table th, .task-log-table td {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

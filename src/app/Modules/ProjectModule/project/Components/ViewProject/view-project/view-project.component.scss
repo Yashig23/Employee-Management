@@ -1,0 +1,574 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  background-color: #2a49e2;
+  color: #fff;
+  padding: 0px;
+
+  .project-name {
+    h2 {
+      font-size: 1.5em;
+      margin: 0;
+    }
+  }
+
+  nav {
+    margin-top: 20px;
+    ul {
+      list-style: none;
+      padding: 0;
+      li {
+        margin-bottom: 15px;
+        a {
+          color: #fff;
+          text-decoration: none;
+          &.active {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+
+  .teams {
+    margin-top: auto;
+    h3 {
+      font-size: 1.2em;
+    }
+    .team-members {
+      display: flex;
+      margin: 10px 0;
+      /* Style for team members' avatars */
+    }
+    .invite-button {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      margin-top: 10px;
+    }
+  }
+}
+
+.main-content {
+  flex: 1;
+  background-color: #d8d9db;
+  padding: 20px;
+  overflow-y: auto; 
+  overflow-x: hidden;
+  scroll-behavior: smooth; 
+  // max-height: calc(100vh - 60px);
+
+  header {
+    // display: flex;
+    // justify-content: space-between;
+    // align-items: center;
+
+    h1 {
+      font-size: 1.8em;
+      margin: 0;
+    }
+
+    .actions {
+      // display: flex;
+      // align-items: center;
+
+      .search-input {
+        margin-right: 15px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      .category-filter {
+        margin-right: 15px;
+
+        label {
+          margin-right: 5px;
+        }
+
+        select {
+          padding: 5px;
+        }
+      }
+
+      .filter {
+        margin-right: 15px;
+
+        button {
+          padding: 5px 10px;
+          border: none;
+          background-color: #2b94f7;
+          color: #fff;
+          border-radius: 4px;
+        }
+      }
+
+      .import-export {
+        button {
+          padding: 5px 10px;
+          border: none;
+          background-color: #2b94f7;
+          color: #fff;
+          border-radius: 4px;
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
+  .sales-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    table-layout: fixed;
+  }
+
+  .sales-table th, .sales-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .sales-table th {
+    background-color: #2b94f7;
+    color: #fff;
+  }
+
+  .sales-table td {
+    background-color: #fff;
+  }
+
+.pagination{
+  margin-top: 1rem;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+button{
+  border: none;
+  padding: 10px;
+  margin: 3px;
+  background-color: rgb(218, 240, 185);
+  border-radius: 1rem;
+}
+
+.deleteBtn{
+  border: none;
+  padding: 12px;
+  margin: 5px;
+  background-color: rgb(240, 195, 185);
+  border-radius: 1rem;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.import-export {
+  display: flex;
+  gap: 1rem;
+}
+
+.import-export .import {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.entries-per-page {
+  display: flex;
+  align-items: center;
+}
+
+.entries-per-page label {
+  font-size: 0.9rem;
+}
+
+.pagination {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.pagination-link {
+  cursor: pointer;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.pagination-link:hover {
+  text-decoration: underline;
+}
+
+.page-number {
+  font-size: 0.9rem;
+}
+
+.headerSec{
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem;
+}
+
+.inputSec{
+  display: flex;
+  align-items: center;
+  width: 40rem;
+}
+
+.SearchingSec{
+  display: flex;
+}
+
+.submit{
+  position: relative;
+  top: 2px;
+  bottom: 4px;
+}
+
+.icon-btn{
+  width: 2rem;
+  height: 2rem;
+  padding: 2px;
+}
+
+.icon-btn1{
+  width: 2rem;
+  height: 2rem;
+  padding: 2px;
+}
+
+.pagesList{
+  padding: 1rem;
+  border: 1px solid white;
+  width: 2rem;
+  height: 2rem;
+  background-color: #2b94f7;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+  margin: 1px;
+}
+
+.parentList{
+  display: flex;
+  flex-direction: row;
+  margin: 7px;
+}
+
+.page-number {
+  display: inline-block;
+  margin: 0 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
+  user-select: none;
+}
+.page-number:hover {
+  background-color: #f0f0f0;
+}
+
+.table-container {
+  max-height: 400px; /* Adjust the height as needed */
+  overflow-y: auto;
+}
+
+.sales-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sales-table th, .sales-table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.sales-table th {
+  background-color: #3c7de6;
+}
+
+.sales-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.deleteBtn {
+  color: red;
+}
+
+.addBtn{
+  background-color: rgb(131, 218, 131);
+}
+
+.remove{
+  background-color: rgb(233, 154, 154);
+}
+
+select{
+  width: 4rem;
+  height: 2rem;
+  // padding: 5px;
+  // margin: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  background-color: #fffdfd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.searchParent{
+  display: flex;
+  justify-content: space-between;
+}
+
+.length{
+  margin: 4px;
+}
+
+.disabled {
+  pointer-events: none; /* Prevent clicks on the SVG */
+  opacity: 0.5; /* Make the SVG appear disabled */
+}
+
+.employeeNo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+// option{
+//   width: 6rem;
+//   height: 2rem;
+//   padding: 5px;
+//   margin: 5px;
+//   background-color: #ddd;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
+
+.labelOption{
+  display: flex;
+}
+
+.mat-icon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+}
+.viewBtn{
+  border: none;
+  padding: 10px;
+  margin: 3px;
+  border-radius: 1rem;
+  background-color: #c5dbef;
+}
+
+.small-icond{
+  background-color: rgb(240, 186, 186);
+  border: none;
+  padding: 10px;
+  margin: 3px;
+  border-radius: 1rem;
+}
+
+.importClose{
+  padding: 5px 10px;
+          border: none;
+          background-color: rgb(236, 142, 142);
+          color: #fff;
+          border-radius: 4px;
+          margin-left: 10px;
+}
+
+.parentDiv{
+  display: flex;
+}
+
+.btnsection{
+  display: flex;
+  justify-content: flex-end;
+  // align-items: center;
+}
+
+.div1{
+  background-color: rgb(255, 255, 255);
+  padding: 2rem;
+  color:rgb(11, 112, 237);
+  border-radius: 7px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.div2{
+  padding: 2rem;
+  background-color: #84aef2;
+  margin: 1px;
+}
+
+.updateBtn{
+  background-color: rgb(80, 255, 78);
+  color: white;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 7px;
+}
+
+.ImageSec{
+  width: 6rem;
+  height: 6rem;
+  border: none;
+  border-radius: 100%;
+  background-color: #848282;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.employeeName{
+  color: grey;
+  font-size: 20px;
+  padding: 7px;
+  margin: 5px;
+}
+
+.departmentName{
+  color: grey;
+  font-size: 17px;
+  padding: 7px;
+  margin: 5px;
+}
+
+.NameSec{
+  display: flex;
+  align-content: center;
+  // padding: 7px;
+  // margin: 7px;
+  color: grey;
+  font-size: larger;
+  font-weight: 400;
+}
+
+.DivSec{
+  padding: 3rem;
+  margin: 1rem;
+  border: 1px solid grey;
+  border-radius: 7px;
+  background-color: #2c71f1;
+  color: white;
+}
+
+.addNewBtn{
+  padding: 10px;
+  margin: 5px;
+  border-radius: 7px;
+  background-color: #1940ff;
+  color: white;
+}
+
+.newnew{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.MembersSec{
+  padding: 1rem;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  margin-left: 7px;
+  margin-right: 30px;
+  background-color: rgb(255, 255, 255);
+  color: grey;
+  border-radius: 7px;
+  width: 1330px;
+}
+.subSec{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.spinner-section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: medium;
+}
+.data{
+  margin: 7px;
+  width: 100%;
+}
+
+.BTnSec{
+  display: flex;
+  padding: 1rem;
+  margin: 7px;
+}
+
+.removeBtn{
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(241, 56, 96);
+  color: white;
+}
+
+.btn1{
+  // padding: 7px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(144, 207, 131);
+  color: white;
+}
+
+.addTask{
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(11, 112, 237);
+  color: white;
+}
+}

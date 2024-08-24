@@ -1,0 +1,252 @@
+
+<!-- <div *ngIf="progressSpinner === true" class="spinner">
+  <div class="spinner-section">
+  <mat-spinner></mat-spinner>
+</div>
+</div> -->
+<div class="dashboard-container">
+  <div class="main-content">
+    <header>
+      <div class="headerSec">
+        <h1>Task List</h1>
+      </div>
+      <div class="searchParent">
+        <div class="inputSec">
+          <input type="text" placeholder="Search" class="search-input" [(ngModel)]="EpicTaskData.search"
+            (keydown.enter)="searchTaskNew()">
+          <div><button (click)="searchTaskNew()" class="submit">Search</button></div>
+        </div>
+        <div class="SearchingSec">
+          <div>
+            <mat-form-field style="width: 170px; margin: 2px">
+              <mat-label>TaskType</mat-label>
+              <mat-select (selectionChange)="onTaskTypeChange($event)" multiple>
+                <mat-option [value]=0>Epic</mat-option>
+                <mat-option [value]=1>Feature</mat-option>
+                <mat-option [value]=2>Userstory</mat-option>
+                <mat-option [value]=3>Task</mat-option>
+                <mat-option [value]=4>Bug</mat-option>
+                <!-- <mat-option (click)="onTaskNone()">None</mat-option> -->
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field style="width: 170px; margin: 2px">
+              <mat-label>Status</mat-label>
+              <mat-select (selectionChange)="onStatusChange($event)" multiple>
+                <mat-option [value]=0>Not Finalized</mat-option>
+                <mat-option [value]=1>Active</mat-option>
+                <mat-option [value]=2>Completed</mat-option>
+                <!-- <mat-option (click)="onStatusNone()">None</mat-option> -->
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field style="width: 170px; margin: 2px">
+              <mat-label>Assign</mat-label>
+              <mat-select (selectionChange)="onAssignBoolChange($event)">
+                <mat-option [value]="true">Assigned</mat-option>
+                <mat-option [value]="false">Unassigned</mat-option>
+                <mat-option [value]="null">None</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field style="width: 200px; margin: 2px">
+              <mat-label>Assigned To</mat-label>
+              <mat-select (selectionChange)="onAssignedChange($event)" multiple>
+                <mat-option *ngFor="let employee of EmployeeList" [value]="employee.id">
+                  {{ employee.name }}
+                </mat-option>
+                <!-- <mat-option (click)="onSprintNone()">None</mat-option> -->
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field style="width: 200px; margin: 2px">
+              <mat-label>Enter a date range</mat-label>
+              <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                <input matStartDate formControlName="start" placeholder="Start date">
+                <input matEndDate formControlName="end" placeholder="End date">
+              </mat-date-range-input>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <mat-form-field style="width: 200px; margin: 2px">
+              <mat-label>Select Sprint</mat-label>
+              <mat-select (selectionChange)="onSprintChange($event)">
+                <mat-option *ngFor="let sprint of sprintList" [value]="sprint.id">
+                  <mat-icon [routerLink]="['/tasks/sprint/tasks', sprint.id]">info</mat-icon> {{ sprint.name }}
+                </mat-option>
+                <mat-option [value]="0">None</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="btnSection">
+          <div>
+            <button (click)="FilterChange()" class="submit2" [disabled]="disableSubmitBtn"   [ngClass]="{'disabled': disableSubmitBtn}">Submit</button>
+          </div>
+          <div>
+            <button (click)="ResetChanges()" class="reset"  [disabled]="disableSubmitBtn"   [ngClass]="{'disabled': disableSubmitBtn}">Reset</button>
+          </div>
+        </div>
+      </div>
+      <div class="employeeNo">
+        <div>
+          <label style="color: grey;" class="label">Total Projects: {{taskListLength}}</label>
+        </div>
+        <div>
+          <button (click)="addSprint(projectId!)" class="sprintBtn">
+            Start Sprint
+          </button>
+        </div>
+      </div>
+    </header>
+    <!-- </div> -->
+    <!-- </header> -->
+
+    <div class="table-container">
+      <table mat-table matSort (matSortChange)="sortData($event)" class="sales-table">
+        <thead>
+          <tr>
+            <th>Serial No.</th>
+            <th> </th>
+            <th mat-sort-header="Name">Task Name</th>
+            <th mat-sort-header="AssignedTo">Assigned To</th>
+            <th mat-sort-header="CreatedOn">Created On</th>
+            <th mat-sort-header="Task Type">Task Type</th>
+            <th mat-sort-header="Status">Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Main Task Loop -->
+          <ng-container *ngFor="let task of taskArray; let i = index">
+            <tr>
+              <td>{{ (currentPage - 1) * pagedItemsCount + (i + 1) }}</td>
+              <td>
+                <!-- Show arrow only if there are subtasks -->
+                <button (click)="loadSubTasks(task.id, $event)">
+                  <mat-icon>{{ isExpanded(task.id) ? 'expand_less' : 'expand_more' }}</mat-icon>
+                </button>
+              </td>
+              <td class="taskName"><a [routerLink]="['/tasks/view', task.id]">{{ task.name }}</a></td>
+              <td>{{ task.assigneeName || 'Unassigned'}}</td>
+              <td>{{ task.createdOn | date: 'dd/MM/yyyy' }}</td>
+              <td>{{task.taskType | taskType}}</td>
+              <td>{{ task.status | task }}</td>
+              <td>
+                <button class="AddBtn" (click)="openAddTaskDialog(task.taskType, task.id)">
+                  <mat-icon class="small-icon">add</mat-icon>
+                </button>
+                <button class="updateBtn">
+                  <mat-icon class="update-icon" (click)="updateTask(task.id)">update</mat-icon>
+                </button>
+                <button class="deleteBtn">
+                  <mat-icon class="delete-icon" (click)="deleteTask(task.id)">delete</mat-icon>
+                </button>
+              </td>
+
+            </tr>
+
+            <ng-container *ngIf="isExpanded(task.id)" [ngTemplateOutlet]="subTaskTemplate"
+              [ngTemplateOutletContext]="{ subTasks: getSubTasks(task.id), level: 1 }"></ng-container>
+          </ng-container>
+
+          <!-- <tr *ngIf="progressSpinner === true">
+            <td colspan="6" class="spinner">
+              <div>Loading.....</div>
+            </td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Subtask Template -->
+    <ng-template #subTaskTemplate let-subTasks="subTasks" let-level="level">
+      <ng-container *ngFor="let subtask of subTasks; let j = index" class="subTaskContainer">
+        <tr class="subchildSec">
+          <td [style.paddingLeft.px]="level * 40"><mat-icon>check_indeterminate_small</mat-icon></td>
+          <td>
+            <button [style.paddingLeft.px]="level * 40" (click)="loadSubTasks(subtask.id, $event)">
+              <mat-icon>{{ isExpanded(subtask.id) ? 'expand_less' : 'expand_more' }}</mat-icon>
+            </button>
+          </td>
+          <td class="taskName">
+            <!-- <a (click)="openTaskDetailDialog(subTask.)">{{ subtask.name }}</a> -->
+            <a [routerLink]="['/tasks/view', subtask.id]">{{ subtask.name }}</a>
+          </td>
+          <td>{{ subtask.assigneeName }}</td>
+          <td>{{ subtask.createdOn | date: 'dd/MM/yyyy' }}</td>
+          <td>{{subtask.taskType | taskType}}</td>
+          <td>{{ subtask.status | task }}</td>
+          <td *ngIf="subtask.taskType != 3 && subtask.taskType != 4">
+            <button class="AddBtn" (click)="openAddTaskDialog(subtask.taskType, subtask.id)">
+              <mat-icon class="small-icon">add</mat-icon>
+            </button>
+            <button class="updateBtn">
+              <mat-icon class="update-icon" (click)="updateTask(subtask.id)">update</mat-icon>
+            </button>
+            <button class="deleteBtn">
+              <mat-icon class="delete-icon" (click)="deleteTask(subtask.id)">delete</mat-icon>
+            </button>
+          </td>
+
+        </tr>
+
+        <ng-container *ngIf="isExpanded(subtask.id)" [ngTemplateOutlet]="subTaskTemplate"
+          [ngTemplateOutletContext]="{ subTasks: getSubTasks(subtask.id), level: level + 1 }"></ng-container>
+      </ng-container>
+    </ng-template>
+
+
+
+
+    <footer>
+      <div class="pagination-controls">
+        <div class="entries-per-page">
+          <label for="entries" class="labelOption">Items per page
+            <select id="entries" [(ngModel)]="EpicTaskData.pagedItemsCount" (change)="onPageSizeChange($event)">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </label>
+        </div>
+
+        <div>
+          <div class="pagination">
+            <div (click)="onPrevious()" [ngClass]="{'disabled': EpicTaskData.pageIndex <= 1}">
+              <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" width="20px"
+                height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="m13.789 7.155c.141-.108.3-.157.456-.157.389 0 .755.306.755.749v8.501c0 .445-.367.75-.755.75-.157 0-.316-.05-.457-.159-1.554-1.203-4.199-3.252-5.498-4.258-.184-.142-.29-.36-.29-.592 0-.23.107-.449.291-.591 1.299-1.002 3.945-3.044 5.498-4.243z" />
+              </svg>
+            </div>
+            <button (click)="onPrevious()" [disabled]="EpicTaskData.pageIndex <= 1">Previous</button>
+            <span class="page-number">{{EpicTaskData.pageIndex}}</span>
+            <div (click)="onNext()" [ngClass]="{'disabled': EpicTaskData.pageIndex >= getTotalPages()}">
+              <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" width="20px" height="20px"
+                stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="m10.211 7.155c-.141-.108-.3-.157-.456-.157-.389 0-.755.306-.755.749v8.501c0 .445.367.75.755.75.157 0 .316-.05.457-.159 1.554-1.203 4.199-3.252 5.498-4.258.184-.142.29-.36.29-.592 0-.23-.107-.449-.291-.591-1.299-1.002-3.945-3.044-5.498-4.243z" />
+              </svg>
+            </div>
+            <button class="pagination-link" (click)="onNext()"
+              [disabled]="EpicTaskData.pageIndex >= getTotalPages()">Next</button>
+          </div>
+
+          <div class="parentList">
+            <div class="pagesList" *ngFor="let i of totalPagesList" (click)="goToPage(i)">{{i}}</div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>

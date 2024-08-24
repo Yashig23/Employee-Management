@@ -1,0 +1,57 @@
+<div *ngIf="progressSpinner === true" class="spinner">
+  <div class="spinner-section">
+  <mat-spinner  [diameter]="50"></mat-spinner>
+</div>
+</div>
+<section class="department-section"  *ngIf="progressSpinner === false">
+    <div class="container">
+      <div class="header">
+        <h1>Edit Project</h1>
+      </div>
+      <form [formGroup]="ProjectForm" >
+        <div class="input-field">
+          <h3>Project Name:</h3>
+          <input type="text" placeholder="Project Name" formControlName="name">
+          <div *ngIf="ProjectForm.controls['name']!.invalid && ProjectForm.controls['name']!.touched" class="error-message">
+            Project Name is required
+          </div>
+          <h3>Project Description:</h3>
+          <input type="text" placeholder="Project Description" formControlName="description">
+          <div *ngIf="ProjectForm.controls['description']!.invalid && ProjectForm.controls['description']!.touched" class="error-message">
+            Project Description is required
+          </div>
+          <div>
+            <label for="role">Status:</label>
+            <select id="role" formControlName="status" class="input-field">
+              <option [ngValue]="0">Not Assigned</option>
+              <option [ngValue]="1">Active</option>
+              <option [ngValue]="2">Complete</option>
+            </select>
+          </div>
+          <div class="members-list">
+            <h3>Members:</h3>
+            <div *ngIf="ProjectForm.controls['members'].value && ProjectForm.controls['members'].value.length > 0">
+              <div *ngFor="let member of ProjectForm.controls['members'].value" class="member-item">
+                <span>{{ member.employeeName }}</span>
+                <button (click)="removeMember(member.employeeId, member.employeeName)" class="removeBtn">Remove</button>
+              </div>
+            </div>
+            <div *ngIf="!(ProjectForm.controls['members'].value && ProjectForm.controls['members'].value.length > 0)">
+              No members added.
+            </div>
+          </div>
+          <div >
+            <button (click)="addMembers()">Add Members</button>
+          </div>
+          <div>
+          </div>
+        </div>
+
+        <div class="submit-button">
+          <button type="submit" [disabled]="!ProjectForm.valid" (click)="submit()">Update</button>
+          <button type="button" mat-button mat-dialog-close [routerLink]="['/projects/view', paramId]">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </section>
+  

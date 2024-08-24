@@ -10,6 +10,8 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {
   MatDialogActions,
   MatDialogClose,
@@ -17,13 +19,16 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { SharedModule } from '../../SharedModule/shared/shared.module';
+import { MatSortModule } from '@angular/material/sort';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
     DepartmentListComponent,
-    DepartmentComponent
+    DepartmentComponent,
   ],
   imports: [
+    MatProgressSpinnerModule,
     CommonModule,
     DepartmentRoutingModule,
     HttpClientModule,
@@ -36,7 +41,10 @@ import { SharedModule } from '../../SharedModule/shared/shared.module';
   MatDialogModule,
   MatButtonModule,
   SharedModule,
-  ReactiveFormsModule
+  ReactiveFormsModule,
+  MatSelectModule,
+  MatSortModule,
+  MatIconModule
   ]
 })
 export class DepartmentModule { }

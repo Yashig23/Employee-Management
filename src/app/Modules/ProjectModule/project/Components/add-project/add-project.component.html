@@ -1,39 +1,100 @@
-<section class="department-section">
-    <div class="container">
-      <div class="header">
-        <h1>Add New Project</h1>
+<!-- <section class="department-section">
+  <div class="container">
+    <div class="header">
+      <h1>{{ isEdit ? 'Edit Project' : 'Add Project' }}</h1>
+    </div>
+    <form [formGroup]="ProjectForm">
+      <div class="input-field">
+        <div *ngIf="progressSpinner === true" class="spinner">
+          <mat-spinner></mat-spinner>
+        </div>
+        <h3>Project Name: </h3>
+        <input type="text" placeholder="Project Name" formControlName="name">
+        <div *ngIf="ProjectForm.controls['name']!.invalid && ProjectForm.controls['name']!.touched"
+          class="error-message">
+          Project Name is required
+        </div>
+        <h3>Project Description: </h3>
+        <input type="text" placeholder="Project Description" formControlName="description">
+        <div *ngIf="ProjectForm.controls['description']!.invalid && ProjectForm.controls['description']!.touched"
+          class="error-message">
+          Project Description is required
+        </div>
+        <div>
+          <button (click)="addMembers()">Add Members</button>
+        </div>
+        <div *ngIf="addedMembersList.length > 0">
+            <div *ngFor="let member of addedMembersList">
+            </div>
+        </div>
       </div>
-      <form [formGroup]="ProjectForm" (ngSubmit)="submit()">
-        <div class="input-field">
-          <input type="text" placeholder="Project Name" formControlName="name">
-          <div *ngIf="ProjectForm.get('name')!.invalid && ProjectForm.get('name')!.touched" class="error-message">
-            Project Name is required
-          </div>
-          <input type="text" placeholder="Project Description" formControlName="description">
-          <div *ngIf="ProjectForm.get('description')!.invalid && ProjectForm.get('description')!.touched" class="error-message">
-            Project Description is required
-          </div>
-          <div>
-            <label for="role">Role:</label>
-            <select id="role" formControlName="role" class="input-field">
-              <option value="1">Pending</option>
-              <option value="2">Running</option>
-              <option value="3">Completed</option>
-            </select>
-          </div>
-          <div>
-            <label for="role">Members:</label>
-            <select id="role" formControlName="members" class="input-field">
-              <option *ngFor="let employe of employeeList" [value]="employe.id">{{employe.name}}</option>
-            </select>
-          </div>
+
+      <div class="submit-button">
+        <button type="submit" [disabled]="!ProjectForm.valid" (click)="submit()">{{isEdit? 'Update': 'Submit'}}</button>
+        <button type="button" mat-button mat-dialog-close routerLink="/projects">Cancel</button>
+      </div>
+    </form>
+  </div>
+</section> -->
+<!-- <div *ngIf="progressSpinner === true" class="spinner">
+  <div class="spinner-section">
+  <mat-spinner></mat-spinner>
+</div>
+</div> -->
+<section class="department-section">
+  <div class="container">
+    <div class="header">
+      <h1>{{ isEdit ? 'Edit Project' : 'Add Project' }}</h1>
+    </div>
+    <form [formGroup]="ProjectForm">
+      <div class="input-field">
+
+         <h3>Project Name: </h3>
+         <input type="text" placeholder="Project Name" formControlName="name">
+         <div *ngIf="ProjectForm.controls['name'].invalid && (ProjectForm.controls['name'].touched || ProjectForm.controls['name'].dirty)"
+           class="error-message">
+           <div *ngIf="ProjectForm.controls['name'].errors?.['required']">Project Name is required.</div>
+           <div *ngIf="ProjectForm.controls['name'].errors?.['minlength']">Project Name must be at least 3 characters long.</div>
+         </div>
+ 
+         <h3>Project Description: </h3>
+         <input type="text" placeholder="Project Description" formControlName="description">
+         <div *ngIf="ProjectForm.controls['description'].invalid && (ProjectForm.controls['description'].touched || ProjectForm.controls['description'].dirty)"
+           class="error-message">
+           <div *ngIf="ProjectForm.controls['description'].errors?.['required']">Project Description is required.</div>
+           <div *ngIf="ProjectForm.controls['description'].errors?.['minlength']">Project Description must be at least 15 characters long.</div>
+         </div>
+
+        <div>
+          <button type="button" (click)="addMembers()">Add Members</button>
         </div>
 
-        <div class="submit-button">
-          <button type="submit">Submit</button>
-          <button type="button" mat-button mat-dialog-close>Cancel</button>
+        <div *ngIf="addedMembersList.length > 0" class="added-members-list">
+          <ul>
+            <li *ngFor="let member of addedMembersList; let i = index">
+              <div class="parentBtn">
+              <div>
+              {{ member }}
+            </div>
+            <div>
+              <button (click)="removeMember(i)" class="RemoveBtn">Remove</button>
+            </div>
+          </div>
+            </li>  
+          </ul>
         </div>
-      </form>
-    </div>
-  </section>
-  
+
+      </div>
+
+      <div class="submit-button">
+        <button type="submit" [disabled]="!ProjectForm.valid" 
+        [ngStyle]="{
+          'background-color': (!ProjectForm.valid || disableSubmitBtn) ? '#d6d6d6' : '#007bff',
+          'color': (!ProjectForm.valid || disableSubmitBtn) ? '#a1a1a1' : 'white',
+          'cursor': (!ProjectForm.valid || disableSubmitBtn) ? 'not-allowed' : 'pointer'
+        }">{{isEdit ? 'Update' : 'Submit'}}</button>
+        <button type="button" mat-button mat-dialog-close routerLink="/projects">Cancel</button>
+      </div>
+    </form>
+  </div>
+</section>

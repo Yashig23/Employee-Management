@@ -1,0 +1,23 @@
+.parent{
+    display: flex;
+    justify-content: space-between;
+}
+
+.taskBTn{
+    padding: 7px;
+    margin: 5px;
+    background-color: rgb(141, 186, 246);
+    border-radius: 7px;
+}
+
+.BugBTn{
+    padding: 7px;
+    margin: 5px;
+    background-color: rgb(138, 237, 166);
+    border-radius: 7px;
+}
+
+section{
+    padding: 2rem;
+    margin: 1rem;
+}

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-
+import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import {
   MatDialogActions,
   MatDialogClose,
@@ -18,14 +19,25 @@ import {
 } from '@angular/material/dialog';
 import { LoginComponent } from './Components/Login/login/login.component';
 import { SignupComponent } from './Components/Signup/signup.component';
+import { HomepageComponent } from './Components/Homepage/homepage/homepage.component';
+import { AddTasksComponent } from './Components/Tasks/add-tasks/add-tasks.component';
+import { ToastrModule } from 'ngx-toastr';
+import { TaskModule } from './Modules/TaskModule/task/task.module';
+import { MatIconModule } from '@angular/material/icon';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SignupComponent,
+    HomepageComponent,
+    AddTasksComponent,
+    // ProfilePageComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -37,7 +49,17 @@ import { SignupComponent } from './Components/Signup/signup.component';
     MatDialogModule,
     MatButtonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatPaginatorModule,
+    TaskModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-upper-right',
+      timeOut: 3000,
+      extendedTimeOut: 1000,
+      closeButton: true
+    })
   ],
   providers: [
     provideClientHydration(),

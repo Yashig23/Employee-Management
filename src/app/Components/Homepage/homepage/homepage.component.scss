@@ -1,0 +1,59 @@
+.homepage {
+    margin-top: 5rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    height: 70vh; // Full viewport height
+    width: 70vw;  // Full viewport width
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box; // Include padding in width and height calculations
+  }
+  
+  .section-box {
+    background: #ffffff;
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  
+    &:hover {
+      border-color: #0056b3;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+  
+  .section-content {
+    text-align: center;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
+  }
+  
+  .employee {
+    background-color: #f8f9fa; // Light grey background
+  }
+  
+  .department {
+    background-color: #e9ecef; // Slightly darker grey background
+  }
+  
+  .tasks {
+    background-color: #f1f3f5; // Even darker grey background
+  }
+  
+  .projects {
+    background-color: #ffffff; // White background
+  }
+  
+  .homePageSec{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

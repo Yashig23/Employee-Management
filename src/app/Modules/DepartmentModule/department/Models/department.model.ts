@@ -75,3 +75,86 @@ export interface AddDepartmentResponse{
     message: string |null,
     data: boolean
   }
+
+  // Pagination
+
+  export interface DataPage{
+    pageIndex: number,
+    pagedItemsCount: number,
+    orderKey: string,
+    sortedOrder: number,
+    search: string
+  }
+
+  export interface DepartmentResponsePagination{
+    success: boolean,
+    status: number,
+    message: string,
+    data: DepartmentData
+  }
+
+  export interface  DepartmentData{
+    data: DepartmentPagination[],
+    totalPages: number;
+    totalItems: number;
+  }
+
+  export enum SortedOrder {
+    ASC = 0,
+    DESC = 1,
+    OTHER = 2 
+  }
+
+  interface DepartmentPagination {
+    id: number;
+    name: string;
+    createdBy: number;
+    updatedBy: number | null;
+    createdOn: string;
+    updatedOn: string | null;
+  }
+
+  // export interface PaginationResponse{
+  //   success: boolean;
+  //   status: number; 
+  //   message: string;
+  //   data: EmployeePagination[];
+  // }
+
+  // export interface EmployeeResponsePagination {
+  //   success: boolean;
+  //   status: number;
+  //   message: string;
+  //   data: EmployeeData;
+  // }
+  
+  // interface EmployeeData {
+  //   data: Employee[];
+  //   totalPages: number;
+  //   totalItems: number;
+  // }
+  
+  // interface EmployeePagination {
+  //   id: number;
+  //   name: string;
+  //   departmentName: string | null;
+  //   managerName: string | null;
+  //   role: number;
+  //   salary: number;
+  //   departmentId: number | null;
+  //   managerId: number | null;
+  //   createdBy: number;
+  //   updatedBy: number | null;
+  //   createdOn: string;
+  //   updatedOn: string | null;
+  // }
+  
+  export enum ColumnKey {
+    // SerialNo = '',
+    Name = 'Name',
+    CreatedOn = 'CreatedOn',
+    DepartmentName = 'DepartmentName',
+    Salary = 'Salary',
+    Role = 'Role',
+    Actions = 'Actions'
+  }

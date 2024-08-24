@@ -1,0 +1,33 @@
+<div *ngIf="progressSpinner === true" class="spinner">
+  <div class="spinner-section">
+  <mat-spinner  [diameter]="50"></mat-spinner>
+</div>
+</div>
+<div class="parent" *ngIf="progressSpinner === false">
+    <div class="subParent">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Created On</th>
+            <!-- <th>Add Task</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let project of projectList" class="project-row">
+            <td class="project-name">{{project.name}}</td>
+            <td class="project-description">{{project.description}}</td>
+            <td class="project-status">{{project.status | status}}</td>
+            <td class="project-date">{{project.createdOn | date: 'dd/MM/yyyy'}}</td>
+            <td>
+                <!-- <button (click)="openAddTask(project.id)" class="addBtn">Add Task</button> -->
+                <!-- <button (click)="openAddTaskDialog()" class="addBtn">Add Task</button> -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

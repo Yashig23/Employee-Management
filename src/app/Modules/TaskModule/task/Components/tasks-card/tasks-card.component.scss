@@ -1,0 +1,172 @@
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 250px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 16px;
+    margin: 10px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #d4af37;
+    padding-bottom: 8px;
+  }
+  
+  .task-id {
+    color: #d4af37;
+    margin-right: 5px;
+  }
+  
+  .assignee {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .assignee-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #673ab7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    margin-right: 8px;
+  }
+  
+  .assignee-name {
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .story-points {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .task-details {
+    margin-top: 16px;
+    font-size: 12px;
+    color: #666;
+  }
+  
+  .task-details div {
+    margin-bottom: 8px;
+  }
+  
+  .state-label,
+  .parent-label,
+  .area-path-label {
+    font-weight: bold;
+  }
+  
+  .state-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #bbb;
+    margin-right: 5px;
+  }
+  .status-new {
+    background-color: green;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+  }
+  
+  .status-active {
+    background-color: orange;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+  }
+  
+  .status-completed {
+    background-color: blue;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+  }
+  
+  .state-indicator {
+    display: inline-block;
+  }
+  
+  
+  .AssigneeName{
+    color: white;
+  }
+  .parent-name,
+  .area-path-value {
+    color: #1e88e5;
+    text-decoration: underline;
+  }
+
+  .dashboard-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 240px;
+    background-color: #2a49e2;
+    color: #fff;
+    // padding: 20px;
+  
+    .project-name {
+      h2 {
+        font-size: 1.5em;
+        margin: 0;
+      }
+    }
+  
+    nav {
+      margin-top: 20px;
+      ul {
+        list-style: none;
+        padding: 0;
+        li {
+          margin-bottom: 15px;
+          a {
+            color: #fff;
+            text-decoration: none;
+            &.active {
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+  
+    .teams {
+      margin-top: auto;
+      h3 {
+        font-size: 1.2em;
+      }
+      .team-members {
+        display: flex;
+        margin: 10px 0;
+        /* Style for team members' avatars */
+      }
+      .invite-button {
+        display: block;
+        color: #fff;
+        text-decoration: none;
+        margin-top: 10px;
+      }
+    }
+  }
+  

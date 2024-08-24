@@ -1,0 +1,29 @@
+<div *ngIf="progressSpinner === true" class="spinner">
+  <div class="spinner-section">
+  <mat-spinner  [diameter]="50"></mat-spinner>
+</div>
+</div>
+<section class="task-log-container" *ngIf="progressSpinner === false">
+  <div *ngIf="logList.length > 0; else noLogs">
+    <h2>Task Log List</h2>
+    <table class="task-log-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Log Description</th>
+        </tr>
+      </thead>
+      <tbody>
+ 
+        <tr *ngFor="let log of logList; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ log.message}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noLogs>
+    <p>No logs available for this task.</p>
+  </ng-template>
+</section>
