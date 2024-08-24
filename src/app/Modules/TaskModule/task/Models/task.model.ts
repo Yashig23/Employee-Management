@@ -51,7 +51,10 @@ export interface TaskPostRequest{
     description: string,
     assignedTo: number|null,
     projectId: number|null,
-    status: number
+    taskType: number,
+    parentId: number | null,
+    status: number,
+    sprintId: number|null
 }
 
 export interface TaskPostResponse{
@@ -78,7 +81,7 @@ export interface updateTaskRequest{
 }
 
 export enum Status{
-    Pending = 0,
+  Notfinalized = 0,
     Running = 1,
     Completed = 2
 }
@@ -98,16 +101,6 @@ export interface taskByIdResponse{
     message: string,
     data: Task
 }
-
-// get epic task api interface
-
-// // Define the interface for sub-items
-//  export interface SubItem {
-//     id: number;
-//     name: string;
-//     taskType: number;
-//     subItems: SubItem[] | null; 
-//   }
   
   // Define the interface for the data item
   export interface DataItem {
@@ -115,7 +108,7 @@ export interface taskByIdResponse{
     name: string;
     taskType: TaskType;
     createdOn: string;
-    status:number,
+    status:StatusType,
     assignedTo: string,
     subItems: DataItem[] | null; 
   }
@@ -131,10 +124,17 @@ export interface taskByIdResponse{
   export interface ExampleFlatNode {
     expandable: boolean;
     name: string;
-    // status: number,
-    // createdOn: string,
-    // assignedTo: string,
+    status: StatusType,
+    createdOn: string,
+    assignedTo: string,
+    taskType: TaskType,
     level: number;
+  }
+
+  export enum StatusType{
+    Notfinalized = 0,
+    Running = 1,
+    Completed = 2,
   }
   
    export enum TaskType {
@@ -144,4 +144,181 @@ export interface taskByIdResponse{
     Task = 3,
     Bug = 4
   }
+
+  export enum AssignedTo{
+    assigned = 0,
+    AssignedTo = 1,
+  }
+
+  export interface PaginatedEpicTask{
+    pageIndex: number,
+    pagedItemsCount: number,
+    orderKey: string,
+    sortedOrder: number,
+    search: string,
+    filters: Filters[] | null;
+  }
+
+  export interface PaginatedEpicTask2{
+    pageIndex: number,
+    pagedItemsCount: number,
+    orderKey: string,
+    sortedOrder: number,
+    search: string | null,
+    dateRange: DataRange | null,
+    types: TaskType[] | null;
+    status: Status[] | null;
+    assign: boolean | null;
+    assignedTo: AssignedTo[] | null;
+    sprintId: number| null
+    // sprint: Sprint | null;
+  }
+
+
+  export interface DataRange{
+    startDate: Date,
+    endDate: Date
+  }
+
+  export interface Sprint{
+    startDate: string ,
+    endDate: string | null,
+  }
   
+  export interface Filters{
+    item1: string,
+    item2: number
+  }
+
+  export interface PaginatedEpicTaskResponse{
+    success: boolean,
+    status: number,
+    message: string,
+    data: DataForPagination
+  }
+
+  export interface DataForPagination{
+   data: Data[],
+   totalPages: number,
+   totalItems: number
+  }
+
+  export interface Data{
+     id: number,
+    name: string,
+    description: string,
+    status: Status,
+    projectId: number,
+    taskType: number,
+    assignerName: string,
+    assigneeName: string;
+    createdOn: string,
+  }
+
+  export interface subtask{
+    id: number,
+    name: string,
+    description: string,
+    status: Status,
+    projectId: number,
+    taskType: number,
+    assignerName: string,
+    assigneeName: string | null,
+    createdOn: string,
+    subTask: Data[]
+  }
+
+  export interface DataForSubTask{
+    success: boolean,
+    status: number,
+    message: string,
+    data: Data[]
+  }
+
+  export interface PostReviewRequest{
+    taskId: number,
+    content: string,
+  }
+
+  export interface getTaskReviewResponse{
+    success: boolean,
+    status: number,
+    messgage: string,
+    data: TaskReviewData[]
+  }
+
+  export interface TaskReviewData{
+    id: number,
+    content: string,
+    reviewedBy: string,
+    reviewerAvatarUrl: string,
+    cretaedOn : string
+  }
+
+  export interface getTaskDetailsById{
+    success: boolean,
+    status: number,
+    messgage: string,
+    data: Tasks
+  }
+
+  export interface taskData{
+    id: number,
+      name: string,
+      description: string,
+      status: number,
+      projectId: number,
+      taskType: number,
+      assignerName: string,
+      assigneeName: string | null,
+      createdOn: string
+  }
+
+ export interface Tasks{
+  task : taskData;
+  reviews: TaskReviewData[];
+  subTasks: subTasks[]
+ }
+
+ export interface taskOfSprintResponse{
+  success: boolean,
+  status: number,
+  message: string,
+  data: taskData[],
+ }
+
+ export interface subTasks{
+  id: number,
+  name: string,
+  taskType: number
+ }
+
+ export interface TaskTypeDialogData{
+  taskType: number,
+  taskId: number,
+  projectId: number
+ }
+
+ export interface ProjectListEmployeeData{
+  success: boolean,
+  status: number,
+  message: string,
+  data: DataForEmployee[] | [];
+ }
+
+ export interface DataForEmployee{
+  id: number,
+  name: string,
+  departmentName: string | null
+ }
+
+ export interface TaskLogResponse{
+  success: boolean,
+  status: number,
+  message: string,
+  data: DataForTaskLog[];
+ }
+
+ export interface DataForTaskLog{
+  message: string
+ }

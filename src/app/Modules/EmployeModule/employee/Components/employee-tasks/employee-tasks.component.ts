@@ -16,6 +16,7 @@ export class EmployeeTasksComponent {
   public isEdit!: boolean;
   public taskList: TaskDetails[]=[];
   public projectName!: string;
+  public progressSpinner!: boolean;
 
   constructor(private activatedRoute: ActivatedRoute, private httpClient: HttpClient, private employeeService: EmployeServiceService
     , public dialog: MatDialog
@@ -37,36 +38,39 @@ export class EmployeeTasksComponent {
   }
 
   public getTasksListOfEmployee(id: number){
+    this.progressSpinner = true;
     this.employeeService.getTasksOfEmployeeById(id).subscribe({
       next: (data: TasksListOfEmployees)=>{
+        this.progressSpinner = false;
         const Data = data.data;
         this.taskList = Data;
         console.log(data);
       },
       error: (err)=>{
+        this.progressSpinner = false;
       console.log(err);
       }
     })
   }
 
-  public openAddTaskDialog(): void{
-    const taskDialog: projectDialogData ={projectName: this.projectName, projectId: this.paramId }
-    const dialogRef = this.dialog.open(TaskComponent, {
-      width: '1000px',
-      height: '600px',
-      disableClose: false,
+  // public openAddTaskDialog(): void{
+  //   const taskDialog: projectDialogData ={projectName: this.projectName, projectId: this.paramId }
+  //   const dialogRef = this.dialog.open(TaskComponent, {
+  //     width: '1000px',
+  //     height: '600px',
+  //     disableClose: false,
 
-    }); 
-    dialogRef.componentInstance.projectDialog = taskDialog
-    dialogRef.afterClosed().subscribe({
-      next: (data)=>{
-        console.log("Task added successfully");
-        // this.taskList = data;
-        // console.log(data)
-      },
-      error: (err)=>{
-        console.log(err);
-      }
-    })
-  }
+  //   }); 
+  //   dialogRef.componentInstance.data = taskDialog
+  //   dialogRef.afterClosed().subscribe({
+  //     next: (data)=>{
+  //       console.log("Task added successfully");
+  //       // this.taskList = data;
+  //       // console.log(data)
+  //     },
+  //     error: (err)=>{
+  //       console.log(err);
+  //     }
+  //   })
+  // }
 }

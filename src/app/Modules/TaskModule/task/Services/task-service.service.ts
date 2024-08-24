@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment1, environment2 } from '../../../../../environment/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ApiResponse, DataPost, deleteTaskResponse, PaginationTaskResponse, taskByIdResponse, TaskList, TaskPostRequest, TaskPostResponse, updateTaskRequest, updateTaskResponse } from '../Models/task.model';
+import { ApiResponse, DataForSubTask, DataPost, deleteTaskResponse, getTaskDetailsById, getTaskReviewResponse, PaginatedEpicTask, PaginatedEpicTask2, PaginatedEpicTaskResponse, PaginationTaskResponse, PostReviewRequest, ProjectListEmployeeData, taskByIdResponse, TaskList, TaskLogResponse, taskOfSprintResponse, TaskPostRequest, TaskPostResponse, updateTaskRequest, updateTaskResponse } from '../Models/task.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +13,11 @@ export class TaskServiceService {
   public url1 = environment1.apiUrl.Task;
   public epicURL = environment1.apiUrl.Epic;
   public pagination = environment1.apiUrl.PaginationTasks;
+  public taskPost = environment1.apiUrl.TaskReview;
+  public paginationEpicUrl = environment1.apiUrl.PaginationEpicTasks
 
   constructor(private httpClient: HttpClient) { }
-  public token = "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNoaTEyMyIsIklkIjoiNDUiLCJVc2VySWQiOiI3OCIsImp0aSI6IjNmZmIzOWQzLWQxZTUtNGQ1Yi04ZWU5LTI1OTI1Yjc5MzZhMyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJEYXRlIjoiOC8xMy8yMDI0IDY6NTk6NDIgQU0iLCJleHAiOjE3MjM5NjQzODIsImlzcyI6Ikp3dElzc3VlciIsImF1ZCI6Ikp3dEF1ZGllbmNlIn0.b-gkVJMxcYGWCCpkfY6ytfBrFx4SngHWd60z-LOQUQQ";
-
+  public token = environment1.token;
   private headers = new HttpHeaders({
     'Authorization': `Bearer ${this.token}`
   });
@@ -38,10 +39,6 @@ export class TaskServiceService {
     return this.httpClient.put<updateTaskResponse>(`${this.url1}/${id}`, data, {headers: this.headers});
   }
 
-  public getTaskById(id: number): Observable<taskByIdResponse>{
-    return this.httpClient.get<taskByIdResponse>(`${this.url1}/${id}`, {headers: this.headers});
-  }
-
   public paginationOnTask(data: DataPost): Observable<PaginationTaskResponse>{
     console.log(data);
     return this.httpClient.post<PaginationTaskResponse>(this.pagination, data, {headers: this.headers})
@@ -51,4 +48,40 @@ export class TaskServiceService {
     return this.httpClient.get<ApiResponse>(this.epicURL, {headers: this.headers})
   }
 
+  public paginatedTaskList(data: PaginatedEpicTask2, id: number): Observable<PaginatedEpicTaskResponse>{
+    return this.httpClient.post<PaginatedEpicTaskResponse>(`${this.paginationEpicUrl}/${id}`, data, {headers: this.headers})
+  }
+
+  public getSubTaskList(id: number): Observable<DataForSubTask>{
+    return this.httpClient.get<DataForSubTask>(`https://192.168.1.2:8081/Tasks/task${id}/children`, {headers: this.headers})
+  }
+
+  public postTaskReview(body: { content: string; }, id: number): Observable<TaskPostRequest>{
+    return this.httpClient.post<TaskPostRequest>(`https://192.168.1.2:8081/TaskReview/${id}`, body, {headers: this.headers})
+  }
+
+  public getTaskReviewList(id: number): Observable<getTaskReviewResponse>{
+    return this.httpClient.get<getTaskReviewResponse>(`${this.taskPost}/${id}`, {headers: this.headers});
+  }
+
+  public getTaskDetailsById(id: number): Observable<getTaskDetailsById>{
+    return this.httpClient.get<getTaskDetailsById>(`${this.url1}/${id}`, {headers: this.headers});
+  }
+
+  public getProjectEmployeeList(id: number): Observable<ProjectListEmployeeData>{
+    return this.httpClient.get<ProjectListEmployeeData>(`https://192.168.1.2:8081/Project/projectEmployees${id}`, {headers: this.headers});
+  }
+
+  public getTaskLog(id: number): Observable<TaskLogResponse>{
+    return this.httpClient.get<TaskLogResponse>(`${this.url1}/logs/${id}`, {headers: this.headers})
+  }
+
+  public getTaskListOfSprintId(id: number): Observable<taskOfSprintResponse>{
+    return this.httpClient.get<taskOfSprintResponse>(`${this.url1}/sprint/${id}`, {headers: this.headers});
+  }
+
+  public taskStatusUpdate(id:number, status: number): Observable<deleteTaskResponse>{
+    return this.httpClient.put<deleteTaskResponse>(`${this.url1}/update-status/${id}`, status,{headers: this.headers});
+  } 
 }
+

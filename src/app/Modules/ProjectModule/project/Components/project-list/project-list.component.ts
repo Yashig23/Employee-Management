@@ -5,6 +5,7 @@ import { DeleteDialogService } from '../../../../SharedModule/shared/Services/de
 import { AddProjectComponent } from '../add-project/add-project.component';
 import { DataPage, Project, ProjectResponse } from '../../Models/Project.model';
 import {ToastService} from '../../../../SharedModule/shared/Services/toast.service';
+import { AddSprintComponent } from '../add-sprint/add-sprint.component';
 
 @Component({
   selector: 'app-project-list',
@@ -18,6 +19,7 @@ export class ProjectListComponent implements OnInit {
   public filteredProjectData: Project[] = []; 
   public projectListLength!: number;
   public currentPage: number = 1;
+  public pagedItemsCount: number = 10;
   public totalPages!: number;
   public totalPagesList!: number[];
   public progressSpinner!: boolean;
@@ -25,7 +27,7 @@ export class ProjectListComponent implements OnInit {
     "pageIndex": 1,
     "pagedItemsCount": 10,
     "orderKey": "Name",
-    "sortedOrder": 1,
+    "sortedOrder": 2,
     "search": ""
   };
 
@@ -35,7 +37,6 @@ export class ProjectListComponent implements OnInit {
     public dialog: MatDialog,
     public toaster: ToastService
   ) {
-    console.log("Loaded...")
   }
 
   ngOnInit(): void {
@@ -54,8 +55,6 @@ export class ProjectListComponent implements OnInit {
         if (result) {
           console.log('Find find');
           this.toaster.showSuccess("Project added successfully");
-          // this.getDepartmentData();
-          // this.findDepartment(); 
         }
       },
       error: (err) => {
@@ -122,6 +121,8 @@ export class ProjectListComponent implements OnInit {
     const selectElement = event.target as HTMLSelectElement;
     this.dataPage.pagedItemsCount = Number(selectElement.value);
     this.dataPage.pageIndex = 1; 
+    this.currentPage = 1;
+    this.pagedItemsCount = Number(selectElement.value);
     this.FilterChange(); 
   }
 
@@ -132,6 +133,8 @@ export class ProjectListComponent implements OnInit {
   public searchProjectNew(): void {
     this.dataPage.pageIndex = 1;
     this.dataPage.pagedItemsCount= 10;
+    this.currentPage = 1;
+    this.pagedItemsCount = 10;
     this.FilterChange();
   }
     
@@ -164,10 +167,24 @@ export class ProjectListComponent implements OnInit {
     }
 
 
-  // public deleteProject(id: number): void{
-  //   console.log(id);
-  //   console.log("deleted");
-  // }
+  public addSprint(id: number): void{
+    const data = {projectId: id}
+  const DialogRef = this.dialog.open(AddSprintComponent, {
+    width: '600px',
+    height: '600px'
+  });
+   DialogRef.componentInstance.projectData = data;
+   DialogRef.afterClosed().subscribe({
+    next: (data)=>{
+      console.log(data);
+      this.toaster.showSuccess("Task Added successfully");
+    },
+    error: (err)=>{
+      console.log(err);
+      this.toaster.showWarning("Error while adding Task");
+    }
+   })
+  }
 
    // Delete a project and refresh the list
    public deleteProject(id: number): void {

@@ -18,13 +18,25 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FullTaskListComponent } from './Components/full-task-list/full-task-list.component';
 import {MatTreeModule} from '@angular/material/tree';
+import { TasksListComponent } from './Components/tasks-list/tasks-list.component';
+import { TaskTypePipe } from './Pipes/task-type.pipe';
+import { SubChildTasksComponent } from './Components/sub-child-tasks/sub-child-tasks.component';
+import {provideNativeDateAdapter} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
+import { TasksCardComponent } from './Components/tasks-card/tasks-card.component';
 @NgModule({
   declarations: [
     TaskListComponent,
     TaskComponent,
     TaskViewComponent,
     TaskPipe,
-    FullTaskListComponent
+    FullTaskListComponent,
+    TasksListComponent,
+    TaskTypePipe,
+    SubChildTasksComponent,
+    TasksCardComponent,
   ],
   imports: [
     CommonModule,
@@ -39,10 +51,17 @@ import {MatTreeModule} from '@angular/material/tree';
     MatPaginatorModule,
     HttpClientModule,
     MatProgressSpinnerModule,
-    MatTreeModule
+    MatTreeModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    CdkDrag,
+    CdkDropList
+
   ],
   exports: [
     TaskComponent,
-  ]
+    TasksListComponent
+  ],
+  providers: [provideNativeDateAdapter()]
 })
 export class TaskModule { }

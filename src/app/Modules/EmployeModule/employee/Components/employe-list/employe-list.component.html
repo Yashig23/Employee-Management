@@ -2,12 +2,17 @@
   <div style="background-color: #2a49e2; position: sticky;" *ngIf="!data?.isActive">
     <app-side-bar></app-side-bar>
   </div>
+  <div *ngIf="progressSpinner === true" class="spinner">
+    <div class="spinner-section">
+    <mat-spinner  [diameter]="50"></mat-spinner>
+  </div>
+  </div>
 
-  <div class="main-content">
+  <div class="main-content" *ngIf="progressSpinner === false">
     <header>
       <div class="headerSec">
         <div>
-          <h1>Employee</h1>
+          <h1>Employees</h1>
         </div>
         <div class="import-export" *ngIf="!data?.isActive">
           <button class="import" routerLink="add">Add New Employee</button>
@@ -17,7 +22,7 @@
           <button class="import" [mat-dialog-close]="projectEmployees">Save</button>
         </div>
         <div class="import-export" *ngIf="data?.isActive">
-          <button class="importClose" mat-dialog-close="true">Cancle</button>
+          <button class="importClose" mat-dialog-close="true">Cancel</button>
         </div>
       </div>
       </div>
@@ -50,13 +55,10 @@
           </tr>
         </thead>
         <tbody>
-          <div *ngIf="progressSpinner === true" class="spinner">
-            <mat-spinner></mat-spinner>
-          </div>
           <tr *ngFor="let employee of filteredEmployeeData; let i = index">
-            <td>{{ i + 1 }}</td>
+            <td>{{ (currentPage - 1) * pagedItemsCount + (i + 1) }}</td>
             <td>{{ employee.name }}</td>
-            <td>{{ employee.createdOn | date: 'short' }}</td>
+            <td>{{ employee.createdOn | date: 'dd/MM/yyyy' }}</td>
             <td>{{ employee.departmentName }}</td>
             <td>{{ employee.salary }}</td>
             <td>{{ employee.role | role }}</td>
@@ -69,11 +71,12 @@
               </button>              
               <button [routerLink]="['edit', employee.id]" *ngIf="!data?.isActive">
                 <mat-icon class="small-icon">update</mat-icon></button>
+                <button [routerLink]="['view', employee.id]" class="viewBtn" *ngIf="!data?.isActive">
+                  <mat-icon class="small-icon">visibility</mat-icon>
+                   </button>
               <button (click)="deleteEmployee(employee.id!)" class="deleteBtn" *ngIf="!data?.isActive">
                 <mat-icon class="small-icon">delete</mat-icon></button>
-              <button [routerLink]="['view', employee.id]" class="viewBtn" *ngIf="!data?.isActive">
-                <mat-icon class="small-icon">visibility</mat-icon>
-                 </button>
+          
             </td>
           </tr>
         </tbody>

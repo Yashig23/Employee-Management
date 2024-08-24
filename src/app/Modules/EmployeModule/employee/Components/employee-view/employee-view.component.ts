@@ -73,12 +73,4 @@ export class EmployeeViewComponent implements OnInit{
     });
 }
 
-public viewProjects(): void{
-    
-}
-
-public viewTasks(): void{
-
-}
-
 }

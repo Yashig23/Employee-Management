@@ -164,3 +164,49 @@ export interface updateProjectByIdResponse{
   message: string,
   data: number
 }
+
+export interface EmployeeForProject {
+  employeeId: number | null;
+  employeeName: string | null;
+}
+
+export interface PostSprintRequest{
+  name: string,
+  startDate: string,
+  endDate: string,
+  projectId: number
+}
+
+export interface SprintData{
+  name: string,
+  startDate: string,
+  endDate: string
+}
+
+export interface SprintData2{
+  id: number,
+  name: string,
+  startDate: string,
+  endDate: string
+}
+
+export interface GetSprintById{
+  success: true,
+  status: number,
+  message: string,
+  data: SprintData
+}
+
+export interface getSprintsList{
+  success: true,
+  status: number,
+  message: string,
+  data: SprintData[]
+}
+
+export interface getSprintsListByProjectId{
+  success: true,
+  status: number,
+  message: string,
+  data: SprintData2[]
+}

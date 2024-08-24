@@ -16,9 +16,10 @@ export class DepartmentComponent implements OnInit{
   // public departmentName!: string;
   // public requesting = true;
   public departmentForm! : FormGroup;
-  public name = new FormControl('', [Validators.required]);
+  public name = new FormControl('', [Validators.required, Validators.minLength(3)]);
   public requesting!: boolean;
   public progressSpinner!: boolean;
+  public disableSubmitBtn!: boolean;
 
 
   ngOnInit(): void {
@@ -28,7 +29,8 @@ export class DepartmentComponent implements OnInit{
   }
 
   public submit(): void{
-    this.progressSpinner = true;
+    this.disableSubmitBtn = true;
+    // this.progressSpinner = true;
     console.log("submitted");
     if(this.departmentForm.valid){
       const formData = this.departmentForm.value;
@@ -37,16 +39,15 @@ export class DepartmentComponent implements OnInit{
         this.departmentService.AddDepartment(formData).subscribe({
           next: (response)=>{
             console.log(response);
-            this.progressSpinner = false;
+            // this.progressSpinner = false;
             this.toaster.showSuccess("Submitted successfully");
-            // window.alert("Submitted successfully");
-            // this.dialogRef.close(true);
+            this.disableSubmitBtn = false;
           },
           error: (err)=>{
             console.log(err);
-            this.progressSpinner = false;
+            // this.progressSpinner = false;
+            this.disableSubmitBtn = false;
             this.toaster.showWarning("Error occured while submitting");
-            // window.alert("Error occured while submitting");
           }
         })
       }

@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Form } from 'react-router-dom';
 import { ApiResponse } from '../Models/Login.model';
 import { ToastService } from '../../Modules/SharedModule/shared/Services/toast.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -15,7 +16,7 @@ export class SignupComponent {
   public SignupForm!: FormGroup;
   public token?: string|null;
 
-  constructor(public loginService: LoginService, private toaster: ToastService){
+  constructor(public loginService: LoginService, private toaster: ToastService, private router: Router){
    this.SignupForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
@@ -43,6 +44,8 @@ export class SignupComponent {
         localStorage.setItem('password', this.SignupForm.value.password); 
         localStorage.setItem('token', this.token ?? '');
         console.log(this.token);
+        this.router.navigateByUrl('/homepage');
+        
       },
       error: (err)=>{
         console.log(err);

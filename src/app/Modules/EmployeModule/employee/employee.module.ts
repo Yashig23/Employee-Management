@@ -30,7 +30,7 @@ import { StatusPipe } from './Pipes/status.pipe';
     RolePipe,
     EmployeeProjectComponent,
     EmployeeTasksComponent,
-    StatusPipe
+    StatusPipe,
   ],
   imports: [
     MatProgressSpinnerModule,
@@ -57,6 +57,6 @@ import { StatusPipe } from './Pipes/status.pipe';
   MatSelectModule,
   MatSortModule,
   MatIconModule
-  ]
+  ],
 })
 export class EmployeeModule { }

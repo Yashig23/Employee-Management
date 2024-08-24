@@ -386,4 +386,15 @@ select{
 .labelOption{
   display: flex;
 }
+
+::ng-deep .mat-sort-header-arrow {
+  color: #fff;
+}
+
+.spinner-section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '../../../Service/project.service';
 import { ActivatedRoute } from '@angular/router';
-import { ProjectByIdResponse, EmployeeForProjects, Tasks } from '../../../Models/Project.model';
+import { ProjectByIdResponse, EmployeeForProjects, Tasks, projectData, SprintData2 } from '../../../Models/Project.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastService } from '../../../../../SharedModule/shared/Services/toast.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,7 +9,8 @@ import { TaskComponent } from '../../../../../TaskModule/task/Components/task/ta
 import { DialogService, Employee, projectDialogData } from '../../../../../EmployeModule/employee/Models/Employee.model';
 import { DialogRef } from '@angular/cdk/dialog';
 import { EmployeListComponent } from '../../../../../EmployeModule/employee/Components/employe-list/employe-list.component';
-import { Task } from '../../../../../TaskModule/task/Models/task.model';
+import { Data, PaginatedEpicTask, Task, TaskReviewData } from '../../../../../TaskModule/task/Models/task.model';
+import { TaskServiceService } from '../../../../../TaskModule/task/Services/task-service.service';
 
 @Component({
   selector: 'app-view-project',
@@ -22,9 +23,24 @@ export class ViewProjectComponent implements OnInit {
   public ProjectData1!: FormGroup;
   public progressSpinner!: boolean;
   public projectName!: string;
+  public taskArray: Data[]=[];
   public DialogDataFlag!: boolean;
   public taskList: Tasks[] | null=[];
+  public projectId!: number;
+  public reviewContent!: string;
+  public openReviewBox: boolean = false;
+  public taskReviewList: TaskReviewData[]=[];
+  public taskArrayLength!: number;
+  public sprintList: SprintData2[]=[];
   public addedMembersList: EmployeeForProjects[]=[];
+  public EpicTaskData: PaginatedEpicTask = {
+    pageIndex: 1,
+    pagedItemsCount: 10,
+    orderKey: '',
+    sortedOrder: 2,
+    search: '',
+    filters: null
+  };
   public ProjectData ={
     name: '',
     description: '',
@@ -40,8 +56,10 @@ export class ViewProjectComponent implements OnInit {
   }
 
   constructor(private projectService: ProjectService, private activatedRoute: ActivatedRoute, private toaster: ToastService,
-    public dialog: MatDialog
+    public dialog: MatDialog, private taskService: TaskServiceService,
   ) {
+    console.log("Param id", this.paramId);
+    console.log(this.taskArrayLength);
   }
 
   ngOnInit(): void {
@@ -51,6 +69,8 @@ export class ViewProjectComponent implements OnInit {
       if(this.paramId){
         this.isEdit = true;
         this.getDetailsOfProject();
+        // this.getSprintListOfProject(this.paramId)
+        // this.ProjectReviewList();
       }
     });
   }
@@ -74,12 +94,13 @@ export class ViewProjectComponent implements OnInit {
           this.ProjectData.totalTask = Data.totalTask;
           this.ProjectData.pendingTask = Data.pendingTask;
           this.taskList = Data.tasks;
+          this.projectId = this.paramId;
           console.log(Data.tasks);
         },
         error: (err) => {
           this.progressSpinner = false;
           console.error('Error fetching project details', err);
-          this.toaster.showWarning("Error fetching project details");
+          // this.toaster.showWarning("Error fetching project details");
         }
        })
   }
@@ -92,12 +113,16 @@ export class ViewProjectComponent implements OnInit {
       disableClose: false,
 
     }); 
-    dialogRef.componentInstance.projectDialog = taskDialog
+    dialogRef.componentInstance.data = taskDialog
     dialogRef.afterClosed().subscribe({
       next: (data)=>{
+        // this.getTaskEpicList();
+        this.toaster.showSuccess("Task added successfully");
         console.log("Task added successfully");
+        this.openReviewBox = !this.openReviewBox;
+        // this.taskUpdateService.reloadTaskList == true;
         // this.taskList = data;
-        // console.log(data)
+        console.log(data)
       },
       error: (err)=>{
         console.log(err);
@@ -147,4 +172,56 @@ export class ViewProjectComponent implements OnInit {
       }
     })
   } 
+
+  public ProjectReviewList(): void{
+    this.taskService.getTaskReviewList(this.projectId).subscribe({
+      next: (data)=>{
+        console.log(data);
+        const Data = data.data;
+        this.taskReviewList = Data;
+      },
+      error: (err)=>{
+        console.log(err);
+        this.toaster.showInfo(err);
+      }
+    })
+  }
+
+  // public getTaskEpicList(): void {
+  //   this.taskService.paginatedTaskList(this.EpicTaskData, this.projectId).subscribe({
+  //     next: (data) => {
+  //       this.taskArray = data.data.data;
+  //       console.log("Task list reloaded", this.taskArray);
+  //     },
+  //     error: (err) => {
+  //       console.error("Error fetching task list", err);
+  //     }
+  //   });
+  // }
+  
+
+  public addReview(){
+    console.log("add");
+    this.openReviewBox =! this.openReviewBox;
+  }
+
+  public handleTaskLength(length: number){
+    this.taskArrayLength = length;
+    console.log('Length of taskArray:', length);
+  }
+
+  // public getSprintListOfProject(id: number): void{
+  //    this.projectService.getSprintListsByProject(id).subscribe({
+  //     next: (data)=>{
+  //       console.log(data);
+  //       const Data = data.data;
+  //       this.sprintList = Data;
+  //     },
+  //     error: (err)=>{
+  //       console.log(err);
+  //       this.toaster.showInfo("Erorr occured while fetching the details of sprint list");
+  //     }
+  //    })
+  // }
+
 }

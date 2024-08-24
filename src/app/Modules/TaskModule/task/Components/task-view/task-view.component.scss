@@ -1,0 +1,121 @@
+.task-view-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #333333;
+      text-align: center;
+    }
+  
+    p {
+      margin: 0.5rem 0;
+      font-size: 1rem;
+      color: #666666;
+  
+      strong {
+        color: #333333;
+      }
+    }
+    
+  
+    section {
+      margin-bottom: 2rem;
+  
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  
+    .task-details-section {
+      border-bottom: 1px solid #dddddd;
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+  
+    .task-reviews-section, .task-subtasks-section {
+      h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: #555555;
+      }
+  
+      ul {
+        list-style-type: none;
+        padding: 0;
+  
+        li {
+          margin-bottom: 1rem;
+  
+          &:last-child {
+            margin-bottom: 0;
+          }
+  
+          .review-item, .subtask-item {
+            display: flex;
+            align-items: center;
+            background-color: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  
+            img.review-avatar {
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              margin-right: 1rem;
+            }
+  
+            .review-content {
+              p {
+                margin: 0.25rem 0;
+              }
+  
+              strong {
+                font-weight: 600;
+                color: #333333;
+              }
+  
+              small {
+                color: #999999;
+              }
+            }
+          }
+        }
+      }
+    }
+  
+    .task-actions-section {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+  
+      button {
+        width: 48%;
+        font-size: 1rem;
+      }
+    }
+
+    .inputBox{
+        border: 1px solid grey;
+        padding: 2rem;
+        margin: 7px;
+        border-radius: 10px;
+    }
+
+    .parentDiv{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .subtaskchild:hover{
+      color: grey;
+    }
+  }
+  

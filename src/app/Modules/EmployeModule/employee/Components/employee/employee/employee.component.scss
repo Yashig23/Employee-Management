@@ -21,6 +21,21 @@ a{
   color: white;
 }
 
+.submit-button {
+  background-color: #007bff; /* Default background color */
+  color: white; /* Default text color */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button.disabled {
+  background-color: #d6d6d6; 
+  color: #a1a1a1; 
+  cursor: not-allowed; 
+}
+
 nav ul {
   list-style-type: none;
   padding: 0;
@@ -100,18 +115,18 @@ header {
   margin-top: 20px;
 }
 
-.submit-button {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
+// .submit-button {
+//   background-color: #28a745;
+//   color: white;
+//   border: none;
+//   padding: 10px 20px;
+//   border-radius: 4px;
+//   cursor: pointer;
 
-  &:hover {
-    background-color: #218838;
-  }
-}
+//   &:hover {
+//     background-color: #218838;
+//   }
+// }
 
 .submit-button1 {
   background-color: #4d9ee1;

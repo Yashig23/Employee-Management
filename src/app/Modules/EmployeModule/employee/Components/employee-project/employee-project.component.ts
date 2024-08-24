@@ -19,6 +19,7 @@ export class EmployeeProjectComponent implements OnInit {
   public isEdit!: boolean;
   public projectName!: string;
   public projectList: ProjectDetails[]=[];
+  public progressSpinner!: boolean;
 
   constructor(private activatedRoute: ActivatedRoute, private httpClient: HttpClient, private projectService: ProjectService, private employeeService: EmployeServiceService
     ,public router: Router, public dialog: MatDialog,
@@ -40,14 +41,17 @@ export class EmployeeProjectComponent implements OnInit {
   }
 
   public getProjectsListOfEmployee(id: number){
+    this.progressSpinner = true;
     this.employeeService.getProjectsOfEmployeeById(id).subscribe({
       next: (data:  ProjectListOfEmployee1)=>{
+        this.progressSpinner = false;
         console.log(data);
         const Data = data.data;
         // this.projectName = data.
         this.projectList = Data;
       },
       error: (err)=>{
+        this.progressSpinner = false;
       console.log(err);
       }
     })
@@ -74,24 +78,24 @@ export class EmployeeProjectComponent implements OnInit {
   public openAddTask(id: number): void{
     console.log(id);
   }
-  public openAddTaskDialog(): void{
-    const taskDialog: projectDialogData ={projectName: this.projectName, projectId: this.paramId }
-    const dialogRef = this.dialog.open(TaskComponent, {
-      width: '1000px',
-      height: '600px',
-      disableClose: false,
+  // public openAddTaskDialog(): void{
+  //   const taskDialog: projectDialogData ={projectName: this.projectName, projectId: this.paramId }
+  //   const dialogRef = this.dialog.open(TaskComponent, {
+  //     width: '1000px',
+  //     height: '600px',
+  //     disableClose: false,
 
-    }); 
-    dialogRef.componentInstance.projectDialog = taskDialog
-    dialogRef.afterClosed().subscribe({
-      next: (data)=>{
-        console.log("Task added successfully");
-        // this.taskList = data;
-        // console.log(data)
-      },
-      error: (err)=>{
-        console.log(err);
-      }
-    })
-  }
+  //   }); 
+  //   dialogRef.componentInstance.data = taskDialog
+  //   dialogRef.afterClosed().subscribe({
+  //     next: (data)=>{
+  //       console.log("Task added successfully");
+  //       // this.taskList = data;
+  //       // console.log(data)
+  //     },
+  //     error: (err)=>{
+  //       console.log(err);
+  //     }
+  //   })
+  // }
 }

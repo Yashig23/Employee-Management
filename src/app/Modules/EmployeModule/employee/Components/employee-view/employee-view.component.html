@@ -1,13 +1,12 @@
 <div class="dashboard-container">
-  <div class="sidebar" style="position: sticky;">
-    <app-side-bar></app-side-bar>
+  <div *ngIf="progressSpinner === true" class="spinner">
+    <div class="spinner-section">
+    <mat-spinner  [diameter]="50"></mat-spinner>
+  </div>
   </div>
 
-  <div class="main-content">
+  <div class="main-content" *ngIf="progressSpinner === false">
     <section class="Formsection">
-      <div *ngIf="progressSpinner === true" class="spinner">
-        <mat-spinner></mat-spinner>
-      </div>
       <div class="ParentDiv">
         <div class="div1">
           <div>
@@ -45,7 +44,7 @@
           </div>
           <div class="NameSec">
             <div>Created On : </div>
-            <div class="data">{{EmployeeData.createdOn | date: 'short' }}</div>
+            <div class="data">{{EmployeeData.createdOn | date: 'dd/MM/yyyy'}}</div>
           </div>
           <div class="NameSec">
             <div>Salary : </div>

@@ -1,1 +1,82 @@
-<p>task-view works!</p>
+<div *ngIf="progressSpinner === true" class="spinner">
+    <div class="spinner-section">
+    <mat-spinner  [diameter]="50"></mat-spinner>
+  </div>
+  </div>
+<div class="parentDiv" *ngIf="progressSpinner === false">
+    <div>
+<div class="task-view-container">
+    <!-- Task Details Section -->
+    <!-- <section class="parentSec"> -->
+        <section class="task-details-section">
+            <!-- <h2>{{ taskDetails.name }}</h2> -->
+            <p><strong>Description:</strong> {{ taskDetails.description }}</p>
+            <p><strong>Status:</strong> {{ taskDetails.status | task }}</p>
+            <p><strong>Assigned To:</strong> {{ taskDetails.assigneeName || 'Unassigned' }}</p>
+            <p><strong>Created On:</strong> {{ taskDetails.createdOn | date: 'dd/MM/yyyy' }}</p>
+        </section>
+
+        <!-- Subtasks Section -->
+        <!-- <section class="task-subtasks-section" *ngIf="subTasks.length > 0">
+      <h3>Subtasks</h3>
+      <ul>
+        <li *ngFor="let subTask of subTasks">
+          <div class="subtask-item">
+            <p><strong>{{ subTask.name }}</strong> ({{ subTask.taskType }})</p>
+          </div>
+        </li>
+      </ul>
+    </section> -->
+
+        <section>
+            <button (click)="addReviews()">Add Reviews</button>
+        </section>
+
+        <div>
+        </div>
+        <div *ngIf="openReviewBox == true">
+            <div>
+                <input type="text" [(ngModel)]="reviewContent" class="inputBox" style="width: 600px; height: 10px;">
+                <button (click)="submitReview()">Submit</button>
+            </div>
+        </div>
+        <!-- Reviews Section -->
+        <section class="task-reviews-section" *ngIf="reviews.length > 0">
+            <h3>Reviews</h3>
+            <ul>
+                <li *ngFor="let review of reviews">
+                    <div class="review-item">
+                        <img [src]="review.reviewerAvatarUrl" alt="Reviewer Avatar" class="review-avatar" />
+                        <div class="review-content">
+                            <p><strong>{{ review.reviewedBy }}</strong></p>
+                            <p>{{ review.content }}</p>
+                            <p><small>{{ review.cretaedOn | date: 'dd/MM/yyyy' }}</small></p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    <!-- </section> -->
+</div>
+</div>
+<section class="task-view-container">
+    <div>
+        <app-task-list [taskId]="paramId"></app-task-list>
+    </div>
+</section>
+
+<section class="task-view-container" *ngIf="subTasks.length > 0">
+    <!-- Subtasks Section -->
+    <section class="task-subtasks-section" >
+        <h3>Subtasks</h3>
+        <ul>
+            <li *ngFor="let subTask of subTasks">
+                <div class="subtask-item">
+                    <a [routerLink]="['/tasks/view', subTask.id]" class="subtaskchild"><strong>{{ subTask.name }}</strong> ({{ subTask.taskType | taskType}})</a>
+                </div>
+            </li>
+        </ul>
+    </section>
+</section>
+
+</div>

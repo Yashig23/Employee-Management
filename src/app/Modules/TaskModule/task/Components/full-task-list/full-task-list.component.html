@@ -1,28 +1,54 @@
 <div class="dashboard-container">
-    <div class="sidebar" style="position: sticky;" >
-     <app-side-bar></app-side-bar>
+  <div style="background-color: #2a49e2; position: sticky;">
+    <app-side-bar></app-side-bar>
+  </div>
+  <div *ngIf="progressSpinner === true" class="spinner">
+    <div class="spinner-section">
+    <mat-spinner  [diameter]="50"></mat-spinner>
+  </div>
+  </div>
+
+  <section class="MainBody" *ngIf="progressSpinner === false">
+
+    <div class="navbarSec">
+      <nav class="navbar">
+        <div>Project Name</div>
+      </nav>
     </div>
-<div class="parentDiv">
-    <div>
-        <button (click)="openAddTaskDialog()" class="AddEpic">Add Epic</button>
-    </div>
-<mat-tree [treeControl]="treeControl" [dataSource]="dataSource" >
-    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding class="subParent">
-        <button class="addBTn" (click)="openAddTaskDialog()">+</button>
-      <button mat-icon-button disabled></button>
-      {{node.name}}
-      {{node.status}}
-    </mat-tree-node>
-  
-    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding class="subParent">
-        <button class="addBTn" (click)="openAddTaskDialog()">+</button>
-      <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
-        <mat-icon>
-          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-        </mat-icon>
-      </button>
-      {{node.name}}
-    </mat-tree-node>
-  </mat-tree>
-</div>  
+    <main class="mainSection">
+      <!-- New Tasks Section -->
+      <div class="example-container">
+        <h2>New Tasks</h2>
+        <div cdkDropList #newList="cdkDropList" id="newList" [cdkDropListData]="NewTasks"
+          [cdkDropListConnectedTo]="[activeList, completedList]" class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          <div *ngFor="let task of NewTasks" class="example-box" cdkDrag>
+            <app-tasks-card [task]="task"></app-tasks-card>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Tasks Section -->
+      <div class="example-container">
+        <h2>Active Tasks</h2>
+        <div cdkDropList #activeList="cdkDropList" id="activeList" [cdkDropListData]="ActivatedTasks"
+          [cdkDropListConnectedTo]="[newList, completedList]" class="example-list" (cdkDropListDropped)="drop($event)">
+          <div *ngFor="let task of ActivatedTasks" class="example-box" cdkDrag>
+            <app-tasks-card [task]="task"></app-tasks-card>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completed Tasks Section -->
+      <div class="example-container">
+        <h2>Completed Tasks</h2>
+        <div cdkDropList #completedList="cdkDropList" id="completedList" [cdkDropListData]="CompletedTasks"
+          [cdkDropListConnectedTo]="[newList, activeList]" class="example-list" (cdkDropListDropped)="drop($event)">
+          <div *ngFor="let task of CompletedTasks" class="example-box" cdkDrag>
+            <app-tasks-card [task]="task"></app-tasks-card>
+          </div>
+        </div>
+      </div>
+    </main>
+  </section>
 </div>

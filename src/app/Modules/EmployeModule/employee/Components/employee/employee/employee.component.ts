@@ -27,8 +27,9 @@ export class EmployeeComponent implements OnInit {
   public departmentName!: string | null;
   public departmentList: Department[]=[];
   public adminNameList: OnlyEmployeeData[]=[];
+  public disableSubmitBtn!: boolean;
   constructor(public router: Router, private activatedRoute: ActivatedRoute, private departmentService: DepartmentServiceService, private employeeService: EmployeServiceService,
-    public toaster: ToastService,
+    public toaster: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -36,14 +37,20 @@ export class EmployeeComponent implements OnInit {
     this.employeeForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
-      name: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required]),
-      phone: new FormControl('', [Validators.required]),
-      address: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required,Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Z ]+$')]),
+      email: new FormControl('', [Validators.required,  Validators.minLength(1),
+        Validators.maxLength(100),
+        Validators.pattern('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')]),
+      phone: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$'), Validators.maxLength(10), Validators.minLength(10)]),
+      address: new FormControl('', [Validators.required, Validators.minLength(1),
+        Validators.maxLength(200)]),
       salary: new FormControl(null, [Validators.required, Validators.min(1)]),
       departmentId: new FormControl(''),
       managerId: new FormControl(''),
-      role: new FormControl(null)
+      role: new FormControl(0)
     });
 
     this.activatedRoute.paramMap.subscribe(paramMap => {
@@ -52,14 +59,18 @@ export class EmployeeComponent implements OnInit {
       if(this.paramId){
         this.isEdit = true;
         this.getEmployeeNamesById(this.paramId);
+        this.disableSubmitBtn = false;
         this.getEditData();
       }
     });
   }
 
   public onSubmit(): void {
-    if(this.employeeForm.valid){
-    if (this.employeeForm.value.name && this.employeeForm.value.salary) {
+    this.disableSubmitBtn = true;
+    console.log('submit')
+    console.log(this.employeeForm.value);
+    if(this.employeeForm.valid) {
+      console.log("Valid form");
       const  formValue = this.employeeForm.value;
       console.log(formValue);
       const body = {
@@ -69,10 +80,10 @@ export class EmployeeComponent implements OnInit {
         phone: this.employeeForm.value.phone,
         email: this.employeeForm.value.email,
         address: this.employeeForm.value.address,
-        salary: this.employeeForm.value.salary,
+        salary: Number(this.employeeForm.value.salary),
         departmentId: Number(this.employeeForm.value.departmentId),
         managerId: Number(this.employeeForm.value.managerId),
-        role: Number(this.employeeForm.value.role)
+        role: Number(0)
       };
       console.log(body);
       if(this.isEdit == true){
@@ -93,15 +104,16 @@ export class EmployeeComponent implements OnInit {
           console.log(data);
           this.toaster.showSuccess('Employee added successfully');
            this.employeeForm.reset();
+           this.disableSubmitBtn = false;
         },
         error: (err)=>{
           console.log(err);
-          this.toaster.showWarning('Error while adding employee')
+          this.toaster.showWarning('Error while adding employee');
+          this.disableSubmitBtn = false;
         }
       })
     }
     }
-    }
   }
 
   public getDepartmentData(): void {
@@ -116,10 +128,10 @@ export class EmployeeComponent implements OnInit {
   } 
 
   private getEditData(): void {
-    this.progressSpinner = true;
+    // this.progressSpinner = true;
     this.employeeService.getEmployeeById(this.paramId).subscribe({
       next: (response)=>{
-        this.progressSpinner = false;
+        // this.progressSpinner = false;
         const employeeDataOfId = response.data;
         console.log(employeeDataOfId);
         this.departmentName = employeeDataOfId.departmentName;
@@ -127,7 +139,7 @@ export class EmployeeComponent implements OnInit {
         this.employeeForm.patchValue(employeeDataOfId)
       },
       error: (err)=>{
-        this.progressSpinner = false;
+        // this.progressSpinner = false;
         console.log("Error while showing employee details",err);
       }
     })

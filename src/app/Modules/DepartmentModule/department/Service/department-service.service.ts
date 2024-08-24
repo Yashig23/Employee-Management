@@ -13,8 +13,7 @@ export class DepartmentServiceService {
   public url1 =  environment2.apiUrl;
   public pagination = environment1.apiUrl.PaginationDepartments;
 
-  public token = "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNoaTEyMyIsIklkIjoiNDUiLCJVc2VySWQiOiI3OCIsImp0aSI6IjNmZmIzOWQzLWQxZTUtNGQ1Yi04ZWU5LTI1OTI1Yjc5MzZhMyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJEYXRlIjoiOC8xMy8yMDI0IDY6NTk6NDIgQU0iLCJleHAiOjE3MjM5NjQzODIsImlzcyI6Ikp3dElzc3VlciIsImF1ZCI6Ikp3dEF1ZGllbmNlIn0.b-gkVJMxcYGWCCpkfY6ytfBrFx4SngHWd60z-LOQUQQ";
-
+  public token = environment1.token;
   constructor(private httpClient: HttpClient) { }
   private headers = new HttpHeaders({
     'Authorization': `Bearer ${this.token}` // Use Bearer token

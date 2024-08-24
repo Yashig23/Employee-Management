@@ -101,3 +101,18 @@ body {
     background-color: #5a6268;
   }
   
+  .error-message{
+    color: red;
+  }
+
+  .RemoveBtn{
+    padding: 7px;
+    border-radius: 7px;
+    margin: 2px;
+    background-color: rgb(231, 162, 162);
+  }
+
+  .parentBtn{
+    display: flex;
+    justify-content: space-between;
+  }

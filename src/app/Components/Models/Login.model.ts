@@ -23,8 +23,15 @@ export enum Role {
   
   // Define the LoginUserDto interface
   export interface LoginUserDto {
-    employee: EmployeeDto;
+    employee: EmployeeDto1;
     token?: string | null;
+  }
+
+  export interface EmployeeDto1{
+    id: number;
+    name: string;
+    role: Role;
+    isManager: boolean;
   }
   
   // Define the ApiResponse interface for login response

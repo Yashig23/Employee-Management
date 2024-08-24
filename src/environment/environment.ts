@@ -2,18 +2,21 @@
 export const environment1 = {
     production: false,
     apiUrl: {
-      Department: 'https://emp-mgmt-dev.azurewebsites.net/Department',
-      Employee: 'https://emp-mgmt-dev.azurewebsites.net/Employee',
-      Project: 'https://emp-mgmt-dev.azurewebsites.net/Project',
-      Task: 'https://emp-mgmt-dev.azurewebsites.net/Tasks',
-      Epic: 'https://emp-mgmt-dev.azurewebsites.net/Tasks/epics',
-      Login: 'https://emp-mgmt-dev.azurewebsites.net/Login',
-      Pagination:  'https://emp-mgmt-dev.azurewebsites.net/Paginated/employees' ,
-      PaginationDepartments:  'https://emp-mgmt-dev.azurewebsites.net/Paginated/departments',
-      PaginationProjects: 'https://emp-mgmt-dev.azurewebsites.net/Paginated/projects',
-      PaginationTasks:  'https://emp-mgmt-dev.azurewebsites.net/Paginated/tasks'
+      Department: 'https://192.168.1.2:8081/Department',
+      Employee: 'https://192.168.1.2:8081/Employee',
+      Project: 'https://192.168.1.2:8081/Project',
+      Task:   'https://192.168.1.2:8081/Tasks',
+      Epic: 'https://192.168.1.2:8081/Tasks/epics',
+      Login: 'https://192.168.1.2:8081/Login',
+      Pagination:  'https://192.168.1.2:8081/Employee/pagination' ,
+      PaginationDepartments:  'https://192.168.1.2:8081/Paginated/departments',
+      PaginationProjects: 'https://192.168.1.2:8081/Project/pagination',
+      PaginationTasks:  'https://192.168.1.2:8081/Tasks/pagination',
+      PaginationEpicTasks: 'https://192.168.1.2:8081/Tasks/pagination',
+      TaskReview: 'https://192.168.1.2:8081/TaskReview',
+      Sprint: 'https://192.168.1.2:8081/api/Sprint'
     },
-    token: "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNoaTEyMyIsIklkIjoiNDUiLCJVc2VySWQiOiI3OCIsImp0aSI6IjNmZmIzOWQzLWQxZTUtNGQ1Yi04ZWU5LTI1OTI1Yjc5MzZhMyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJEYXRlIjoiOC8xMy8yMDI0IDY6NTk6NDIgQU0iLCJleHAiOjE3MjM5NjQzODIsImlzcyI6Ikp3dElzc3VlciIsImF1ZCI6Ikp3dEF1ZGllbmNlIn0.b-gkVJMxcYGWCCpkfY6ytfBrFx4SngHWd60z-LOQUQQ"
+    token: "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJQcmluY2UgUmFnaHV3YW5zaGkiLCJVc2VySWQiOiIyIiwianRpIjoiZWQyYjc3YzYtNmUyYy00YzQxLWI4YmEtOTJjYmNkYjAxNTJmIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiU3VwZXJBZG1pbiIsIkRhdGUiOiIyNC0wOC0yMDI0IDExOjAyOjE1IiwiZXhwIjoxNzI0OTA5NTM1LCJpc3MiOiJKd3RJc3N1ZXIiLCJhdWQiOiJKd3RBdWRpZW5jZSJ9.acU5WgK7pjENU3lvsnKGQvEzrNTSyn2NLc2aLJJeSEc"
   };
 
 

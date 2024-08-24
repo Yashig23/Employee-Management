@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+  // CdkDrag,
+  // CdkDropList,
+} from '@angular/cdk/drag-drop';
+import { ProjectService } from '../../../../ProjectModule/project/Service/project.service';
 import { TaskServiceService } from '../../Services/task-service.service';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { DataItem, ExampleFlatNode } from '../../Models/task.model';
-import { TaskType } from '../../Models/task.model';
-import { projectDialogData } from '../../../../EmployeModule/employee/Models/Employee.model';
-import { TaskComponent } from '../task/task.component';
-import { MatDialog } from '@angular/material/dialog';
+import { taskData } from '../../Models/task.model';
+import { ToastService } from '../../../../SharedModule/shared/Services/toast.service';
 
 @Component({
   selector: 'app-full-task-list',
@@ -14,88 +18,105 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./full-task-list.component.scss']
 })
 export class FullTaskListComponent implements OnInit {
-  public taskList: DataItem[] = [];
-  public projectName!: string;
   public paramId!: number;
+  public isEdit!: boolean;
+  public sprintTaskList: taskData[] = [];
+  public NewTasks: taskData[] = [];
+  public ActivatedTasks: taskData[] = [];
+  public CompletedTasks: taskData[] = [];
+  public progressSpinner!: boolean;
 
-  private _transformer = (node: DataItem, level: number) => {
-    return {
-      expandable: !!node.subItems && node.subItems.length > 0,
-      name: node.name,
-      level: level
-    };
-  }
-
-  public treeControl = new FlatTreeControl<ExampleFlatNode>(
-    node => node.level,
-    node => node.expandable
-  );
-
-  public treeFlattener = new MatTreeFlattener(
-    this._transformer,
-    node => node.level,
-    node => node.expandable,
-    node => node.subItems || []
-  );
-
-  public dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-
-  constructor(public taskService: TaskServiceService, private dialog: MatDialog) {}
+  constructor(
+    private activatedRoute: ActivatedRoute, 
+    public projectService: ProjectService, 
+    public taskService: TaskServiceService,
+    public toaster: ToastService
+  ) {}
 
   ngOnInit(): void {
-    this.getEpicTaskList();
-  }
-
-  public getTaskStatus(taskType: TaskType): string {
-    switch (taskType) {
-      case TaskType.Epic: return 'Epic';
-      case TaskType.Features: return 'Features';
-      case TaskType.Userstory: return 'User Story';
-      case TaskType.Task: return 'Task';
-      case TaskType.Bug: return 'Bug';
-      default: return 'Epic';
-    }
-  }
-
-  public getEpicTaskList(): void {
-    this.taskService.getEpics().subscribe({
-      next: (data) => {
-        console.log(data);
-        const dataItems: DataItem[] = data.data;
-        console.log("DataItems", dataItems);
-        this.dataSource.data = dataItems; 
-        console.log("TaskList", dataItems);
-      },
-      error: (err) => {
-        console.log(err);
+    this.activatedRoute.paramMap.subscribe((paramMap) => {
+      this.paramId = Number(paramMap.get('id'));
+      if (this.paramId) {
+        this.isEdit = true;
+        this.getTaskListOfSprint(this.paramId);
       }
     });
   }
 
-  public openAddTaskDialog(): void{
-    const taskDialog: projectDialogData ={projectName: this.projectName, projectId: this.paramId }
-    const dialogRef = this.dialog.open(TaskComponent, {
-      width: '1000px',
-      height: '600px',
-      disableClose: false,
+  drop(event: CdkDragDrop<taskData[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+  
+      const movedTask = event.container.data[event.currentIndex]; 
+      
 
-    }); 
-    dialogRef.componentInstance.projectDialog = taskDialog
-    dialogRef.afterClosed().subscribe({
-      next: (data)=>{
-        console.log("Task added successfully");
-        // this.taskList = data;
-        console.log(data)
-      },
-      error: (err)=>{
-        console.log(err);
+      if (event.container.id === 'newList') {
+        movedTask.status = 0; 
+      } else if (event.container.id === 'activeList') {
+        movedTask.status = 1;  // Active Task
+      } else if (event.container.id === 'completedList') {
+        movedTask.status = 2;  // Completed Task
       }
-    })
+
+      console.log(`Task ID: ${movedTask.id}, New Status: ${movedTask.status}`);
+      this.updateTaskStatus(movedTask.id, movedTask.status);
+    }
+  }
+  
+  public getTaskListOfSprint(id: number): void {
+    this.progressSpinner = true;
+    this.taskService.getTaskListOfSprintId(id).subscribe({
+      next: (data) => {
+        this.progressSpinner = false;
+        const Data = data.data;
+        this.sprintTaskList = Data;
+        console.log(this.sprintTaskList);
+        this.NewTasks = [];
+        this.ActivatedTasks = [];
+        this.CompletedTasks = [];
+
+        Data.forEach((task) => {
+  
+          if (task.status === 0) {
+            this.NewTasks.push(task);
+          } else if (task.status === 1) {
+            this.ActivatedTasks.push(task);
+          } else if (task.status === 2) {
+            this.CompletedTasks.push(task);
+          }
+        });
+
+        console.log("Completed Tasks", this.CompletedTasks);
+        console.log("Active Tasks", this.ActivatedTasks);
+        console.log("New Tasks", this.NewTasks);
+      },
+      error: (err) => {
+        this.progressSpinner = false;
+        console.log(err);
+        this.toaster.showWarning("Error occured while feteching details of sprint tasks");
+      }
+    });
   }
 
-  getCreatedAt(node: DataItem): string {
-    return node.createdOn ? new Date(node.createdOn).toLocaleDateString() : 'N/A';
+  public updateTaskStatus(id: number, status: number): void {
+    console.log(id, status);
+    this.taskService.taskStatusUpdate(id, status).subscribe({
+      next: (data) => {
+        console.log("Task updated successfully", data);
+        this.toaster.showSuccess("Task updated successfully");
+        this.getTaskListOfSprint(this.paramId);
+      },
+      error: (err) => {
+        console.log("Error occurred while updating task", err);
+        this.toaster.showWarning("Error occurred while updating task")
+      }
+    });
   }
-
-  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 }

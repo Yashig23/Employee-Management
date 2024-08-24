@@ -82,7 +82,7 @@ export interface AddEmployeeRequest{
     username: string,
     password: string,
     name: string,
-    phone: number,
+    phone: string,
     email: string,
     address: string,
     salary: number,
@@ -108,7 +108,7 @@ export interface UpdateEmployeeRequest{
   username: string,
   password: string,
   name: string,
-  phone: number,
+  phone: string,
   email: string,
   address: string,
   salary: number,
@@ -227,6 +227,6 @@ export enum SortedOrder {
   }
 
   export interface projectDialogData{
-    projectName: string,
-    projectId: number
+    projectName: string ,
+    projectId: number,
   }

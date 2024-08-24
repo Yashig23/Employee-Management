@@ -27,6 +27,9 @@ import {
 import { ViewProjectComponent } from './Components/ViewProject/view-project/view-project.component';
 import { MatSortModule } from '@angular/material/sort';
 import { EditProjectComponent } from './Components/edit-project/edit-project.component';
+import { TaskModule } from "../../TaskModule/task/task.module";
+import { AddReviewComponent } from './Components/add-review/add-review.component';
+import { AddSprintComponent } from './Components/add-sprint/add-sprint.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,8 @@ import { EditProjectComponent } from './Components/edit-project/edit-project.com
     AddProjectComponent,
     ViewProjectComponent,
     EditProjectComponent,
+    AddReviewComponent,
+    AddSprintComponent,
   ],
   imports: [
     CommonModule,
@@ -45,20 +50,21 @@ import { EditProjectComponent } from './Components/edit-project/edit-project.com
     MatDialogModule,
     MatSlideToggle,
     MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogTitle,
-  MatPaginatorModule,
-  MatOption,
-  MatLabel,
-  MatFormField,
-  MatFormFieldModule,
-  MatSelectModule,
-  MatOptionModule,
-  MatIconModule,
-  MatSelectModule,
-  MatSortModule,
-  MatProgressSpinnerModule
-  ]
+    MatDialogClose,
+    MatDialogContent,
+    MatDialogTitle,
+    MatPaginatorModule,
+    MatOption,
+    MatLabel,
+    MatFormField,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatIconModule,
+    MatSelectModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    TaskModule
+]
 })
 export class ProjectModule { }

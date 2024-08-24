@@ -27,11 +27,12 @@ export class EmployeListComponent implements OnInit {
   public progressSpinner!: boolean;
   public projectEmployees: EmployeeForProjects[]=[] ;
   public currentPage: number = 1;
+  public pagedItemsCount: number = 10;
   public dataPage: DataPage = {
     "pageIndex": 1,
     "pagedItemsCount": 10,
     "orderKey": "Name",
-    "sortedOrder": 1,
+    "sortedOrder": 2,
     "search": ""
   };
   public data!: DialogService;
@@ -120,6 +121,8 @@ export class EmployeListComponent implements OnInit {
     const selectElement = event.target as HTMLSelectElement;
     this.dataPage.pagedItemsCount = Number(selectElement.value);
     this.dataPage.pageIndex = 1; 
+    this.currentPage = 1;
+    this.pagedItemsCount = Number(selectElement.value);
     this.FilterChange(); 
   }
 
@@ -171,6 +174,8 @@ export class EmployeListComponent implements OnInit {
   public searchEmployeeNew(): void {
     this.dataPage.pageIndex = 1;
     this.dataPage.pagedItemsCount = 10;
+    this.currentPage = 1;
+    this.pagedItemsCount = 10;
     this.FilterChange();
   }
 

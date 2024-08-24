@@ -35,7 +35,8 @@ import { LoadingComponent } from './Components/loading/loading.component';
   ],
   exports: [
     SideBarComponent,
-    MatIconModule
+    MatIconModule,
+    // ProfilePageComponent
   ]
 })
 export class SharedModule { }

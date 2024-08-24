@@ -2,31 +2,51 @@
   <div class="sidebar" style="position: sticky;">
     <app-side-bar></app-side-bar>
   </div>
+  <div *ngIf="progressSpinner === true" class="spinner">
+    <div class="spinner-section">
+    <mat-spinner  [diameter]="50"></mat-spinner>
+  </div>
+  </div>
 
-  <div class="main-content">
+  <div class="main-content"  *ngIf="progressSpinner === false">
     <section class="Formsection">
       <div class="ParentDiv">
-        <div *ngIf="progressSpinner === true" class="spinner">
+        <!-- <div *ngIf="progressSpinner === true" class="spinner">
           <mat-spinner></mat-spinner>
-        </div>
+        </div> -->
         <div class="div1">
-          <div class="employeeName">{{ProjectData.name}}</div>
-          <div class="departmentName">{{ProjectData.description}}</div>
           <div>
-            <button  [routerLink]="['/projects/edit', this.paramId]">Update</button>
+            <div class="departmentName">Project Name: {{ProjectData.name}}</div>
+            <div class="departmentName">Project Description: {{ProjectData.description}}</div>
+            <div class="departmentName">Created By : {{ProjectData.createdBy}}
+              <!-- <div>Created By : {{ProjectData.createdBy}}</div> -->
+              <div *ngIf="ProjectData.createdBy === null">null</div>
+              <!-- <div class="departmentName">{{ProjectData.createdBy}}</div> -->
+            </div>
+            <div class="departmentName">
+              Created On : {{ProjectData.createdOn | date: 'dd/MM/yyyy'}}
+              <!-- <div class="departmentName">{{ProjectData.createdOn | date: 'dd/MM/yyyy'}}</div> -->
+            </div>
           </div>
+          <div class="btnsection">
+          <div>
+            <button (click)="openAddTaskDialog()" class="addNewBtn">Add New Task</button>
+          </div>
+          <div>
+            <button [routerLink]="['/projects/edit', this.paramId]" class="updateBtn">Update</button>
+          </div>
+        </div>
         </div>
         <div class="div2">
           <div class="MembersSec">
-            <div>Members : </div>
-            <!-- <button (click)="openEmployeeDialog()">Add Members</button> -->
-            <div *ngFor="let members of addedMembersList" class="subSec">
-            <div class="data1">{{members.employeeName}}</div>
-            <!-- <div class="removeBtn" (click)="removeMember(members.employeeId, members.employeeName)">Remove</div> -->
-          </div>
+            <div style="font-size: 24px;">Members : </div>
+            <span *ngFor="let members of addedMembersList" class="subSec">
+              <!-- <div style="display: flex;"> -->
+              <span class="data1">{{members.employeeName}}</span>
+              <!-- </div> -->
+            </span>
           </div>
           <div class="NameSec">
-            <div>Tasks : </div>
             <div *ngIf="ProjectData.totalTask != null" class="DivSec">
               <div> Total Task</div>
               <div>{{ProjectData.totalTask}}</div>
@@ -35,24 +55,12 @@
               <div> Pending Task</div>
               <div>{{ProjectData.pendingTask}}</div>
             </div>
-            <div class="data" *ngIf="ProjectData.tasks?.length">
-              <div *ngFor="let task of taskList">
-                {{task.name}}
+            <div class="newnew">
+              <div class="data">
+                <app-tasks-list *ngIf="projectId" [projectId]="projectId" [openReviewBox]="openReviewBox"
+                  (taskArrayLengthChanged)="handleTaskLength($event)" ngSkipHydration></app-tasks-list>
               </div>
-              </div>
-            <div class="data" *ngIf="ProjectData.tasks?.length === 0">
-              <button class="addTask" routerLink="/tasks/Ports">View Tasks</button>
-              <!-- <button (click)="openAddTaskDialog()" class="addTask" >Add Task</button> -->
             </div>
-          </div>
-          <div class="NameSec">
-            <div>Created By : </div>
-            <div *ngIf="ProjectData.createdBy === null">null</div>
-            <div class="data">{{ProjectData.createdBy}}</div>
-          </div>
-          <div class="NameSec">
-            <div>Created On : </div>
-            <div class="data">{{ProjectData.createdOn | date: 'short'}}</div>
           </div>
           <router-outlet></router-outlet>
         </div>

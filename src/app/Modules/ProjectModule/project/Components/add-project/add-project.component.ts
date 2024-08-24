@@ -6,10 +6,9 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { EmployeServiceService } from '../../../../EmployeModule/employee/Service/employe-service.service';
 import { DialogService, Employee, EmployeeResponse } from '../../../../EmployeModule/employee/Models/Employee.model';
 import { ToastService } from '../../../../SharedModule/shared/Services/toast.service';
-import { EmployeeComponent } from '../../../../EmployeModule/employee/Components/employee/employee/employee.component';
 import { EmployeListComponent } from '../../../../EmployeModule/employee/Components/employe-list/employe-list.component';
 import { DialogData } from '../../../../SharedModule/shared/Model/delete.model';
-import { EmployeeForProjects, ProjectByIdResponse, projectData } from '../../Models/Project.model';
+import { EmployeeForProject, EmployeeForProjects, ProjectByIdResponse, projectData } from '../../Models/Project.model';
 import { redirect } from 'react-router-dom';
 
 export enum ProjectStatus {
@@ -42,77 +41,25 @@ export class AddProjectComponent implements OnInit {
   public progressSpinner!: boolean;
   public projectDataById: projectData[]=[];
   public isEdit!: boolean;
+  public disableSubmitBtn!: boolean;
 
   ngOnInit(): void {
     this.ProjectForm = new FormGroup({
-      name: new FormControl('', [Validators.required]),
-      description: new FormControl('', [Validators.required]),
-      status: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      description: new FormControl('', [Validators.required, Validators.minLength(15)]),
+      status: new FormControl(0, [Validators.required]),
       members: new FormControl([])
     });
     this.activatedRoute.paramMap.subscribe(paramMap => {
       this.paramId = Number(paramMap.get('id'));
       if (this.paramId) {
         this.isEdit = true;
-        // this.getProjectDataById();
       }
     });
   }
 
-  // public getProjectDataById(): void{
-  //   this.progressSpinner = true;
-  //   this.projectService.getProjectById(this.paramId).subscribe({
-  //     next: (data: ProjectByIdResponse) =>{
-  //       console.log(data);
-  //       this.progressSpinner = false;
-  //       this.ProjectForm.patchValue(data.data);
-  //     },
-  //     error: (err: string)=>{
-  //       console.log(err);
-  //       this.toaster.showWarning("Error occured while getting project data")
-  //     }
-  //   })
-  // }
-
-  // getProjectDataById(): void {
-  //   this.progressSpinner = true;
-  //   this.projectService.getProjectById(this.paramId!).subscribe({
-  //     next: (data: ProjectByIdResponse) => {
-  //       const projectData = data.data;
-  //       this.ProjectForm.patchValue({
-  //         name: projectData.name,
-  //         description: projectData.description,
-  //         status: projectData.status,
-  //         members: projectData.members
-  //       });
-  //       this.progressSpinner = false;
-  //     },
-  //     error: (err) => {
-  //       console.error(err);
-  //       this.progressSpinner = false;
-  //     }
-  //   });
-  // }
-
-  // private getEditData(): void {
-  //   this.progressSpinner = true;
-  //   this.employeeService.getEmployeeById(this.paramId).subscribe({
-  //     next: (response)=>{
-  //       this.progressSpinner = false;
-  //       const employeeDataOfId = response.data;
-  //       console.log(employeeDataOfId);
-  //       this.getAdminById(this.paramId);
-  //       this.employeeForm.patchValue(employeeDataOfId)
-  //     },
-  //     error: (err)=>{
-  //       this.progressSpinner = false;
-  //       // window.alert("Error while getting employee details");
-  //       console.log("Error while showing employee details",err);
-  //     }
-  //   })
-  // }
-
   public submit(): void {
+    this.disableSubmitBtn = true;
     if (this.ProjectForm.valid) {
       console.log("Submitted");
       const formData = this.ProjectForm.value;
@@ -129,11 +76,13 @@ export class AddProjectComponent implements OnInit {
         this.projectService.AddProject(body).subscribe({
           next: (response) => {
             console.log(response);
+            this.disableSubmitBtn = false;
             this.toaster.showSuccess("Submitted successfully");
             // this.dialogRef.close(true);
           },
           error: (err) => {
             console.log(err);
+            this.disableSubmitBtn = false;
             this.toaster.showWarning("Error occured while submitting");
           }
         })
@@ -172,6 +121,9 @@ export class AddProjectComponent implements OnInit {
         console.log(err);
       }
     })
+  }
+  public removeMember(index: number): void {
+    this.addedMembersList.splice(index, 1);
   }
 }
 

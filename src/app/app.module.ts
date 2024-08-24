@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-
+import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -25,6 +25,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { TaskModule } from './Modules/TaskModule/task/task.module';
 import { MatIconModule } from '@angular/material/icon';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,8 +34,10 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     SignupComponent,
     HomepageComponent,
     AddTasksComponent,
+    // ProfilePageComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

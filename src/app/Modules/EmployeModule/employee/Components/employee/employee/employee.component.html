@@ -2,11 +2,13 @@
   <div class="sidebar" style="position: sticky;">
    <app-side-bar></app-side-bar>
   </div>
+  <!-- <div *ngIf="progressSpinner === true" class="spinner">
+    <div class="spinner-section">
+    <mat-spinner></mat-spinner>
+  </div>
+  </div> -->
 
-  <div class="main-content">
-    <div *ngIf="progressSpinner === true" class="spinner">
-      <mat-spinner></mat-spinner>
-    </div>
+  <div class="main-content" >
     <header>
       <div class="Formsection">
         <div>
@@ -20,7 +22,7 @@
     </div>
       </div>
     </header>
-
+<!-- 
     <section class="Formsection">
       <form [formGroup]="employeeForm">
         <table>
@@ -51,13 +53,9 @@
             </tr>
             <tr>
               <td><label for="departmentName">Department Name:</label></td>
-              <select formControlName="departmentId" (change)="onDepartmentChange($event)" class="input-field">
-                <!-- <div *ngIf="isEdit == false"> -->
+              <select formControlName="departmentId" (change)="onDepartmentChange($event)" class="input-field" >
                 <option *ngFor="let department of departmentList" [value]="department.id">{{department.name}}</option>
-              <!-- </div> -->
-                <!-- <div *ngIf="isEdit == true">
-                <option *ngFor="let department of departmentList" [value]="department.id">{{departmentName}}</option>
-              </div> -->
+                <option value="" disabled selected>Select Department</option>
               </select>
             </tr>
             <tr *ngIf="showManagerList == true">
@@ -67,21 +65,12 @@
               </select>
             </tr>            
             <tr>
-              <td><label for="role">Role:</label></td>
-              <td>
-                <select id="role" formControlName="role" class="input-field">
-                  <option value="0">Employee</option>
-                  <option value="1">Admin</option>
-                  <option value="2">SuperAdmin</option>
-                </select>
-              </td>
             </tr>            
             <tr>
               <td colspan="2" class="form-buttons">
                 <button type="submit" [disabled]="!employeeForm.valid" class="submit-button" style="margin-right: 1rem; margin-top: 7px" (click)="onSubmit()">
                   {{ isEdit ? 'Update' : 'Submit' }}
                 </button>
-                <button type="button" (click)="router.navigate(['/employees'])" class="cancel-button" style="margin-left: 1rem; margin-top: 7px">Cancel</button>
               </td>
             </tr>
           </tbody>
@@ -89,4 +78,182 @@
       </form>
     </section>
   </div>
-</div>
+</div> -->
+
+<section class="Formsection">
+  <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+    <table>
+      <tbody>
+        <!-- Username -->
+        <tr *ngIf="isEdit == false">
+          <td><label for="username">UserName:</label></td>
+          <td>
+            <input id="username" type="text" formControlName="username" placeholder="Employee Username" class="input-field"
+              [ngClass]="{ 'is-invalid': employeeForm.controls['username'].invalid && employeeForm.controls['username'].touched }">
+            <div *ngIf="employeeForm.controls['username'].invalid && employeeForm.controls['username'].touched" class="error-message">
+              Username is required
+            </div>
+          </td>
+        </tr>
+
+        <!-- Password -->
+        <tr *ngIf="isEdit == false">
+          <td><label for="password">Password:</label></td>
+          <td>
+            <input id="password" type="password" formControlName="password" placeholder="Employee Password" class="input-field"
+              [ngClass]="{ 'is-invalid': employeeForm.controls['password'].invalid && employeeForm.controls['password'].touched }">
+            <div *ngIf="employeeForm.controls['password'].invalid && employeeForm.controls['password'].touched" class="error-message">
+              Password is required
+            </div>
+          </td>
+        </tr>
+
+        <!-- Name -->
+        <tr>
+          <td><label for="name">Name:</label></td>
+          <td>
+            <input id="name" type="text" formControlName="name" placeholder="Employee Name" class="input-field"
+              [ngClass]="{ 'is-invalid': employeeForm.controls['name'].invalid && employeeForm.controls['name'].touched }">
+            <div *ngIf="employeeForm.controls['name'].errors?.['required'] && employeeForm.controls['name'].touched" class="error-message">
+              Name is required
+            </div>
+            <div *ngIf="employeeForm.controls['name'].errors?.['minlength'] && employeeForm.controls['name'].touched" class="error-message">
+              Name must be at least 2 characters
+            </div>
+            <div *ngIf="employeeForm.controls['name'].errors?.['maxlength'] && employeeForm.controls['name'].touched" class="error-message">
+              Name must be no more than 50 characters
+            </div>
+            <div *ngIf="employeeForm.controls['name'].errors?.['pattern'] && employeeForm.controls['name'].touched" class="error-message">
+              Name can only contain letters and spaces
+            </div>
+          </td>
+        </tr>
+
+        <!-- Email -->
+        <tr>
+          <td><label for="email">Email:</label></td>
+          <td>
+            <input id="email" type="text" formControlName="email" placeholder="Employee Email" class="input-field"
+              [ngClass]="{ 'is-invalid': employeeForm.controls['email'].invalid && employeeForm.controls['email'].touched }">
+            <div *ngIf="employeeForm.controls['email'].errors?.['required'] && employeeForm.controls['email'].touched" class="error-message">
+              Email is required
+            </div>
+            <div *ngIf="employeeForm.controls['email'].errors?.['pattern'] && employeeForm.controls['email'].touched" class="error-message">
+              Enter a valid email address
+            </div>
+          </td>
+        </tr>
+
+      <!-- Phone -->
+<tr>
+  <td><label for="phone">Phone:</label></td>
+  <td>
+    <input
+      id="phone"
+      type="text"
+      formControlName="phone"
+      placeholder="Employee Phone Number"
+      class="input-field"
+      [ngClass]="{ 'is-invalid': employeeForm.controls['phone'].invalid && employeeForm.controls['phone'].touched }"
+    />
+    <div *ngIf="employeeForm.controls['phone'].errors?.['required'] && employeeForm.controls['phone'].touched" class="error-message">
+      Phone Number is required
+    </div>
+    <div *ngIf="employeeForm.controls['phone'].errors?.['pattern'] && employeeForm.controls['phone'].touched" class="error-message">
+      Enter a valid 10-digit phone number
+    </div>
+    <div *ngIf="employeeForm.controls['phone'].errors?.['maxlength'] && employeeForm.controls['phone'].touched" class="error-message">
+      Phone number should be exactly 10 digits
+    </div>
+    <div *ngIf="employeeForm.controls['phone'].errors?.['minlength'] && employeeForm.controls['phone'].touched" class="error-message">
+      Phone number should be exactly 10 digits
+    </div>
+  </td>
+</tr>
+
+
+
+        <!-- Address -->
+        <tr>
+          <td><label for="address">Address:</label></td>
+          <td>
+            <input id="address" type="text" formControlName="address" placeholder="Employee Address" class="input-field"
+              [ngClass]="{ 'is-invalid': employeeForm.controls['address'].invalid && employeeForm.controls['address'].touched }">
+            <div *ngIf="employeeForm.controls['address'].errors?.['required'] && employeeForm.controls['address'].touched" class="error-message">
+              Address is required
+            </div>
+            <div *ngIf="employeeForm.controls['address'].errors?.['maxlength'] && employeeForm.controls['address'].touched" class="error-message">
+              Address must be no more than 200 characters
+            </div>
+          </td>
+        </tr>
+
+        <!-- Salary -->
+        <tr>
+          <td><label for="salary">Salary:</label></td>
+          <td>
+            <input id="salary" type="number" formControlName="salary" placeholder="Salary" class="input-field"
+              [ngClass]="{ 'is-invalid': employeeForm.controls['salary'].invalid && employeeForm.controls['salary'].touched }">
+            <div *ngIf="employeeForm.controls['salary'].errors?.['required'] && employeeForm.controls['salary'].touched" class="error-message">
+              Salary is required
+            </div>
+            <div *ngIf="employeeForm.controls['salary'].errors?.['min'] && employeeForm.controls['salary'].touched" class="error-message">
+              Salary must be at least 1
+            </div>
+          </td>
+        </tr>
+
+       <!-- Department Name -->
+       <tr>
+        <td><label for="departmentName">Department Name:</label></td>
+        <td>
+          <select formControlName="departmentId" (change)="onDepartmentChange($event)" class="input-field"
+            [ngClass]="{ 'is-invalid': employeeForm.controls['departmentId'].invalid && employeeForm.controls['departmentId'].touched }">
+            <option *ngFor="let department of departmentList" [value]="department.id">{{department.name}}</option>
+            <option value="" disabled selected>Select Department</option>
+          </select>
+        </td>
+      </tr>
+
+      <!-- Manager Name (Visible only when managers are available) -->
+      <tr *ngIf="showManagerList == true">
+        <td><label for="adminName">Manager Name:</label></td>
+        <td>
+          <select formControlName="managerId" class="input-field"
+            [ngClass]="{ 'is-invalid': employeeForm.controls['managerId'].invalid && employeeForm.controls['managerId'].touched }">
+            <option *ngFor="let admin of adminNameList" [value]="admin.id">{{admin.name}}</option>
+          </select>
+        </td>
+      </tr>
+
+      <!-- Role -->
+      <tr>
+        <td><label for="role">Role:</label></td>
+        <td>
+          <select formControlName="role" class="input-field">
+            <option value="1">Employee</option>
+            <option value="2">Admin</option>
+            <option value="3">Super Admin</option>
+          </select>
+        </td>
+      </tr>
+
+      <!-- Submit Button -->
+      <tr>
+        <td colspan="2" class="form-buttons">
+          <button [disabled]="!employeeForm.valid || disableSubmitBtn" class="submit-button" style="margin-right: 1rem; margin-top: 7px" (click)="onSubmit()"
+          [ngStyle]="{
+            'background-color': (!employeeForm.valid || disableSubmitBtn) ? '#d6d6d6' : '#007bff',
+            'color': (!employeeForm.valid || disableSubmitBtn) ? '#a1a1a1' : 'white',
+            'cursor': (!employeeForm.valid || disableSubmitBtn) ? 'not-allowed' : 'pointer'
+          }"
+          style="margin-right: 1rem; margin-top: 7px" >
+            {{ isEdit ? 'Update' : 'Submit' }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+</section>
+

@@ -19,12 +19,13 @@ export class DepartmentListComponent implements OnInit {
   public currentPage: number = 1;
   public totalPages!: number;
   public progressSpinner!: boolean;
+  public pagedItemsCount = 10;
   public totalPagesList!: number[];
    public dataPage: DataPage = {
     "pageIndex": 1,
     "pagedItemsCount": 10,
     "orderKey": "Name",
-    "sortedOrder": 1,
+    "sortedOrder": 2,
     "search": ""
   };
 
@@ -68,7 +69,7 @@ export class DepartmentListComponent implements OnInit {
     dialogRef.afterClosed().subscribe({
       next: (data)=>{
         console.log(data);
-        this.toaster.showSuccess("New Department Added");
+        // this.toaster.showSuccess("New Department Added");
         console.log("added new Department");
         this.getDepartmentData();
       },
@@ -172,6 +173,8 @@ export class DepartmentListComponent implements OnInit {
     const selectElement = event.target as HTMLSelectElement;
     this.dataPage.pagedItemsCount = Number(selectElement.value);
     this.dataPage.pageIndex = 1; 
+    this.pagedItemsCount = Number(selectElement.value);
+    this.currentPage = 1;
     this.FilterChange(); 
   }
 
@@ -182,6 +185,8 @@ export class DepartmentListComponent implements OnInit {
   public searchDepartmentNew(): void {
     this.dataPage.pageIndex = 1;
     this.dataPage.pagedItemsCount = 10;
+    this.currentPage =1;
+    this.pagedItemsCount = 10;
     this.FilterChange();
   }
     

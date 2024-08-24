@@ -1,0 +1,357 @@
+.table-container {
+    max-height: 400px; /* Adjust the height as needed */
+    overflow-y: auto;
+  }
+  
+  .sales-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+  }
+  
+  .sales-table th, .sales-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .sales-table th {
+    background-color: #3c7de6;
+  }
+
+  tbody{
+    color: grey;
+  }
+  
+  .subchildSec{
+    margin: 20px;
+    padding: 7px;
+    border-radius: 7px;
+  }
+
+  #entries{
+    color: black;
+  }
+
+  .submit2, .reset {
+    background-color: #007bff; /* Default background color */
+    color: white; /* Default text color */
+    cursor: pointer;
+  }
+  
+  .submit2.disabled, .reset.disabled {
+    background-color: #d6d6d6 !important; /* Disabled background color */
+    color: #a1a1a1 !important; /* Disabled text color */
+    cursor: not-allowed !important;
+  }
+  
+
+  .subTaskContainer{
+    padding-left: 1rem;
+  }
+  
+  .deleteBtn {
+    color: red;
+  }
+
+  .updateBtn {
+    color: rgb(14, 104, 34);
+  }
+  .search-input{
+    color: black;
+  }
+  
+  .addBtn{
+    background-color: rgb(131, 218, 131);
+  }
+
+  .remove{
+    background-color: rgb(233, 154, 154);
+  }
+
+  .defaultVal{
+    display: none;
+    color: white
+  }
+
+  .type, .status{
+    width: 3rem;
+    margin: 2px;
+  }
+
+  
+  .mat-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+  }
+
+  .delete-icon{
+    background-color: rgb(240, 186, 186);
+    border: none;
+    padding: 1.3rem;
+    margin: 3px;
+    border-radius: 7px;
+  }
+
+  .update-icon{
+      background-color: rgb(193, 240, 186);
+      border: none;
+      padding: 1.3rem;
+      margin: 3px;
+      border-radius: 7px;
+  }
+   
+  mat-form-field.mat-form-field {
+    width: 1rem;
+  }
+  
+  .parentForm{
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .taskType{
+    width: 10rem;
+    padding: 7px;
+    margin: 2px;
+    height: 2.5rem;
+    color: grey;
+    border-radius: 5px;
+  }
+  .main-content{
+  background-color: #ffffff;
+  padding-left: 30px;
+  padding-right: 21px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 10px;
+  }
+
+  .mat-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+  }
+
+  .taskName{
+    word-wrap: break-word; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    max-width: 200px; 
+  }
+
+  .deleteBtn{
+    color: red;
+    padding: 4px;
+    border-radius: 7px;
+  }
+
+  .sprintBtn{
+    border: none;
+    padding: 14px;
+    margin: 5px;
+    background-color: rgb(101, 240, 127);
+    border-radius: 1rem;
+    color: white;
+  }
+
+  .notP{
+    color: red;
+    padding: 2rem;
+    margin: 1rem;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .import-export {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .import-export .import {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .entries-per-page {
+    display: flex;
+    align-items: center;
+  }
+  
+  .entries-per-page label {
+    font-size: 0.9rem;
+  }
+  
+  .pagination {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .pagination-link {
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  
+  .pagination-link:hover {
+    text-decoration: underline;
+  }
+  
+  .page-number {
+    font-size: 0.9rem;
+  }
+
+  .headerSec{
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem;
+  }
+  
+  .inputSec{
+    display: flex;
+    align-items: center;
+    width: 40rem;
+  }
+
+  .SearchingSec{
+    display: flex;
+  }
+
+  .submit{
+    position: relative;
+    top: 2px;
+    bottom: 4px;
+    border-radius: 7px;
+    background-color: #fff;
+    color: rgb(29, 29, 189);
+    padding: 10px;
+    margin: 1rem;
+  }
+
+  .submit2{
+    position: relative;
+    top: 2px;
+    bottom: 4px;
+    border-radius: 7px;
+    background-color: #0079dc;
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    margin: 1rem;
+  }
+
+  .reset{
+    position: relative;
+    top: 2px;
+    bottom: 4px;
+    border-radius: 7px;
+    background-color: #f68787;
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    margin: 1rem;
+  }
+
+  .btnSection{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .submit:hover{
+    position: relative;
+    top: 2px;
+    bottom: 4px;
+    border-radius: 7px;
+    background-color: #d2cccc;
+    color: rgb(29, 29, 189);
+    padding: 10px;
+    margin: 1rem;
+  }
+
+  .pagination{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+  }
+
+  .icon-btn{
+    width: 2rem;
+    height: 2rem;
+    padding: 2px;
+  }
+
+  .icon-btn1{
+    width: 2rem;
+    height: 2rem;
+    padding: 2px;
+  }
+
+  .pagesList{
+    padding: 1rem;
+    border: 1px solid white;
+    width: 2rem;
+    height: 2rem;
+    background-color: #2b94f7;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .parentList{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .page-number {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+    user-select: none;
+  }
+  .page-number:hover {
+    background-color: #f0f0f0;
+  }
+
+  .taskName:hover{
+    cursor: pointer;
+    color: black;
+  }
+
+  ::ng-deep .mat-sort-header-arrow {
+    color: #fff;
+  }
+
+  .employeeNo{
+    padding: 5px;
+    margin: 5px; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+ 

@@ -1,10 +1,17 @@
+
   <div ngSkipHydration>
-  <div class="dashboard-container">
+  <div class="dashboard-container" >
     <div style="background-color: #2a49e2; position: sticky;">
       <app-side-bar></app-side-bar>
     </div>
+    <div class="loader-wrapper">
+    <div *ngIf="progressSpinner === true" class="spinner-container" >
+      <div class="spinner-section">
+      <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+    </div>
   
-    <div class="main-content">
+    <div class="main-content" *ngIf="progressSpinner === false">
       <header>
         <div class="headerSec">
           <div>
@@ -34,24 +41,27 @@
             <th>Serial No.</th>
             <th mat-sort-header="Name">Project Name</th>
             <th >Description</th>
-            <th mat-sort-header="CreatedOn">Created On</th>
+            <th mat-sort-header="CreatedOn" >Created On</th>
             <th> Actions</th>
           </tr>
   
           <tr *ngFor="let project of filteredProjectData; let i = index">
-            <div *ngIf="progressSpinner === true" class="spinner">
+            <!-- <div *ngIf="progressSpinner === true" class="spinner">
               <mat-spinner></mat-spinner>
-            </div>
-            <td>{{ i + 1 }}</td>
+            </div> -->
+            <td>{{ (currentPage - 1) * pagedItemsCount + (i + 1) }}</td>
             <td class="projectName">{{ project.name }}</td>
             <td class="projectName">{{project.description}}</td>
-            <td>{{ project.createdOn | date: 'short' }}</td>
+            <td>{{ project.createdOn | date: 'dd/MM/yyyy' }}</td>
             <td>
-              <button (click)="deleteProject(project.id!)" class="deleteBtn">
-                <mat-icon class="mat-icon">delete</mat-icon>
-              </button>
               <button [routerLink]="['view', project.id]">
                 <mat-icon>visibility</mat-icon>
+              </button>
+              <!-- <button (click)="addSprint(project.id!)" class="sprintBtn">
+                Start Sprint
+              </button> -->
+              <button (click)="deleteProject(project.id!)" class="deleteBtn">
+                <mat-icon class="mat-icon">delete</mat-icon>
               </button>
             </td>
           </tr>
@@ -82,8 +92,6 @@
               <div (click)="onNext()"    [ngClass]="{'disabled': dataPage.pageIndex >= getTotalPages()}">
                 <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" width="20px" height="20px" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m10.211 7.155c-.141-.108-.3-.157-.456-.157-.389 0-.755.306-.755.749v8.501c0 .445.367.75.755.75.157 0 .316-.05.457-.159 1.554-1.203 4.199-3.252 5.498-4.258.184-.142.29-.36.29-.592 0-.23-.107-.449-.291-.591-1.299-1.002-3.945-3.044-5.498-4.243z"/></svg>
             </div>
-              <!-- <button class="pagination-link" (click)="onNext()"
-                [disabled]="dataPage.pageIndex >= getTotalPages()">Next</button> -->
             </div> 
   
             <div class="parentList">
@@ -94,4 +102,5 @@
       </footer>
     </div>
   </div>
+</div>
 </div>

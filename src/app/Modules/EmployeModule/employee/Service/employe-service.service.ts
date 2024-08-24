@@ -13,11 +13,12 @@ export class EmployeServiceService {
 
   public url1 = environment1.apiUrl.Employee;
   public url2 = environment1.apiUrl.Project;
-  public tasks = 'https://emp-mgmt-dev.azurewebsites.net/Tasks/employee';
+  public tasks = 'https://192.168.1.2:8081/Tasks/employee';
   public pagination = environment1.apiUrl.Pagination;
 
   constructor(private httpClient: HttpClient) { }
-  public token = "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNoaTEyMyIsIklkIjoiNDUiLCJVc2VySWQiOiI3OCIsImp0aSI6IjNmZmIzOWQzLWQxZTUtNGQ1Yi04ZWU5LTI1OTI1Yjc5MzZhMyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJEYXRlIjoiOC8xMy8yMDI0IDY6NTk6NDIgQU0iLCJleHAiOjE3MjM5NjQzODIsImlzcyI6Ikp3dElzc3VlciIsImF1ZCI6Ikp3dEF1ZGllbmNlIn0.b-gkVJMxcYGWCCpkfY6ytfBrFx4SngHWd60z-LOQUQQ";
+
+  public token = environment1.token;
 
   private headers = new HttpHeaders({
     'Authorization': `Bearer ${this.token}` // Use Bearer token
@@ -47,11 +48,11 @@ export class EmployeServiceService {
   }
 
   public getDepartmentDetailsByName(data: number): Observable<EmployeeResponse>{
-    return this.httpClient.get<EmployeeResponse>(`https://192.168.1.34:8081/Employee/department/${data}`, {headers: this.headers})
+    return this.httpClient.get<EmployeeResponse>(`https://192.168.1.2:8081/Employee/department/${data}`, {headers: this.headers})
   } 
 
   public getEmployeeNamesByDepartmentId(id: number): Observable<GetEmployeeDepartmentById>{
-    return this.httpClient.get<GetEmployeeDepartmentById>(`https://emp-mgmt-dev.azurewebsites.net/Employee/department/${id}`, {headers: this.headers})
+    return this.httpClient.get<GetEmployeeDepartmentById>(`https://192.168.1.2:8081/Employee/department/${id}`, {headers: this.headers})
   }
 
   public paginationOnEmployee(data: DataPage): Observable<EmployeeResponsePagination>{
