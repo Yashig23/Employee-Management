@@ -2,21 +2,21 @@
 export const environment1 = {
     production: false,
     apiUrl: {
-      Department: 'https://192.168.1.2:8081/Department',
-      Employee: 'https://192.168.1.2:8081/Employee',
-      Project: 'https://192.168.1.2:8081/Project',
-      Task:   'https://192.168.1.2:8081/Tasks',
-      Epic: 'https://192.168.1.2:8081/Tasks/epics',
-      Login: 'https://192.168.1.2:8081/Login',
-      Pagination:  'https://192.168.1.2:8081/Employee/pagination' ,
-      PaginationDepartments:  'https://192.168.1.2:8081/Paginated/departments',
-      PaginationProjects: 'https://192.168.1.2:8081/Project/pagination',
-      PaginationTasks:  'https://192.168.1.2:8081/Tasks/pagination',
-      PaginationEpicTasks: 'https://192.168.1.2:8081/Tasks/pagination',
-      TaskReview: 'https://192.168.1.2:8081/TaskReview',
-      Sprint: 'https://192.168.1.2:8081/api/Sprint'
+      Department: 'https://192.168.1.8:8081//Department',
+      Employee: 'https://192.168.1.8:8081/Employee',
+      Project: 'https://192.168.1.8:8081/Project',
+      Task:   'https://192.168.1.8:8081/Tasks',
+      Epic: 'https://192.168.1.8:8081/Tasks/epics',
+      Login: 'https://192.168.1.8:8081/Login',
+      Pagination:  'https://192.168.1.8:8081/Employee/pagination' ,
+      PaginationDepartments:  'https://192.168.1.8:8081/Department/pagination',
+      PaginationProjects: 'https://192.168.1.8:8081/Project/pagination',
+      PaginationTasks:  'https://192.168.1.8:8081/Tasks/pagination',
+      PaginationEpicTasks: 'https://192.168.1.8:8081/Tasks/pagination',
+      TaskReview: 'https://192.168.1.8:8081/TaskReview',
+      Sprint: 'https://192.168.1.8:8081/api/Sprint'
     },
-    token: "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJQcmluY2UgUmFnaHV3YW5zaGkiLCJVc2VySWQiOiIyIiwianRpIjoiZWQyYjc3YzYtNmUyYy00YzQxLWI4YmEtOTJjYmNkYjAxNTJmIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiU3VwZXJBZG1pbiIsIkRhdGUiOiIyNC0wOC0yMDI0IDExOjAyOjE1IiwiZXhwIjoxNzI0OTA5NTM1LCJpc3MiOiJKd3RJc3N1ZXIiLCJhdWQiOiJKd3RBdWRpZW5jZSJ9.acU5WgK7pjENU3lvsnKGQvEzrNTSyn2NLc2aLJJeSEc"
+    token: "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiUHJpbmNlIFJhZ2h1d2Fuc2hpIiwiVXNlcklkIjoiMiIsImp0aSI6IjYwMTYxZDA3LWE2YjUtNGYyZC04ODI4LTU3ZmUyODljZDhhMCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJSb2xlIjoiU3VwZXJBZG1pbiIsIkRhdGUiOiIyOC0wOC0yMDI0IDE3OjMwOjIxIiwiZXhwIjoxNzI1Mjc4NDIxLCJpc3MiOiJKd3RJc3N1ZXIiLCJhdWQiOiJKd3RBdWRpZW5jZSJ9.X2QJ0VkbErnc9zYsvUPQdQJX9lvTLZ5n70cQom5wCwI"
   };
 
 

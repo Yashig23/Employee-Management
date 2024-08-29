@@ -12,6 +12,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class AddSprintComponent implements OnInit {
   public projectData!: {projectId: number};
   public AddSprintForm!: FormGroup;
+  public data!: {'sprintId': number};
   constructor(private projectService: ProjectService, private toaster: ToastService, private dialog: MatDialogRef<AddSprintComponent>){}
 
   ngOnInit(): void {
@@ -22,6 +23,10 @@ export class AddSprintComponent implements OnInit {
       endDate: new FormControl('', [Validators.required]),
       projectId: new FormControl(this.projectData.projectId)
     })
+    if(this.data?.sprintId != null && 0){
+      this.getSprintIdDetails();
+      console.log(this.data);
+    }
   }
 
   public submit(): void{
@@ -48,6 +53,19 @@ export class AddSprintComponent implements OnInit {
       }
     })
     }
+  }
+
+  getSprintIdDetails(): void{
+    this.projectService.getSprintById(this.data.sprintId).subscribe({
+      next: (data)=>{
+        console.log(data);
+        const Data = data.data;
+        this.AddSprintForm.patchValue(Data);
+      },
+      error: (err)=>{
+        console.log("Invalid Id of sprint", err);
+      }
+    })
   }
 
 }

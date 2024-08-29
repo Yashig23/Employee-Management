@@ -5,6 +5,7 @@ import { DeleteDialogService } from '../../../../SharedModule/shared/Services/de
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DepartmentComponent } from '../department/department.component';
 import {ToastService} from '../../../../SharedModule/shared/Services/toast.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-department-list',
@@ -21,26 +22,35 @@ export class DepartmentListComponent implements OnInit {
   public progressSpinner!: boolean;
   public pagedItemsCount = 10;
   public totalPagesList!: number[];
+  public range!: FormGroup;
    public dataPage: DataPage = {
     "pageIndex": 1,
     "pagedItemsCount": 10,
-    "orderKey": "Name",
-    "sortedOrder": 2,
-    "search": ""
+    "orderKey": "id",
+    "sortedOrder": 0,
+    "search": "",
+    "dateRange": null
   };
 
   constructor(
     private departmentService: DepartmentServiceService,
     private dialogService: DeleteDialogService,
     public dialog: MatDialog,
-    private toaster: ToastService
+    private toaster: ToastService,
+    private fb: FormBuilder
   ) {
-    console.log("Loaded...")
+    this.range = this.fb.group({
+      start: [null, Validators.required],
+      end: [null, Validators.required],
+    });
   }
 
   ngOnInit(): void {
     this.getDepartmentData();
     this.FilterChange();
+    this.range.valueChanges.subscribe((value) => {
+      this.updateDateRange(value);
+    });
   }
 
   // Fetch department data and display it
@@ -57,10 +67,25 @@ export class DepartmentListComponent implements OnInit {
       },
       error: (err: string) => {
         this.progressSpinner = false;
-        // window.alert('Error occurred while displaying the department list');
         console.log('Error occurred', err);
       }
     });
+  }
+
+  public updateDateRange(value: any) {
+    console.log(value);
+    const { start, end } = value;
+    if (start) {
+      this.dataPage.dateRange = {
+        startDate: new Date(start).toISOString(),
+        endDate: end ? new Date(end).toISOString(): new Date(Date.now()).toISOString(),
+      };
+      console.log(this.dataPage);
+      this.FilterChange();
+    } else {
+      console.error("Invalid date range");
+      this.toaster.showWarning("Invalid Date Range");
+    }
   }
 
   // opening add department dialog

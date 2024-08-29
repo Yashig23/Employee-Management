@@ -98,6 +98,17 @@
                 </select>
               </td>
             </tr>
+            <!-- <tr > -->
+              <tr *ngIf="(taskForm.controls['taskType']?.value == 3 || taskForm.controls['taskType']?.value == 4)">
+              <td><label for="assignedTo">Total Estimated Hours:</label></td>
+              <td>
+                <input id="time" type="number" formControlName="originalEstimateHours" placeholder="Estimated Hours" class="input-field">
+                <!-- <select id="assignedTo" formControlName="originalEstimateHours" class="input-field">
+                  <option *ngFor="let employee of employeeList" [value]="employee.employeeId">{{employee.employeeName}}
+                  </option>
+                </select> -->
+              </td>
+            </tr>
             <tr>
               <td colspan="2" class="form-buttons">
                 <button type="submit" [disabled]="!taskForm.valid" class="submit-button"
@@ -106,7 +117,7 @@
                     'color': (!taskForm.valid || disableSubmitBtn) ? '#a1a1a1' : 'white',
                     'cursor': (!taskForm.valid || disableSubmitBtn) ? 'not-allowed' : 'pointer'
                   }">
-                  {{ isEdit ? 'Update' : 'Submit' }}
+                  {{'Submit' }}
                 </button>
                 <button type="button" mat-dialog-close class="cancel-button"
                   style="margin-left: 1rem; margin-top: 7px">Cancel</button>

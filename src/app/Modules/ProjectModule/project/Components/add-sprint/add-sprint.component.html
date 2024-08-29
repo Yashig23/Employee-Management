@@ -1,8 +1,8 @@
 
 <div class="add-sprint-container">
-    <h2>Add New Sprint</h2>
+    <h2>{{data ? 'Update sprint': 'Add New sprint'}}</h2>
   
-    <form [formGroup]="AddSprintForm" (ngSubmit)="submit()" novalidate>
+    <form [formGroup]="AddSprintForm" (ngSubmit)="submit()" novalidate *ngIf="AddSprintForm">
 
       <div class="form-group">
         <label for="name">Sprint Name</label>
@@ -12,11 +12,11 @@
           formControlName="name"
           class="form-control"
           placeholder="Enter Sprint Name"
-          [ngClass]="{ 'is-invalid': AddSprintForm.get('name')?.invalid && AddSprintForm.get('name')?.touched }"
+          [ngClass]="{ 'is-invalid': AddSprintForm.controls['name'].invalid && AddSprintForm.controls['name'].touched }"
         />
-        <div *ngIf="AddSprintForm.get('name')?.invalid && AddSprintForm.get('name')?.touched" class="invalid-feedback">
-          <span *ngIf="AddSprintForm.get('name')?.errors?.['required']">Sprint name is required.</span>
-          <span *ngIf="AddSprintForm.get('name')?.errors?.['minlength']">Sprint name must be at least 3 characters.</span>
+        <div *ngIf="AddSprintForm.controls['name']?.invalid && AddSprintForm.controls['name']?.touched" class="invalid-feedback">
+          <span *ngIf="AddSprintForm.controls['name']?.errors?.['required']">Sprint name is required.</span>
+          <span *ngIf="AddSprintForm.controls['name']?.errors?.['minlength']">Sprint name must be at least 3 characters.</span>
         </div>
       </div>
 
@@ -27,10 +27,10 @@
           id="startDate"
           formControlName="startDate"
           class="form-control"
-          [ngClass]="{ 'is-invalid': AddSprintForm.get('startDate')?.invalid && AddSprintForm.get('startDate')?.touched }"
+          [ngClass]="{ 'is-invalid': AddSprintForm.controls['startDate'].invalid && AddSprintForm.controls['startDate'].touched }"
         />
-        <div *ngIf="AddSprintForm.get('startDate')?.invalid && AddSprintForm.get('startDate')?.touched" class="invalid-feedback">
-          <span *ngIf="AddSprintForm.get('startDate')?.errors?.['required']">Start date is required.</span>
+        <div *ngIf="AddSprintForm.controls['startDate']?.invalid && AddSprintForm.controls['startDate']?.touched" class="invalid-feedback">
+          <span *ngIf="AddSprintForm.controls['startDate']?.errors?.['required']">Start date is required.</span>
         </div>
       </div>
   
@@ -41,10 +41,10 @@
           id="endDate"
           formControlName="endDate"
           class="form-control"
-          [ngClass]="{ 'is-invalid': AddSprintForm.get('endDate')?.invalid && AddSprintForm.get('endDate')?.touched }"
+          [ngClass]="{ 'is-invalid': AddSprintForm.controls['endDate'].invalid && AddSprintForm.controls['endDate'].touched }"
         />
-        <div *ngIf="AddSprintForm.get('endDate')?.invalid && AddSprintForm.get('endDate')?.touched" class="invalid-feedback">
-          <span *ngIf="AddSprintForm.get('endDate')?.errors?.['required']">End date is required.</span>
+        <div *ngIf="AddSprintForm.controls['endDate']?.invalid && AddSprintForm.controls['endDate']?.touched" class="invalid-feedback">
+          <span *ngIf="AddSprintForm.controls['endDate']?.errors?.['required']">End date is required.</span>
         </div>
       </div>
 

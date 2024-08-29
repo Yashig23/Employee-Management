@@ -33,6 +33,7 @@
             <div *ngIf="ProjectForm.controls['members'].value && ProjectForm.controls['members'].value.length > 0">
               <div *ngFor="let member of ProjectForm.controls['members'].value" class="member-item">
                 <span>{{ member.employeeName }}</span>
+                <!-- <span>{{member.employeeId}}</span> -->
                 <button (click)="removeMember(member.employeeId, member.employeeName)" class="removeBtn">Remove</button>
               </div>
             </div>
@@ -48,7 +49,7 @@
         </div>
 
         <div class="submit-button">
-          <button type="submit" [disabled]="!ProjectForm.valid" (click)="submit()">Update</button>
+          <button type="submit" [disabled]="!ProjectForm.valid || ProjectForm.pristine" (click)="submit()">Update</button>
           <button type="button" mat-button mat-dialog-close [routerLink]="['/projects/view', paramId]">Cancel</button>
         </div>
       </form>

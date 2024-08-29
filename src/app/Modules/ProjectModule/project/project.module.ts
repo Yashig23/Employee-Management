@@ -17,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core'; 
 import { MatIconModule } from '@angular/material/icon';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {
   MatDialogActions,
@@ -30,6 +31,7 @@ import { EditProjectComponent } from './Components/edit-project/edit-project.com
 import { TaskModule } from "../../TaskModule/task/task.module";
 import { AddReviewComponent } from './Components/add-review/add-review.component';
 import { AddSprintComponent } from './Components/add-sprint/add-sprint.component';
+import { ViewMembersProjectComponent } from './Components/view-members-project/view-members-project.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { AddSprintComponent } from './Components/add-sprint/add-sprint.component
     EditProjectComponent,
     AddReviewComponent,
     AddSprintComponent,
+    ViewMembersProjectComponent,
   ],
   imports: [
     CommonModule,
@@ -53,6 +56,7 @@ import { AddSprintComponent } from './Components/add-sprint/add-sprint.component
     MatDialogClose,
     MatDialogContent,
     MatDialogTitle,
+    MatDatepickerModule,
     MatPaginatorModule,
     MatOption,
     MatLabel,

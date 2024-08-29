@@ -6,6 +6,7 @@ import { ToastService } from '../../../../SharedModule/shared/Services/toast.ser
 import { DataForTaskLog, DataPost, Task, TaskList } from '../../Models/task.model';
 import { projectDialogData } from '../../../../EmployeModule/employee/Models/Employee.model';
 import { TaskComponent } from '../task/task.component';
+import { ActivatedRoute } from '@angular/router';
 // import { TaskListUpdateService } from '../../Services/task-list-update.service';
 
 @Component({
@@ -17,20 +18,24 @@ export class TaskListComponent implements OnInit {
   @Input() taskId!: number; 
   public logList: DataForTaskLog[]=[];
   public progressSpinner!: boolean;
+  public paramId!: number;
 
-  constructor(public taskService: TaskServiceService) {}
+  constructor(public taskService: TaskServiceService, public activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    if (this.taskId) {
-      this.getTaskLogList();
-    } else {
-      console.error('taskId is undefined');
-    }
+    this.activatedRoute.paramMap.subscribe(paramMap => {
+      console.log(paramMap);
+      this.paramId = Number(paramMap.get('id'));
+      if(this.paramId){
+        this.getTaskLogList();
+      }
+    });
+    
   }
 
   public getTaskLogList(): void {
     this.progressSpinner = true;
-    this.taskService.getTaskLog(this.taskId).subscribe({
+    this.taskService.getTaskLog(this.paramId).subscribe({
       next: (data) => {
         this.progressSpinner = false;
         const Data = data.data;

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeServiceService } from '../../Modules/EmployeModule/employee/Service/employe-service.service';
 import { ToastService } from '../../Modules/SharedModule/shared/Services/toast.service';
 import { MatDialog } from '@angular/material/dialog';
+import { LoginService } from '../Services/login.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -31,7 +32,9 @@ export class ProfilePageComponent {
     imageUrl: ''
   }
  
-  constructor(public router: Router, private activatedRoute: ActivatedRoute, private employeeService: EmployeServiceService, private toster: ToastService,   public dialog: MatDialog,){
+  constructor(public router: Router, private activatedRoute: ActivatedRoute, private employeeService: EmployeServiceService, private toster: ToastService,   public dialog: MatDialog,
+    public loginService: LoginService
+  ){
     this.paramId = Number(localStorage.getItem('userId'));
     console.log(this.paramId);
     if(this.paramId){
@@ -58,6 +61,7 @@ export class ProfilePageComponent {
             this.EmployeeData.phone = Data.phone;
             this.EmployeeData.email = Data.email;
             this.EmployeeData.imageUrl = Data.imageUrl;
+            this.loginService.setUserName(this.EmployeeData.name);
         },
         error: (err) => {
           this.progressSpinner = false;

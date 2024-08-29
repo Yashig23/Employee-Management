@@ -11,6 +11,7 @@ import { DialogRef } from '@angular/cdk/dialog';
 import { EmployeListComponent } from '../../../../../EmployeModule/employee/Components/employe-list/employe-list.component';
 import { Data, PaginatedEpicTask, Task, TaskReviewData } from '../../../../../TaskModule/task/Models/task.model';
 import { TaskServiceService } from '../../../../../TaskModule/task/Services/task-service.service';
+import { ViewMembersProjectComponent } from '../../view-members-project/view-members-project.component';
 
 @Component({
   selector: 'app-view-project',
@@ -32,6 +33,7 @@ export class ViewProjectComponent implements OnInit {
   public taskReviewList: TaskReviewData[]=[];
   public taskArrayLength!: number;
   public sprintList: SprintData2[]=[];
+  public role!: number;
   public addedMembersList: EmployeeForProjects[]=[];
   public EpicTaskData: PaginatedEpicTask = {
     pageIndex: 1,
@@ -63,6 +65,7 @@ export class ViewProjectComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.role = Number(localStorage.getItem('role'));
     this.activatedRoute.paramMap.subscribe(paramMap => {
       console.log(paramMap);
       this.paramId = Number(paramMap.get('id'));
@@ -186,6 +189,48 @@ export class ViewProjectComponent implements OnInit {
       }
     })
   }
+
+  public viewMembers(): void{
+    const data = this.addedMembersList;
+    const DialogRef = this.dialog.open(ViewMembersProjectComponent, {
+      width: "800px",
+      height: "600px"
+    });
+    DialogRef.componentInstance.data = data;
+
+  }
+
+  // public addMembers(): void {
+  //   this.DialogDataFlag = true;
+  //   const dialogData: DialogService = { isActive: this.DialogDataFlag };
+  //   // const dialogData2 = this.addedMembersList;
+  //   const dialogRef = this.dialog.open(EmployeListComponent, {
+  //     height: '1000px',
+  //     width: '1200px',
+  //     disableClose: true,
+  //   });
+  //   this.ProjectForm.controls['members']!.markAsDirty();
+
+  //   dialogRef.componentInstance.data = dialogData;
+
+  //   dialogRef.afterClosed().subscribe({
+  //     next: (data: EmployeeForProjects[] | null) => {
+  //       console.log(data);
+  //       if (Array.isArray(data) && data.length > 0) {
+  //         const currentMembers = this.ProjectForm.controls['members'].value || [];
+  //         this.ProjectForm.controls['members'].setValue([...currentMembers, ...data]);
+  //         this.addedMembersList = [...currentMembers, ...data];
+
+  //         console.log(this.addedMembersList);
+  //       } else {
+  //         this.toaster.showInfo("No members selected or data is empty");
+  //       }
+  //     },
+  //     error: (err: any) => {
+  //       console.log('Error:', err);
+  //     }
+  //   });
+  // }
 
   // public getTaskEpicList(): void {
   //   this.taskService.paginatedTaskList(this.EpicTaskData, this.projectId).subscribe({

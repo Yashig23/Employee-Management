@@ -12,6 +12,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import {
   MatDialogActions,
   MatDialogClose,
@@ -30,6 +31,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [
     MatProgressSpinnerModule,
     CommonModule,
+    MatDatepickerModule,
     DepartmentRoutingModule,
     HttpClientModule,
     FormsModule,

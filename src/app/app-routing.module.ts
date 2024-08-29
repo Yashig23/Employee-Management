@@ -4,6 +4,7 @@ import { LoginComponent } from './Components/Login/login/login.component';
 import { SignupComponent } from './Components/Signup/signup.component';
 import { HomepageComponent } from './Components/Homepage/homepage/homepage.component';
 import { ProfilePageComponent } from './Components/profile-page/profile-page.component';
+import { roleGuard } from './Modules/SharedModule/shared/RouteGuards/adminguard.guard';
 
 const routes: Routes = [
   {
@@ -25,7 +26,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'homepage', component: HomepageComponent },
-  {path: 'profile', component: ProfilePageComponent},
+  {path: 'profile', component: ProfilePageComponent, canActivate:[roleGuard]},
   { path: '', redirectTo: '/homepage', pathMatch: 'full' },
   { path: '**', redirectTo: '/homepage' }
 ];

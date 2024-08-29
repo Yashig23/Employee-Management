@@ -29,23 +29,30 @@
             </div>
           </div>
           <div class="btnsection">
+            <div>
+              <button (click)="viewMembers()" class="updateBtn">View Members</button>
+            </div>
           <div>
             <button (click)="openAddTaskDialog()" class="addNewBtn">Add New Task</button>
           </div>
-          <div>
+          <div *ngIf="!(role == 0 || role == 1)">
             <button [routerLink]="['/projects/edit', this.paramId]" class="updateBtn">Update</button>
           </div>
         </div>
         </div>
         <div class="div2">
-          <div class="MembersSec">
-            <div style="font-size: 24px;">Members : </div>
+          <!-- <div class="MembersSec">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 24px;">Members : </div> -->
+            <!-- <div><button>Add Members</button></div> -->
+          <!-- </div>
             <span *ngFor="let members of addedMembersList" class="subSec">
-              <!-- <div style="display: flex;"> -->
-              <span class="data1">{{members.employeeName}}</span>
-              <!-- </div> -->
+              <div style="display: flex;">
+              <div class="data1">{{members.employeeName}}</div> -->
+              <!-- <div ><button class="removeBtn">Remove</button></div> -->
+              <!-- </div>
             </span>
-          </div>
+          </div> -->
           <div class="NameSec">
             <div *ngIf="ProjectData.totalTask != null" class="DivSec">
               <div> Total Task</div>

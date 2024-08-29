@@ -87,7 +87,7 @@
       </div>
 
       <div class="submit-button">
-        <button type="submit" [disabled]="!ProjectForm.valid" 
+        <button type="submit" [disabled]="!ProjectForm.valid" (click)="submit()"
         [ngStyle]="{
           'background-color': (!ProjectForm.valid || disableSubmitBtn) ? '#d6d6d6' : '#007bff',
           'color': (!ProjectForm.valid || disableSubmitBtn) ? '#a1a1a1' : 'white',

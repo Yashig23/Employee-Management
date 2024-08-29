@@ -8,7 +8,7 @@ import { ProjectService } from '../../../../ProjectModule/project/Service/projec
 import { EmployeeForProjects, Project, ProjectResponse, SprintData2 } from '../../../../ProjectModule/project/Models/Project.model';
 import { EmployeServiceService } from '../../../../EmployeModule/employee/Service/employe-service.service';
 import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
-import { TaskType, TaskTypeDialogData } from '../../Models/task.model';
+import { TaskType, TaskTypeDialogData, getTaskDetailsById } from '../../Models/task.model';
 import { MatSelectChange } from '@angular/material/select';
 
 @Component({
@@ -29,6 +29,7 @@ export class TaskComponent implements OnInit{
   public sprintList: SprintData2[]=[];
   public taskTypeDialog!: TaskTypeDialogData;
   public disableSubmitBtn!: boolean;
+  public updateData!: TaskTypeDialogData;
     
   constructor(public activatedRoute: ActivatedRoute, public taskService: TaskServiceService, private toaster: ToastService, public router: Router, 
     private projectService: ProjectService, public employeeService: EmployeServiceService, public dialogRef: MatDialogRef<TaskComponent>,
@@ -43,14 +44,26 @@ export class TaskComponent implements OnInit{
     else if(this.taskTypeDialog?.projectId){
       this.projectId = this.taskTypeDialog.projectId;
       this.getSprintListOfProject(this.projectId);
+      this.getProjectMembersById();
     }
-    console.log(this.taskTypeDialog);
+    else if(this.updateData?.projectId){
+      console.log(this.updateData);
+      this.projectId = this.updateData.projectId;
+      if(this.updateData.isEdit == true){
+      this.getTaskDetails();
+      this.getProjectMembersById();
+      this.getSprintListOfProject(this.projectId);
+      }
+    }
     this.initializeTaskForm();
-    this.getProjectMembersById();
+    // this.getProjectMembersById();
     this.activatedRoute.paramMap.subscribe(paramMap => {
       console.log(paramMap);
       this.paramId = Number(paramMap.get('id'));
-      // this.isEdit = true;
+      this.isEdit = true;
+      // if(this.isEdit == true){
+      //   this.getTaskDetails();
+      // }
     });
   }
 
@@ -64,9 +77,25 @@ export class TaskComponent implements OnInit{
       parentId: new FormControl(taskDialogData ? taskDialogData.taskId : null),
       taskType: new FormControl(taskDialogData ? taskDialogData.taskType : this.typeName),
       status: new FormControl(0),
+      originalEstimateHours: new FormControl(null),
       sprintId: new FormControl(null)
     });
 
+  }
+
+  public getTaskDetails(){
+    this.taskService.getTaskDetailsById(this.projectId).subscribe({
+      next: (data)=>{
+        const Data = data.data.task;
+        this.taskForm.patchValue(Data);
+        console.log(Data);
+        console.log(Data);
+        
+      },
+      error: (err)=>{
+        console.log(err);
+      }
+    })
   }
 
   public getProjectMembersById(): void{
@@ -84,24 +113,25 @@ export class TaskComponent implements OnInit{
   public submit(): void{
     this.disableSubmitBtn = true;
     console.log("submitted");
-    debugger;
+    // debugger;
     console.log(this.taskForm.value)
     if(this.taskForm.valid){
     if (this.taskForm.value.name) {
       const  formValue = this.taskForm.value;
       console.log(formValue);
       const body = {
-        name: this.taskForm.value.name,
-        description: this.taskForm.value.description,
+        name: String(this.taskForm.value.name),
+        description: String(this.taskForm.value.description),
         assignedTo: Number(this.taskForm.value.assignedTo),
         projectId: Number(this.projectId),
         parentId: Number(this.taskForm.value.parentId),
         taskType: Number(this.taskForm.value.taskType),
         status: Number(this.taskForm.value.status),
+        originalEstimateHours: Number(this.taskForm.value.originalEstimateHours),
         sprintId: Number(this.taskForm.value.sprintId)
       };
       console.log(this.taskForm.value.taskType);
-      if(this.isEdit == true){
+      if(this.isEdit == false){
         this.taskService.updatedTask(body, this.paramId).subscribe({
           next: (data)=>{
             console.log(data);
@@ -109,11 +139,14 @@ export class TaskComponent implements OnInit{
             this.disableSubmitBtn = false;
             this.toaster.showSuccess("Task updated successfully");
             this.taskForm.reset();
+            this.dialogRef.close();
+            console.log("task form", "Upadted successfully");
           },
           error: (err)=>{
             console.log(err);
             this.disableSubmitBtn = false;
             this.toaster.showWarning("Error while updating the Task");
+            this.dialogRef.close();
           }
         })
       }
@@ -150,6 +183,10 @@ export class TaskComponent implements OnInit{
        this.toaster.showInfo("Erorr occured while fetching the details of sprint list");
      }
     })
+  }
+
+  updateTaskType(): void{
+    
   }
 
 }

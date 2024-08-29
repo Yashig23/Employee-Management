@@ -14,60 +14,60 @@ export class ProjectService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public headers = new HttpHeaders({
-    'Authorization': `Bearer ${this.token}` // Use Bearer token
-  });
-
   // public deleteDepartment(id: number): Observable<DepartmentResponse>{
   //   return this.httpClient.delete<DepartmentResponse>(`${this.url1.Department}/${id}`);
   // }
 
    public getProjectById(id:number): Observable<ProjectByIdResponse>{
-    return this.httpClient.get<ProjectByIdResponse>(`${this.url.Project}/${id}`, {headers: this.headers} )
+    return this.httpClient.get<ProjectByIdResponse>(`${this.url.Project}/${id}` )
    }
 
    public AddProject(data: PostProjectRequest): Observable<PostProjectResponse>{
-    return this.httpClient.post<PostProjectResponse>( this.url.Project, data, {headers: this.headers});
+    return this.httpClient.post<PostProjectResponse>( this.url.Project, data);
    }
 
    public getProject(): Observable<ProjectResponse>{
-    return this.httpClient.get<ProjectResponse>(this.url.Project, {headers: this.headers})
+    return this.httpClient.get<ProjectResponse>(this.url.Project)
    }
    
   public deleteProject(id: number): Observable<DeleteProjectResponse>{
-    return this.httpClient.delete<DeleteProjectResponse>(`${this.url.Project}/${id}`, {headers: this.headers})
+    return this.httpClient.delete<DeleteProjectResponse>(`${this.url.Project}/${id}`)
   }
 
   public paginationOnProjects(data: DataPage): Observable<ProjectResponsePagination>{
-    return this.httpClient.post<ProjectResponsePagination>(this.pagination, data, {headers: this.headers})
+    return this.httpClient.post<ProjectResponsePagination>(this.pagination, data)
   }
    
   public getProjectListOfEmployee(id: number): Observable<ProjectByEmployeeId>{
-    return this.httpClient.get<ProjectByEmployeeId>(`${this.url.Project}/${id}`, {headers: this.headers})
+    return this.httpClient.get<ProjectByEmployeeId>(`${this.url.Project}/${id}`)
   }
 
   public updateProjectById(data: updateProjectByIdRequest, id: number): Observable<updateProjectByIdResponse>{
-    return this.httpClient.post<updateProjectByIdResponse>(`${this.url.Project}/${id}`, data, {headers: this.headers})
+    return this.httpClient.put<updateProjectByIdResponse>(`${this.url.Project}/${id}`, data)
   }
 
   public addSprint(data: PostSprintRequest): Observable<updateProjectByIdResponse>{
-    return this.httpClient.post<updateProjectByIdResponse>(`https://192.168.1.2:8081/api/Sprint/0`, data, {headers: this.headers})
+    return this.httpClient.post<updateProjectByIdResponse>(`https://192.168.1.8:8081/api/Sprint/0`, data)
+  }
+
+  public updateSprint(data: PostSprintRequest, id: number): Observable<updateProjectByIdResponse>{
+    return this.httpClient.post<updateProjectByIdResponse>(`https://192.168.1.8:8081/api/Sprint/${id}`, data)
   }
 
   public deleteSprint(id: number): Observable<DeleteProjectResponse>{
-    return this.httpClient.delete<DeleteProjectResponse>(`${this.url.Sprint}/${id}`, {headers: this.headers})
+    return this.httpClient.delete<DeleteProjectResponse>(`${this.url.Sprint}/${id}`)
   }
 
   public getSprintById(id: number): Observable<GetSprintById>{
-    return this.httpClient.get<GetSprintById>(`${this.url.Sprint}/${id}`,{headers: this.headers})
+    return this.httpClient.get<GetSprintById>(`${this.url.Sprint}/${id}`)
   }
 
   public getSprintLists(id: number): Observable<getSprintsList>{
-    return this.httpClient.get<getSprintsList>(`${this.url.Sprint}/${id}`,{headers: this.headers})
+    return this.httpClient.get<getSprintsList>(`${this.url.Sprint}/${id}`)
   }
 
   public getSprintListsByProject(id: number): Observable<getSprintsListByProjectId>{
-   return this.httpClient.get<getSprintsListByProjectId>(`${this.url.Sprint}/project/${id}`, {headers: this.headers})
+   return this.httpClient.get<getSprintsListByProjectId>(`${this.url.Sprint}/project/${id}`)
   }
 
 }

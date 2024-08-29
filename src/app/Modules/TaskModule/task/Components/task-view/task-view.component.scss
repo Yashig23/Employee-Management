@@ -5,6 +5,7 @@
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+    width: 600px;
   
     h2 {
       font-size: 2rem;
@@ -36,6 +37,8 @@
       border-bottom: 1px solid #dddddd;
       padding-bottom: 1rem;
       margin-bottom: 1.5rem;
+      // max-width: 800px;
+      width: 550px; 
     }
   
     .task-reviews-section, .task-subtasks-section {
@@ -63,6 +66,7 @@
             padding: 1rem;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            // justify-content: space-evenly;
   
             img.review-avatar {
               width: 50px;
@@ -108,14 +112,88 @@
         border-radius: 10px;
     }
 
-    .parentDiv{
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-    }
+    // .parentDiv{
+    //     display: flex;
+    //     justify-content: space-around;
+    //     align-items: center;
+    // }
 
     .subtaskchild:hover{
       color: grey;
     }
+
+    .taskDetailsSec{
+      border-left: 1px solid black;
+      margin: 1rem;
+      padding: 1rem;
+      // border-left: 6px solid rgb(185, 185, 74);
+    }
+
+    .main-content {
+      margin-left: 40px;
+      padding: 20px;
+      width: calc(100% - 260px);
+    }
+
+    .dashboard-container {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+  }
+
+  .addDiscussions{
+    background-color: rgb(19, 176, 19);
+    color: white;
+    padding: 1rem;
+    margin: 7px;
+    font-size: 14px;
+    border-radius: 7px;
+  }
+
+  .submit{
+    background-color: rgb(61, 201, 240);
+    color: white;
+    padding: 1rem;
+    margin: 7px;
+    font-size: 14px;
+    border-radius: 7px;
+  }
+
+  .ParentName:hover{
+    color: grey;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+  
+  .content {
+      flex-grow: 1; /* The content will take up the remaining space */
+      padding: 20px; /* Add some padding to avoid content sticking to the edges */
+      overflow: auto; /* Allows the content to be scrollable if it overflows */
+  }
+
+  .sidebar {
+    width: 250px;
+    background-color: #2a49e2;
+    // padding: 20px;
+    height: 100vh;
+    position: fixed;
+  }
+  
+  textarea{
+   width: 500px;
+   height: 100px;
+   padding: 1rem;
+   margin: 0.5rem;
+   border: 1px solid grey;
+   border-radius: 7px;
+   
+  }
+
+  .projectName{
+    word-wrap: break-word; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    max-width: 200px; 
+  }
   }
   

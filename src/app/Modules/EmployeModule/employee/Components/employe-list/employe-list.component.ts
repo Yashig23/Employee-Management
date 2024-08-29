@@ -5,6 +5,8 @@ import { EmployeServiceService } from '../../Service/employe-service.service';
 import { DataPage, DialogService, Employee, EmployeeAddedList, EmployeeResponse } from '../../Models/Employee.model';
 import { ToastService } from '../../../../SharedModule/shared/Services/toast.service';
 import { EmployeeForProjects } from '../../../../ProjectModule/project/Models/Project.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DateRange } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-employe-list',
@@ -13,9 +15,9 @@ import { EmployeeForProjects } from '../../../../ProjectModule/project/Models/Pr
 })
 export class EmployeListComponent implements OnInit {
 
-  public employeeList: Employee[] = [];
+  public employeeList: Employee[] | null= [];
   public searchQuery: string = '';
-  public filteredEmployeeData: Employee[] = [];
+  public filteredEmployeeData: Employee[] | null = [];
   public totalPagesList!: number[];
   public addedMembersList: EmployeeAddedList[]=[];
   public employeeListLength!: number;
@@ -27,24 +29,31 @@ export class EmployeListComponent implements OnInit {
   public progressSpinner!: boolean;
   public projectEmployees: EmployeeForProjects[]=[] ;
   public currentPage: number = 1;
+  public range!: FormGroup;
   public pagedItemsCount: number = 10;
   public dataPage: DataPage = {
     "pageIndex": 1,
     "pagedItemsCount": 10,
-    "orderKey": "Name",
-    "sortedOrder": 2,
-    "search": ""
+    "orderKey": "id",
+    "sortedOrder": 0,
+    "search": "",
+    "dateRange": null
   };
   public data!: DialogService;
   constructor(
     private employeService: EmployeServiceService,
     private dialogService: DeleteDialogService,
     public toaster: ToastService,
+    public fb: FormBuilder
     // @Inject(MAT_DIALOG_DATA) public data: DialogService
   ) {
     console.log("Moaded");
     console.log(this.data?.isActive);
     console.log(this.data); 
+    this.range = this.fb.group({
+      start: [null, Validators.required],
+      end: [null, Validators.required],
+    });
   }
 
   ngOnInit(): void {
@@ -52,6 +61,25 @@ export class EmployeListComponent implements OnInit {
     this.getEmployeeData();
     // this.FilterChange();
     console.log("loaded 1")
+    this.range.valueChanges.subscribe((value) => {
+      this.updateDateRange(value);
+    });
+  }
+
+  public updateDateRange(value: any) {
+    console.log(value);
+    const { start, end } = value;
+    if (start) {
+      this.dataPage.dateRange = {
+        startDate: new Date(start).toISOString(),
+        endDate: end ? new Date(end).toISOString(): new Date(Date.now()).toISOString(),
+      };
+      console.log(this.dataPage);
+      this.FilterChange();
+    } else {
+      console.error("Invalid date range");
+      this.toaster.showWarning("Invalid Date Range");
+    }
   }
 
   // Fetch department data and display it
@@ -151,7 +179,8 @@ export class EmployeListComponent implements OnInit {
       pagedItemsCount: 10,
       orderKey: 'Name',
       sortedOrder: 1,
-      search: ''
+      search: '',
+      dateRange: null
     };
 
     this.employeService.paginationOnEmployee(ResetData).subscribe({

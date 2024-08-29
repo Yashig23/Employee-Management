@@ -138,6 +138,12 @@ export enum SortedOrder {
     orderKey: string | null; 
     sortedOrder: SortedOrder; 
     search: string | null; 
+    dateRange: DateRange | null
+  }
+
+  export interface DateRange{
+    startDate: string,
+    endDate: string
   }
 
   export interface PaginationResponse{
@@ -155,7 +161,7 @@ export enum SortedOrder {
   }
   
   interface EmployeeData {
-    data: Employee[];
+    data: Employee[] | null;
     totalPages: number;
     totalItems: number;
   }

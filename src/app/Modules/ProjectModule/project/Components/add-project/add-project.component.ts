@@ -47,7 +47,7 @@ export class AddProjectComponent implements OnInit {
     this.ProjectForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(3)]),
       description: new FormControl('', [Validators.required, Validators.minLength(15)]),
-      status: new FormControl(0, [Validators.required]),
+      status: new FormControl(0),
       members: new FormControl([])
     });
     this.activatedRoute.paramMap.subscribe(paramMap => {
@@ -77,12 +77,16 @@ export class AddProjectComponent implements OnInit {
           next: (response) => {
             console.log(response);
             this.disableSubmitBtn = false;
+            this.ProjectForm.reset();
             this.toaster.showSuccess("Submitted successfully");
+            this.addedMembersList = [];
             // this.dialogRef.close(true);
           },
           error: (err) => {
             console.log(err);
             this.disableSubmitBtn = false;
+            this.ProjectForm.reset();
+            this.addedMembersList = [];
             this.toaster.showWarning("Error occured while submitting");
           }
         })

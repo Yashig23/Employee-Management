@@ -81,9 +81,15 @@ export interface AddDepartmentResponse{
   export interface DataPage{
     pageIndex: number,
     pagedItemsCount: number,
-    orderKey: string,
+    orderKey: string | null,
     sortedOrder: number,
-    search: string
+    search: string | null,
+    dateRange: DateRange | null
+  }
+
+  export interface DateRange{
+    startDate: string,
+    endDate: string
   }
 
   export interface DepartmentResponsePagination{

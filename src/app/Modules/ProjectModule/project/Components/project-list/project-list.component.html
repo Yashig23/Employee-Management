@@ -17,7 +17,7 @@
           <div>
             <h1>Project</h1>
           </div>
-          <div class="import-export">
+          <div class="import-export" *ngIf="!(role == 0 || role == 1)">
             <button class="import" routerLink="add">Add New Project</button>
           </div>
         </div>
@@ -28,6 +28,17 @@
                 (keydown.enter)="searchProjectNew()">
             </div>
             <div><button (click)="searchProjectNew()" class="submit">Submit</button></div>
+            <div>
+              <mat-form-field style="width: 200px; margin: 2px">
+                <mat-label>Enter a date range</mat-label>
+                <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                  <input matStartDate formControlName="start" placeholder="Start date">
+                  <input matEndDate formControlName="end" placeholder="End date">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
+            </div>
           </div>
           <div class="employeeNo">
             <label style="color: rgb(117, 116, 116);">Total Projects:</label>
@@ -60,7 +71,7 @@
               <!-- <button (click)="addSprint(project.id!)" class="sprintBtn">
                 Start Sprint
               </button> -->
-              <button (click)="deleteProject(project.id!)" class="deleteBtn">
+              <button *ngIf="!(role == 0 || role == 1)" (click)="deleteProject(project.id!)" class="deleteBtn">
                 <mat-icon class="mat-icon">delete</mat-icon>
               </button>
             </td>

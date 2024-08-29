@@ -3,7 +3,7 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -25,6 +25,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { TaskModule } from './Modules/TaskModule/task/task.module';
 import { MatIconModule } from '@angular/material/icon';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { SideBarComponent } from './Modules/SharedModule/shared/Components/side-bar/side-bar.component';
+import { customInterceptor } from './Components/Services/custom.interceptor';
 
 
 @NgModule({
@@ -63,8 +65,10 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
   ],
   providers: [
     provideClientHydration(),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideHttpClient(withInterceptors([customInterceptor]))
+    
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

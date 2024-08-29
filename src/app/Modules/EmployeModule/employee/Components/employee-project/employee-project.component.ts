@@ -57,45 +57,7 @@ export class EmployeeProjectComponent implements OnInit {
     })
   }
 
-  // public openAddtask(id: number): void{
-  //   const dialogData: projectDialogData = { projectId: this.paramId };
-  //    const dialogRef = this.dialog.open(TaskComponent, {
-  //     height: '800px',
-  //     width: '1000px',
-  //     disableClose: false,
-  //    })
-  //    dialogRef.afterClosed().subscribe({
-  //     next: (data)=>{
-  //       console.log(data)
-  //     },
-  //     error: (err)=>{
-  //       console.log(err);
-  //     }
-  //    })
-  //    dialogRef.componentInstance.projectDialog = dialogData; 
-  // }
-
   public openAddTask(id: number): void{
     console.log(id);
   }
-  // public openAddTaskDialog(): void{
-  //   const taskDialog: projectDialogData ={projectName: this.projectName, projectId: this.paramId }
-  //   const dialogRef = this.dialog.open(TaskComponent, {
-  //     width: '1000px',
-  //     height: '600px',
-  //     disableClose: false,
-
-  //   }); 
-  //   dialogRef.componentInstance.data = taskDialog
-  //   dialogRef.afterClosed().subscribe({
-  //     next: (data)=>{
-  //       console.log("Task added successfully");
-  //       // this.taskList = data;
-  //       // console.log(data)
-  //     },
-  //     error: (err)=>{
-  //       console.log(err);
-  //     }
-  //   })
-  // }
 }

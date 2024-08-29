@@ -38,11 +38,12 @@ export class SignupComponent {
         this.toaster.showSuccess("Signup Completed Successfully");
         // alert("Signup Completed successfully");
         console.log("signup success");
+        localStorage.clear();
 
         // setting up the local storage for username and password.
-        localStorage.setItem('username', this.SignupForm.value.username);
-        localStorage.setItem('password', this.SignupForm.value.password); 
-        localStorage.setItem('token', this.token ?? '');
+        // localStorage.setItem('username', this.SignupForm.value.username);
+        // localStorage.setItem('password', this.SignupForm.value.password); 
+        // localStorage.setItem('token', this.token ?? '');
         console.log(this.token);
         this.router.navigateByUrl('/homepage');
         
