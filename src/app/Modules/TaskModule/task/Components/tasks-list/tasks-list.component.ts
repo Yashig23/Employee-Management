@@ -588,9 +588,19 @@ public updateSprint(id: number){
   console.log(id);
   const Dialog = this.dialog.open(AddSprintComponent);
   const SprintId = {'sprintId': id};
+  const ProjectId = {'projectId': this.projectId};
   Dialog.componentInstance.data = SprintId;
+  Dialog.componentInstance.projectIdByTask = ProjectId;
   console.log("Sprint Id", SprintId);
-  // this.projectService.updateSprint(data, id)
+  Dialog.afterClosed().subscribe({
+    next:()=>{
+      this.getSprintListOfProject(this.projectId);
+      // this.toaster.showSuccess("Sprint Updated successfully");
+    },
+    error: (err)=>{
+      console.log(err);
+    }
+  })
 }
 
 public openTaskDetailDialog(id: number): void{

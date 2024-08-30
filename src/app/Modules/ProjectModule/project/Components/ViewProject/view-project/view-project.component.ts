@@ -60,20 +60,18 @@ export class ViewProjectComponent implements OnInit {
   constructor(private projectService: ProjectService, private activatedRoute: ActivatedRoute, private toaster: ToastService,
     public dialog: MatDialog, private taskService: TaskServiceService,
   ) {
-    console.log("Param id", this.paramId);
-    console.log(this.taskArrayLength);
+    // console.log("Param id", this.paramId);
+    // console.log(this.taskArrayLength);
   }
 
   ngOnInit(): void {
     this.role = Number(localStorage.getItem('role'));
     this.activatedRoute.paramMap.subscribe(paramMap => {
-      console.log(paramMap);
+      // console.log(paramMap);
       this.paramId = Number(paramMap.get('id'));
       if(this.paramId){
         this.isEdit = true;
         this.getDetailsOfProject();
-        // this.getSprintListOfProject(this.paramId)
-        // this.ProjectReviewList();
       }
     });
   }
@@ -82,10 +80,9 @@ export class ViewProjectComponent implements OnInit {
     this.progressSpinner = true;
        this.projectService.getProjectById(this.paramId).subscribe({
         next: (data: ProjectByIdResponse) => {
-          console.log(data);
+          // console.log(data);
           this.progressSpinner = false;
-          const Data = data.data
-          
+          const Data = data.data 
           this.ProjectData.name = Data.name,
           this.ProjectData.description = Data.description,
           this.ProjectData.members = Data.members,
@@ -98,11 +95,11 @@ export class ViewProjectComponent implements OnInit {
           this.ProjectData.pendingTask = Data.pendingTask;
           this.taskList = Data.tasks;
           this.projectId = this.paramId;
-          console.log(Data.tasks);
+          // console.log(Data.tasks);
         },
         error: (err) => {
           this.progressSpinner = false;
-          console.error('Error fetching project details', err);
+          // console.error('Error fetching project details', err);
           // this.toaster.showWarning("Error fetching project details");
         }
        })
@@ -197,53 +194,53 @@ export class ViewProjectComponent implements OnInit {
       height: "600px"
     });
     DialogRef.componentInstance.data = data;
-
   }
 
-  // public addMembers(): void {
-  //   this.DialogDataFlag = true;
-  //   const dialogData: DialogService = { isActive: this.DialogDataFlag };
-  //   // const dialogData2 = this.addedMembersList;
-  //   const dialogRef = this.dialog.open(EmployeListComponent, {
-  //     height: '1000px',
-  //     width: '1200px',
-  //     disableClose: true,
-  //   });
-  //   this.ProjectForm.controls['members']!.markAsDirty();
+  public addMembers(): void {
+    this.DialogDataFlag = true;
+    const dialogData: DialogService = { isActive: this.DialogDataFlag};
+    const membersData =  this.addedMembersList;
+    // const dialogData2 = this.addedMembersList;
+    const dialogRef = this.dialog.open(EmployeListComponent, {
+      height: '1000px',
+      width: '1200px',
+      disableClose: true,
+    });
 
-  //   dialogRef.componentInstance.data = dialogData;
+    dialogRef.componentInstance.data = dialogData;
+    // dialogRef.componentInstance.membersList = membersData;
 
-  //   dialogRef.afterClosed().subscribe({
-  //     next: (data: EmployeeForProjects[] | null) => {
-  //       console.log(data);
-  //       if (Array.isArray(data) && data.length > 0) {
-  //         const currentMembers = this.ProjectForm.controls['members'].value || [];
-  //         this.ProjectForm.controls['members'].setValue([...currentMembers, ...data]);
-  //         this.addedMembersList = [...currentMembers, ...data];
+    dialogRef.afterClosed().subscribe({
+      next: (data: EmployeeForProjects[] | null) => {
+        console.log(data);
+        if (Array.isArray(data) && data.length > 0) {
+          const currentMembers = this.addedMembersList || [];
+          // this.Project[...currentMembers, ...data]);
+          this.addedMembersList = [...currentMembers, ...data];
 
-  //         console.log(this.addedMembersList);
-  //       } else {
-  //         this.toaster.showInfo("No members selected or data is empty");
-  //       }
-  //     },
-  //     error: (err: any) => {
-  //       console.log('Error:', err);
-  //     }
-  //   });
+          console.log(this.addedMembersList);
+        } else {
+          this.toaster.showInfo("No members selected or data is empty");
+        }
+      },
+      error: (err: any) => {
+        console.log('Error:', err);
+      }
+    });
+  }
+
+  // public removeMember(employeeId: number, employeeName: string): void {
+  //   const currentMembers = this.ProjectForm.controls['members'].value || [];
+  //   const indexToRemove = currentMembers.findIndex(
+  //     (member: EmployeeForProjects) =>
+  //       member.employeeId === employeeId && member.employeeName === employeeName
+  //   );
+  //   if (indexToRemove !== -1) {
+  //     currentMembers.splice(indexToRemove, 1);
+  //     this.ProjectForm.controls['members'].setValue([...currentMembers]);
+  //     this.ProjectForm.controls['members']!.markAsDirty();
+  //   }
   // }
-
-  // public getTaskEpicList(): void {
-  //   this.taskService.paginatedTaskList(this.EpicTaskData, this.projectId).subscribe({
-  //     next: (data) => {
-  //       this.taskArray = data.data.data;
-  //       console.log("Task list reloaded", this.taskArray);
-  //     },
-  //     error: (err) => {
-  //       console.error("Error fetching task list", err);
-  //     }
-  //   });
-  // }
-  
 
   public addReview(){
     console.log("add");
@@ -254,19 +251,4 @@ export class ViewProjectComponent implements OnInit {
     this.taskArrayLength = length;
     console.log('Length of taskArray:', length);
   }
-
-  // public getSprintListOfProject(id: number): void{
-  //    this.projectService.getSprintListsByProject(id).subscribe({
-  //     next: (data)=>{
-  //       console.log(data);
-  //       const Data = data.data;
-  //       this.sprintList = Data;
-  //     },
-  //     error: (err)=>{
-  //       console.log(err);
-  //       this.toaster.showInfo("Erorr occured while fetching the details of sprint list");
-  //     }
-  //    })
-  // }
-
 }

@@ -44,11 +44,11 @@ export class EmployeServiceService {
   }
 
   public getDepartmentDetailsByName(data: number): Observable<EmployeeResponse>{
-    return this.httpClient.get<EmployeeResponse>(`https://192.168.1.8:8081/Employee/department/${data}`)
+    return this.httpClient.get<EmployeeResponse>(`https://192.168.1.37:8081/Employee/department/${data}`)
   } 
 
   public getEmployeeNamesByDepartmentId(id: number): Observable<GetEmployeeDepartmentById>{
-    return this.httpClient.get<GetEmployeeDepartmentById>(`https://192.168.1.8:8081/Employee/department/${id}`)
+    return this.httpClient.get<GetEmployeeDepartmentById>(`https://192.168.1.37:8081/Employee/department/${id}`)
   }
 
   public paginationOnEmployee(data: DataPage): Observable<EmployeeResponsePagination>{

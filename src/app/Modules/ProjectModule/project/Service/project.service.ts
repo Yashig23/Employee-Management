@@ -47,11 +47,13 @@ export class ProjectService {
   }
 
   public addSprint(data: PostSprintRequest): Observable<updateProjectByIdResponse>{
-    return this.httpClient.post<updateProjectByIdResponse>(`https://192.168.1.8:8081/api/Sprint/0`, data)
+    return this.httpClient.post<updateProjectByIdResponse>(`https://192.168.1.37:8081/api/Sprint/0`, data)
   }
 
   public updateSprint(data: PostSprintRequest, id: number): Observable<updateProjectByIdResponse>{
-    return this.httpClient.post<updateProjectByIdResponse>(`https://192.168.1.8:8081/api/Sprint/${id}`, data)
+    console.log(data, id);
+    console.log("entered");
+    return this.httpClient.post<updateProjectByIdResponse>(`https://192.168.1.37:8081/api/Sprint/${id}`, data)
   }
 
   public deleteSprint(id: number): Observable<DeleteProjectResponse>{

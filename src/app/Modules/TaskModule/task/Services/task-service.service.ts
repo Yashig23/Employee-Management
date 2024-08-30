@@ -50,11 +50,11 @@ export class TaskServiceService {
   }
 
   public getSubTaskList(id: number): Observable<DataForSubTask>{
-    return this.httpClient.get<DataForSubTask>(`https://192.168.1.8:8081/Tasks/task${id}/children`)
+    return this.httpClient.get<DataForSubTask>(`https://192.168.1.37:8081/Tasks/task${id}/children`)
   }
 
   public postTaskReview(body: { content: string; }, id: number): Observable<TaskPostRequest>{
-    return this.httpClient.post<TaskPostRequest>(`https://192.168.1.8:8081/TaskReview/${id}`, body)
+    return this.httpClient.post<TaskPostRequest>(`https://192.168.1.37:8081/TaskReview/${id}`, body)
   }
 
   public getTaskReviewList(id: number): Observable<getTaskReviewResponse>{
@@ -66,11 +66,11 @@ export class TaskServiceService {
   }
 
   public getProjectEmployeeList(id: number): Observable<ProjectListEmployeeData>{
-    return this.httpClient.get<ProjectListEmployeeData>(`https://192.168.1.8:8081/api/ProjectEmployee/${id}`);
+    return this.httpClient.get<ProjectListEmployeeData>(`https://192.168.1.37:8081/api/ProjectEmployee/${id}`);
   }
 
   public getTaskLog(id: number): Observable<TaskLogResponse>{
-    return this.httpClient.get<TaskLogResponse>(`https://192.168.1.8:8081/api/Tasklog/${id}`)
+    return this.httpClient.get<TaskLogResponse>(`https://192.168.1.37:8081/api/Tasklog/${id}`)
   }
 
   public getTaskListOfSprintId(id: number): Observable<taskOfSprintResponse>{
@@ -89,7 +89,7 @@ export class TaskServiceService {
     const body ={
       content: data
     }
-    return this.httpClient.put<deleteTaskResponse>(`https://192.168.1.8:8081/TaskReview/${id}`, data);
+    return this.httpClient.put<deleteTaskResponse>(`https://192.168.1.37:8081/TaskReview/${id}`, body);
   }
 
   public updateTask(taskId: number, data: number, path: string): Observable<deleteTaskResponse> {
@@ -107,15 +107,15 @@ export class TaskServiceService {
     });
     console.log(patchData);
   
-    return this.httpClient.patch<deleteTaskResponse>(`https://192.168.1.8:8081/Tasks/${taskId}`, patchData, { headers })
+    return this.httpClient.patch<deleteTaskResponse>(`https://192.168.1.37:8081/Tasks/${taskId}`, patchData, { headers })
   }
 
   public getCounts(): Observable<TaskCountResponse>{
-    return this.httpClient.get<TaskCountResponse>(`https://192.168.1.8:8081/Tasks/Count`)
+    return this.httpClient.get<TaskCountResponse>(`https://192.168.1.37:8081/Tasks/Count`)
   }
 
   public deleteSprint(id: number): Observable<deleteTaskResponse>{
-    return this.httpClient.delete<deleteTaskResponse>(`https://192.168.1.8:8081/api/Sprint/${id}`)
+    return this.httpClient.delete<deleteTaskResponse>(`https://192.168.1.37:8081/api/Sprint/${id}`)
   }
 }
 

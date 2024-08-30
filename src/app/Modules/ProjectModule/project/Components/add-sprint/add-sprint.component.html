@@ -50,7 +50,7 @@
 
       <input type="hidden" formControlName="projectId" />
 
-      <button (click)="submit()" class="btn btn-primary" >Add Sprint</button>
+      <button (click)="submit()" class="btn btn-primary" >{{isEdit == true? 'Update Sprint' : 'Add Sprint'}}</button>
     </form>
   </div>
   

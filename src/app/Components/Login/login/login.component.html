@@ -2,24 +2,61 @@
   <div class="form-wrapper">
     <div class="form-card">
       <div class="form-content">
-        <h1 class="title">Sign Up </h1>
+        <h1 class="title">Sign Up</h1>
         <form [formGroup]="SignupForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
-              <label for="username" class="label">Your Username</label>
-              <input type="username" name="username" id="username" class="input" placeholder="abc123" required formControlName="username">
+            <label for="username" class="label">Your Username</label>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              class="input"
+              placeholder="abc123"
+              required
+              formControlName="username"
+            />
+            <div class="error-message" *ngIf="SignupForm.controls['username']!.invalid && (SignupForm.controls['username']!.dirty || SignupForm.controls['username']!.touched)">
+              <div *ngIf="SignupForm.controls['username']!.errors?.['required']">Username is required.</div>
+              <div *ngIf="SignupForm.controls['username']!.errors?.['minlength']">Username must be at least 4 characters long.</div>
+              <div *ngIf="SignupForm.controls['username']!.errors?.['pattern']">Username can only contain letters, numbers, and underscores.</div>
             </div>
+          </div>
+          
           <div class="form-group">
             <label for="email" class="label">Your email</label>
-            <input type="email" name="email" id="email" class="input" placeholder="name@company.com" required formControlName="email">
+            <input
+              type="email"
+              name="email"
+              id="email"
+              class="input"
+              placeholder="name@company.com"
+              required
+              formControlName="email"
+            />
+            <div class="error-message" *ngIf="SignupForm.controls['email']!.invalid && (SignupForm.controls['email']!.dirty || SignupForm.controls['email']!.touched)">
+              <div *ngIf="SignupForm.controls['email']!.errors?.['required']">Email is required.</div>
+              <div *ngIf="SignupForm.controls['email']!.errors?.['email']">Please enter a valid email address.</div>
+            </div>
           </div>
+          
           <div class="form-group">
             <label for="password" class="label">Password</label>
-            <input type="password" name="password" id="password" class="input" placeholder="••••••••" required formControlName="password">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="input"
+              placeholder="••••••••"
+              required
+              formControlName="password"
+            />
+            <div class="error-message" *ngIf="SignupForm.controls['password']!.invalid && (SignupForm.controls['password']!.dirty || SignupForm.controls['password'].touched)">
+              <div *ngIf="SignupForm.controls['password']!.errors?.['required']">Password is required.</div>
+              <div *ngIf="SignupForm.controls['password']!.errors?.['minlength']">Password must be at least 4 characters long.</div>
+            </div>
           </div>
-          <button type="submit" class="submit-btn">Sign in</button>
-          <p class="signup-text">
-            Already have an account yet? <a href="#" class="signup-link" routerLink="/login">Sign in</a>
-          </p>
+
+          <button type="submit" class="submit-btn" [disabled]="SignupForm.invalid">Sign Up</button>
         </form>
       </div>
     </div>

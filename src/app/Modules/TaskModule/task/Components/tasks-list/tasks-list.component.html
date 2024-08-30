@@ -79,7 +79,8 @@
               <mat-label>Select Sprint</mat-label>
               <mat-select (selectionChange)="onSprintChange($event)">
                 <mat-option *ngFor="let sprint of sprintList" [value]="sprint.id">
-                  <mat-icon [routerLink]="['/tasks/sprint/tasks', sprint.id]">info</mat-icon> {{ sprint.name }}
+                  {{ sprint.name }}
+                  <mat-icon [routerLink]="['/tasks/sprint/tasks', sprint.id]">info</mat-icon> 
                   <mat-icon (click)="updateSprint(sprint.id)">update</mat-icon>
                   <mat-icon (click)="deleteSprint(sprint.id)">delete</mat-icon>
                 </mat-option>

@@ -40,8 +40,8 @@
                   <option [ngValue]="4">Bug</option>
                 </select>
                 <div
-                  *ngIf="taskForm.get('taskType')!.invalid && (taskForm.get('taskType')!.touched || taskForm.get('taskType')?.dirty)">
-                  <div *ngIf="taskForm.get('taskType')?.errors?.['required']" class="warn">Task Type is required.</div>
+                  *ngIf="taskForm.controls['taskType']!.invalid && (taskForm.controls['taskType']!.touched || taskForm.controls['taskType']?.dirty)">
+                  <div *ngIf="taskForm.controls['taskType']?.errors?.['required']" class="warn">Task Type is required.</div>
                 </div>
               </td>
               <td>
@@ -67,9 +67,9 @@
               <td>
                 <input id="name" type="text" formControlName="name" placeholder="Add Name" class="input-field">
                 <div
-                  *ngIf="taskForm.get('name')?.invalid && (taskForm.get('name')?.touched || taskForm.get('name')?.dirty)">
-                  <div *ngIf="taskForm.get('name')?.errors?.['required']" class="warn">Name is required.</div>
-                  <div *ngIf="taskForm.get('name')?.errors?.['minlength']" class="warn">Name must be at least 3
+                  *ngIf="taskForm.controls['name']?.invalid && (taskForm.controls['name']?.touched || taskForm.controls['name']?.dirty)">
+                  <div *ngIf="taskForm.controls['name']?.errors?.['required']" class="warn">Name is required.</div>
+                  <div *ngIf="taskForm.controls['name']?.errors?.['minlength']" class="warn">Name must be at least 3
                     characters long.</div>
                 </div>
               </td>
@@ -81,10 +81,10 @@
                   class="input-field">
                 </textarea>
                 <div
-                  *ngIf="taskForm.get('description')!.invalid && (taskForm.get('description')!.touched || taskForm.get('description')?.dirty)">
-                  <div *ngIf="taskForm.get('description')?.errors?.['required']" class="warn">Description is required.
+                  *ngIf="taskForm.controls['description']!.invalid && (taskForm.controls['description']!.touched || taskForm.controls['description']?.dirty)">
+                  <div *ngIf="taskForm.controls['description']?.errors?.['required']" class="warn">Description is required.
                   </div>
-                  <div *ngIf="taskForm.get('description')?.errors?.['minlength']" class="warn">Description must be at
+                  <div *ngIf="taskForm.controls['description']?.errors?.['minlength']" class="warn">Description must be at
                     least 15 characters long.</div>
                 </div>
               </td>

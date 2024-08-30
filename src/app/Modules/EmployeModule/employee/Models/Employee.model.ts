@@ -22,6 +22,7 @@ export enum EmployeeRole {
     salary: number; // Double
     departmentId: number | null; // Nullable integer
     managerId: number | null; // Nullable integer
+    isMember?: boolean;
   }
   
   export interface EmployeeResponse {
@@ -192,7 +193,7 @@ export enum SortedOrder {
   }
   
   export interface DialogService{
-    isActive: boolean
+    isActive: boolean,
   }
 
   export interface EmployeeAddedList{

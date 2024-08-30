@@ -21,6 +21,7 @@ export const roleGuard: CanActivateFn = (
     return router.createUrlTree(['/login']);
   }
 
+  const restrictedRoutes = ['/employeeList', '/departmentList'];
   if (isAdmin) {
     return router.createUrlTree(['/homepage']);
   }
@@ -29,7 +30,7 @@ export const roleGuard: CanActivateFn = (
     return router.createUrlTree(['/homepage']);
   }
 
-  if (isEmployee) {
+  if (isEmployee && restrictedRoutes.includes(state.url)) {
     return router.createUrlTree(['/homepage']);
   }
 

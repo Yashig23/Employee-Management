@@ -30,6 +30,7 @@ export class EmployeListComponent implements OnInit {
   public projectEmployees: EmployeeForProjects[]=[] ;
   public currentPage: number = 1;
   public range!: FormGroup;
+  // public membersList!: EmployeeForProjects[];
   public pagedItemsCount: number = 10;
   public dataPage: DataPage = {
     "pageIndex": 1,
@@ -59,8 +60,7 @@ export class EmployeListComponent implements OnInit {
   ngOnInit(): void {
     // this.loadEmployeeData();
     this.getEmployeeData();
-    // this.FilterChange();
-    console.log("loaded 1")
+
     this.range.valueChanges.subscribe((value) => {
       this.updateDateRange(value);
     });
@@ -90,6 +90,12 @@ export class EmployeListComponent implements OnInit {
         this.progressSpinner = false;
         this.employeeList = response.data;
         this.filteredEmployeeData = this.employeeList; 
+        // this.filteredEmployeeData.forEach((employee) => {
+        //   employee.isMember = this.membersList.some(
+        //     (member) => member.employeeId === employee.id && member.employeeName === employee.name
+        //   );
+        //   this.existInArray(employee.id);
+        // });
         this.FilterChange();
         this.employeeListLength = this.employeeList.length;
       },
@@ -161,14 +167,12 @@ export class EmployeListComponent implements OnInit {
         this.filteredEmployeeData = this.employeeList;
         this.employeeListLength = data.data.totalItems; 
         this.totalPages = this.getTotalPages(); 
-        // this.totalPagesList.push(this.totalPages);
         this.totalPagesList = Array.from({ length: this.totalPages }, (_, i) => i + 1);
         console.log(this.filteredEmployeeData);
       },
       error: (err) => {
         console.log(err);
         this.toaster.showWarning("Error occurred while Filtering");
-        // alert("Error occurred");
       }
     });
   }
@@ -187,15 +191,10 @@ export class EmployeListComponent implements OnInit {
       next: (data) => {
         this.employeeList = data.data.data;
         this.filteredEmployeeData = this.employeeList;
-        console.log(typeof this.employeeList);
-        console.log(typeof this.filteredEmployeeData);
-        console.log(this.filteredEmployeeData);
-        console.log(data);
       },
       error: (err) => {
         console.log(err);
         this.toaster.showWarning("Error occured while Filtering");
-        // alert("error occured");
       }
     })
   }
@@ -218,14 +217,11 @@ export class EmployeListComponent implements OnInit {
     }
     
     public loadPageData(pageNumber: number): void {
-      console.log(`Loading data for page ${pageNumber}`);
       this.dataPage.pageIndex = pageNumber;
       this.FilterChange();
     }
     
     public sortData(event: any): void {
-      console.log(event.active);
-      console.log(event.direction);
       this.dataPage.orderKey = event.active;
   
       if (event.direction === 'asc') {
@@ -265,5 +261,11 @@ public removeEmployeeInProject(id: number) {
 public existInArray(id: number): boolean {
   return this.projectEmployees.some(emp => emp.employeeId === id);
 }
+
+// New function for checking employee in array
+public newExistInArray(id: number): void{
+  // return this.membersList.some(emp => emp.employeeId === id);
+}
+
 }
 

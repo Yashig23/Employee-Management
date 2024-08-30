@@ -9,6 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TaskComponent } from '../task/task.component';
 import { ProjectListOfEmployee } from '../../../../ProjectModule/project/Models/Project.model';
 import { MatSelectChange } from '@angular/material/select';
+import { TaskDetails } from '../../../../EmployeModule/employee/Models/Employee.model';
 
 @Component({
   selector: 'app-task-view',
@@ -45,6 +46,7 @@ export class TaskViewComponent {
   public previousDescription!: string | null;
   public ParentList: DataOfParent[] | null=[];
   public ParentType!: TaskType;
+  public editBoolean: boolean = false;
   public isEditing: boolean = false; // Tracks whether the review is in edit mode
   public editContent: string = ''; 
   public taskReviewId: number | null = null;
@@ -64,9 +66,8 @@ export class TaskViewComponent {
         this.isEdit = true;
         console.log(this.paramId);
         this.getDetailsOfTask();
-        // this.initializeTaskForm();
         this.getEmployeeList();
-        // console.log("Project id", this.projectId);
+        this.initializeTaskForm();
         this.EmployeeName = localStorage.getItem('EmployeeName');
         console.log("EmployeeName", this.EmployeeName);
       }
@@ -96,6 +97,7 @@ export class TaskViewComponent {
         console.log(data);
         this.ParentList = [];
         this.progressSpinner = false;
+        const TaskDetails = data.data.task;
         this.taskDetails = data.data.task;
         this.reviews = data.data.reviews;
         this.subTasks = data.data.subTasks;
@@ -113,6 +115,7 @@ export class TaskViewComponent {
         console.log("TaskId", this.taskId);
         console.log("Parent type", ParentType);
         this.getParentList1(ProjectId, ParentType);
+             // this.taskForm.patchValue(TaskDetails);
       },
       error: (err) => {
         console.log(err);
@@ -243,7 +246,6 @@ oninput(){
         dialogRef.afterClosed().subscribe({
           next: (data)=>{
             console.log("Task added successfully");
-            // this.taskList = data;
             console.log(data)
             this.getDetailsOfTask();
           },
@@ -254,7 +256,6 @@ oninput(){
       }
 
       private askUserToChoose(): number {
-        // const DialogRef = this.dialog.open(SubChildTasksComponent);
         const choice = window.confirm("Do you want to add a Task? Click 'Cancel' for Bug");
         return choice ? 3 : 4;
       }
@@ -323,14 +324,17 @@ oninput(){
       }
 
       public updateReviews(data: string, taskId: number): void{
+        // const taskReview = this.taskDetails.
         this.taskService.updateReview(data, taskId).subscribe({
           next:(data)=>{
              console.log(data);
              this.getDetailsOfTask();
+             this.editBoolean = false;
           },
           error: (err)=>{
             console.log(err);
             console.log("error occured while updating review");
+            this.editBoolean = false;
           }
         })
       }
@@ -343,12 +347,6 @@ oninput(){
         this.isEditing = !this.isEditing;
       }
     
-     
-      // saveReview(): void {
-      //   this.reviews.content = this.editContent;
-      // }
-    
-     
       cancelEdit(): void {
         this.isEditing = false;
         // this.editContent = this.review.content;
@@ -365,6 +363,7 @@ oninput(){
       public editReviewContent(id: number, body: string){
         this.taskReviewId = id;
         this.taskReviewContent.setValue(body);
+        this.editBoolean = true;
       }
 
       public updateReview(): void{

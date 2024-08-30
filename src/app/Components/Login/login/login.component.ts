@@ -18,11 +18,21 @@ export class LoginComponent {
   public EmployeeName!: string;
 
   constructor(public loginService: LoginService, private toaster: ToastService, private router: Router){
-   this.SignupForm = new FormGroup({
-    username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required])
-   })
+    this.SignupForm = new FormGroup({
+      username: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.pattern(/^[a-zA-Z0-9_]+$/)
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4)
+      ]),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email
+      ])
+    });
   }
 
   public onSubmit(): void {
@@ -49,11 +59,7 @@ export class LoginComponent {
         });
   
         this.toaster.showSuccess("Signup Completed Successfully");
-        console.log("signup success");
-        console.log("EmployeeName", localStorage.getItem('EmployeeName'));
-        console.log("EmployeeDetails", this.EmployeeDetails);
         this.EmployeeName = this.EmployeeDetails.name;
-        console.log("EmployeeName", this.EmployeeName);
         localStorage.setItem('EmployeeName', this.EmployeeName.toString());
   
         this.router.navigateByUrl('/homepage');

@@ -8,18 +8,31 @@ import { taskData } from '../../Models/task.model';
 })
 export class TasksCardComponent {
   @Input() task!: taskData;
-  public AssigneeName?: string;
+  public assigneeInitials?: string;
+  public statusLabel: string = 'New';
 
-  public initailName(): string| undefined{
-   return this.AssigneeName = this.task.assigneeName?.slice(0,2).toUpperCase();
+  ngOnInit() {
+    this.setAssigneeInitials();
+    this.setStatusLabel();
   }
 
-  public getStatusLabel(status: number): string {
-    switch (status) {
-      case 0: return 'New';
-      case 1: return 'Active';
-      case 2: return 'Completed';
-      default: return 'New';
+  private setAssigneeInitials(): void {
+    this.assigneeInitials = this.task.assigneeName?.slice(0, 2).toUpperCase();
+  }
+
+  private setStatusLabel(): void {
+    switch (this.task.status) {
+      case 0:
+        this.statusLabel = 'New';
+        break;
+      case 1:
+        this.statusLabel = 'Active';
+        break;
+      case 2:
+        this.statusLabel = 'Completed';
+        break;
+      default:
+        this.statusLabel = 'New';
     }
   }
 }

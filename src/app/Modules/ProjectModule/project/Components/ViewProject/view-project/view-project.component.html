@@ -11,21 +11,15 @@
   <div class="main-content"  *ngIf="progressSpinner === false">
     <section class="Formsection">
       <div class="ParentDiv">
-        <!-- <div *ngIf="progressSpinner === true" class="spinner">
-          <mat-spinner></mat-spinner>
-        </div> -->
         <div class="div1">
           <div>
             <div class="departmentName">Project Name: {{ProjectData.name}}</div>
             <div class="departmentName">Project Description: {{ProjectData.description}}</div>
             <div class="departmentName">Created By : {{ProjectData.createdBy}}
-              <!-- <div>Created By : {{ProjectData.createdBy}}</div> -->
               <div *ngIf="ProjectData.createdBy === null">null</div>
-              <!-- <div class="departmentName">{{ProjectData.createdBy}}</div> -->
             </div>
             <div class="departmentName">
               Created On : {{ProjectData.createdOn | date: 'dd/MM/yyyy'}}
-              <!-- <div class="departmentName">{{ProjectData.createdOn | date: 'dd/MM/yyyy'}}</div> -->
             </div>
           </div>
           <div class="btnsection">
@@ -41,16 +35,21 @@
         </div>
         </div>
         <div class="div2">
+
+          <!--Members Section-->
           <!-- <div class="MembersSec">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="font-size: 24px;">Members : </div> -->
-            <!-- <div><button>Add Members</button></div> -->
-          <!-- </div>
-            <span *ngFor="let members of addedMembersList" class="subSec">
+            <div style="font-size: 24px;">Members : </div>
+            <div><button (click)="addMembers()">Add Members</button></div>
+          </div>
+            <span *ngFor="let members of addedMembersList" ngIf="addedMembersList.length > 0" class="subSec">
               <div style="display: flex;">
-              <div class="data1">{{members.employeeName}}</div> -->
-              <!-- <div ><button class="removeBtn">Remove</button></div> -->
-              <!-- </div>
+              <div class="data1">{{members.employeeName}}</div>
+              <div ><button class="removeBtn" (click)="removeMember(members.employeeId, members.employeeName)">Remove</button></div>
+              </div>
+            </span>
+            <span *ngIf="addedMembersList.length == 0 || addedMembersList.length == null">
+              <div class="data1">No member Assigned</div>
             </span>
           </div> -->
           <div class="NameSec">
