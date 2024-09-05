@@ -1,7 +1,7 @@
 <div class="dashboard-container">
-  <div class="sidebar" style="position: sticky;">
+  <!-- <div class="sidebar" style="position: sticky;">
     <app-side-bar></app-side-bar>
-  </div>
+  </div> -->
   <div class="main-content">
     <header>
       <div class="Formsection">
@@ -19,7 +19,7 @@
     </header>
 
     <section class="Formsection">
-      <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="employeeForm" >
         <table>
           <tbody>
             <!-- Username -->
@@ -170,8 +170,8 @@
             <tr>
               <td><label for="departmentName">Department Name:</label></td>
               <td>
-                <select formControlName="departmentId" (change)="onDepartmentChange($event)" class="input-field"
-                  [ngClass]="{ 'is-invalid': employeeForm.controls['departmentId'].invalid && employeeForm.controls['departmentId'].touched }">
+                <select formControlName="departmentID" (change)="onDepartmentChange($event)" class="input-field"
+                  [ngClass]="{ 'is-invalid': employeeForm.controls['departmentID'].invalid && employeeForm.controls['departmentID'].touched }">
                   <option *ngFor="let department of departmentList" [value]="department.id">{{department.name}}</option>
                   <option value="" disabled selected>Select Department</option>
                 </select>
@@ -182,8 +182,8 @@
             <tr *ngIf="showManagerList == true">
               <td><label for="adminName">Manager Name:</label></td>
               <td>
-                <select formControlName="managerId" class="input-field"
-                  [ngClass]="{ 'is-invalid': employeeForm.controls['managerId'].invalid && employeeForm.controls['managerId'].touched }">
+                <select formControlName="managerID" class="input-field"
+                  [ngClass]="{ 'is-invalid': employeeForm.controls['managerID'].invalid && employeeForm.controls['managerID'].touched }">
                   <option *ngFor="let admin of adminNameList" [value]="admin.id">{{admin.name}}</option>
                 </select>
               </td>
@@ -194,9 +194,9 @@
               <td><label for="role">Role:</label></td>
               <td>
                 <select formControlName="role" class="input-field">
-                  <option value="1">Employee</option>
-                  <option value="2">Admin</option>
-                  <option value="3">Super Admin</option>
+                  <option value="0">Employee</option>
+                  <option value="1">Admin</option>
+                  <option value="2">Super Admin</option>
                 </select>
               </td>
             </tr>
@@ -204,14 +204,22 @@
             <!-- Submit Button -->
             <tr>
               <td colspan="2" class="form-buttons">
-                <button [disabled]="!employeeForm.valid || disableSubmitBtn" class="submit-button"
+                <button [disabled]="!employeeForm.valid " class="submit-button" *ngIf="isEdit == false"
                   style="margin-right: 1rem; margin-top: 7px" (click)="onSubmit()" [ngStyle]="{
-            'background-color': (!employeeForm.valid || disableSubmitBtn) ? '#d6d6d6' : '#007bff',
-            'color': (!employeeForm.valid || disableSubmitBtn) ? '#a1a1a1' : 'white',
-            'cursor': (!employeeForm.valid || disableSubmitBtn) ? 'not-allowed' : 'pointer'
+            'background-color': (!employeeForm.valid ) ? '#d6d6d6' : '#007bff',
+            'color': (!employeeForm.valid ) ? '#a1a1a1' : 'white',
+            'cursor': (!employeeForm.valid ) ? 'not-allowed' : 'pointer'
           }" style="margin-right: 1rem; margin-top: 7px">
-                  {{ isEdit ? 'Update' : 'Submit' }}
+                 Submit
                 </button>
+                <button *ngIf="isEdit == true" class="submit-button" [disabled]="employeeForm.pristine || !employeeForm.valid"
+                style="margin-right: 1rem; margin-top: 7px" (click)="onSubmit()" [ngStyle]="{
+                    'background-color': (!employeeForm.pristine || !employeeForm.valid) ? '#d6d6d6' : '#007bff',
+            'color': (!employeeForm.pristine || !employeeForm.valid) ? '#a1a1a1' : 'white',
+            'cursor': (!employeeForm.pristine || !employeeForm.valid) ? 'not-allowed' : 'pointer'
+        }" style="margin-right: 1rem; margin-top: 7px">
+               Update
+              </button>
               </td>
             </tr>
           </tbody>

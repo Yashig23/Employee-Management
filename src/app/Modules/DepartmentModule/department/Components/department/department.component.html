@@ -1,14 +1,3 @@
-<!-- <div class="dashboard-container">
-  <div class="sidebar" style="position: sticky;">
-    <app-side-bar></app-side-bar>
-  </div>
-
-  <div class="main-content"> -->
-    <!-- <div *ngIf="progressSpinner === true" class="spinner">
-      <div class="spinner-section">
-      <mat-spinner></mat-spinner>
-    </div> -->
-    <!-- </div>  -->
     <section class="department-section">
       <div class="container">
         <div class="header">
@@ -23,15 +12,13 @@
             </div>
           </div>
           <div class="submit-button">
+            <button type="button" mat-button mat-dialog-close class="cancle">Cancel</button>
             <button type="submit" (click)="submit()" mat-dialog-close="true" [ngStyle]="{
               'background-color': (!departmentForm.valid || disableSubmitBtn) ? '#d6d6d6' : '#007bff',
               'color': (!departmentForm.valid || disableSubmitBtn) ? '#a1a1a1' : 'white',
               'cursor': (!departmentForm.valid || disableSubmitBtn) ? 'not-allowed' : 'pointer'
             }">Submit</button>
-            <button type="button" mat-button mat-dialog-close class="cancle">Cancle</button>
           </div>
         </form>
       </div>
     </section>
-  <!-- </div> 
-</div>    -->

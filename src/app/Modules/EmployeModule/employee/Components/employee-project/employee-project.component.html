@@ -32,7 +32,7 @@
             <td class="project-status">{{project.status | status}}</td>
             <td class="project-date">{{project.createdOn | date: 'dd/MM/yyyy'}}</td>
             <td>
-                <button class="addBtn">View Task</button>
+                <button class="addBtn" (click)="openTaskListDialog(project.id)">View Task</button>
                 <!-- <button (click)="openAddTaskDialog()" class="addBtn">Add Task</button> -->
             </td>
           </tr>

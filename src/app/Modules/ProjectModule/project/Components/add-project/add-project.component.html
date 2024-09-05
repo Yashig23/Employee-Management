@@ -60,13 +60,8 @@
       </div>
 
       <div class="submit-button">
-        <button type="submit" [disabled]="!ProjectForm.valid" (click)="submit()"
-        [ngStyle]="{
-          'background-color': (!ProjectForm.valid || disableSubmitBtn) ? '#d6d6d6' : '#007bff',
-          'color': (!ProjectForm.valid || disableSubmitBtn) ? '#a1a1a1' : 'white',
-          'cursor': (!ProjectForm.valid || disableSubmitBtn) ? 'not-allowed' : 'pointer'
-        }">{{isEdit ? 'Update' : 'Submit'}}</button>
         <button
+        class="cancleButton"
         type="button"
         mat-button
         mat-dialog-close
@@ -74,6 +69,12 @@
       >
         Cancel
       </button>
+        <button type="submit" [disabled]="!ProjectForm.valid && ProjectForm.pristine" (click)="submit()"
+        [ngStyle]="{
+          'background-color': (!ProjectForm.valid || disableSubmitBtn) ? '#d6d6d6' : '#007bff',
+          'color': (!ProjectForm.valid || disableSubmitBtn) ? '#a1a1a1' : 'white',
+          'cursor': (!ProjectForm.valid || disableSubmitBtn) ? 'not-allowed' : 'pointer'
+        }">{{isEdit ? 'Update' : 'Submit'}}</button>
       </div>
     </form>
   </div>

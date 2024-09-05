@@ -72,6 +72,35 @@ export class DepartmentListComponent implements OnInit {
     });
   }
 
+  public loadPageData2(pageNumber: number): void {
+    this.dataPage.pageIndex = pageNumber;
+    this.FilterChange();
+  }
+
+  public onPrevious2(pageNumber: number): void {
+    this.dataPage.pageIndex = pageNumber;
+      this.FilterChange();
+  }
+
+  public onNext2(pageNumber: number): void {
+    // const totalPages = this.getTotalPages();
+    this.dataPage.pageIndex = pageNumber;
+    this.FilterChange();
+    // if (this.dataPage.pageIndex < totalPages) {
+    //   this.dataPage.pageIndex++;
+    //   this.FilterChange();
+    // }
+  }
+
+  public onPageSizeChange2(pageSize: number): void {
+    const newPageSize = pageSize;
+    this.dataPage.pagedItemsCount = Number(newPageSize);
+    this.dataPage.pageIndex = 1; 
+    this.currentPage = 1;
+    this.pagedItemsCount = Number(newPageSize);
+    this.FilterChange(); 
+  }
+
   public updateDateRange(value: any) {
     console.log(value);
     const { start, end } = value;
@@ -208,6 +237,7 @@ export class DepartmentListComponent implements OnInit {
   }
 
   public searchDepartmentNew(): void {
+    // if(this.dataPage.search!.length != 0 ){
     this.dataPage.pageIndex = 1;
     this.dataPage.pagedItemsCount = 10;
     this.currentPage =1;
@@ -215,7 +245,7 @@ export class DepartmentListComponent implements OnInit {
     this.FilterChange();
   }
     
-    goToPage(pageNumber: number) {
+    public goToPage(pageNumber: number): void {
       this.currentPage = pageNumber;
       this.loadPageData(pageNumber);
     }
@@ -242,5 +272,14 @@ export class DepartmentListComponent implements OnInit {
       }
       this.FilterChange();
     }
+
+  public reset(): void{
+    this.dataPage.search = '';
+    this.dataPage.pageIndex = 1;
+    this.dataPage.pagedItemsCount = 10;
+    this.currentPage =1;
+    this.pagedItemsCount = 10;
+    this.FilterChange();
+  }
 
 }

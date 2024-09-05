@@ -142,6 +142,10 @@ export class EmployeListComponent implements OnInit {
       this.FilterChange();
     }
   }
+  public onPrevious2(pageNumber: number): void {
+    this.dataPage.pageIndex = pageNumber;
+      this.FilterChange();
+  }
 
   public onNext(): void {
     const totalPages = this.getTotalPages();
@@ -150,6 +154,16 @@ export class EmployeListComponent implements OnInit {
       this.FilterChange();
     }
   }
+
+  public onNext2(pageNumber: number): void {
+    const totalPages = this.getTotalPages();
+    this.dataPage.pageIndex = pageNumber;
+    this.FilterChange();
+    // if (this.dataPage.pageIndex < totalPages) {
+    //   this.dataPage.pageIndex++;
+    //   this.FilterChange();
+    // }
+  }
   
   public onPageSizeChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
@@ -157,6 +171,15 @@ export class EmployeListComponent implements OnInit {
     this.dataPage.pageIndex = 1; 
     this.currentPage = 1;
     this.pagedItemsCount = Number(selectElement.value);
+    this.FilterChange(); 
+  }
+
+  public onPageSizeChange2(pageSize: number): void {
+    const newPageSize = pageSize;
+    this.dataPage.pagedItemsCount = Number(newPageSize);
+    this.dataPage.pageIndex = 1; 
+    this.currentPage = 1;
+    this.pagedItemsCount = Number(newPageSize);
     this.FilterChange(); 
   }
 
@@ -220,6 +243,11 @@ export class EmployeListComponent implements OnInit {
       this.dataPage.pageIndex = pageNumber;
       this.FilterChange();
     }
+
+    public loadPageData2(pageNumber: number): void {
+      this.dataPage.pageIndex = pageNumber;
+      this.FilterChange();
+    }
     
     public sortData(event: any): void {
       this.dataPage.orderKey = event.active;
@@ -262,9 +290,21 @@ public existInArray(id: number): boolean {
   return this.projectEmployees.some(emp => emp.employeeId === id);
 }
 
-// New function for checking employee in array
-public newExistInArray(id: number): void{
-  // return this.membersList.some(emp => emp.employeeId === id);
+// public newExistInArray(id: number): void{
+//   // return this.membersList.some(emp => emp.employeeId === id);
+// }
+
+public handlePageSizeChange(newPageSize: number): void{
+  console.log("New Page ISze",newPageSize);
+}
+
+public reset(): void{
+  this.dataPage.search = '';
+  this.dataPage.pageIndex = 1;
+  this.dataPage.pagedItemsCount = 10;
+  this.currentPage =1;
+  this.pagedItemsCount = 10;
+  this.FilterChange();
 }
 
 }

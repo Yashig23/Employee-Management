@@ -1,0 +1,66 @@
+.labelOption{
+    display: flex;
+  }
+
+  .pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .entries-per-page {
+    display: flex;
+    align-items: center;
+  }
+
+  .pagination-link {
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  
+  .pagination-link:hover {
+    text-decoration: underline;
+  }
+
+  .pagination{
+    margin: 1rem;
+    display: flex;
+  }
+  
+  .page-number {
+    font-size: 0.9rem;
+  }
+
+  .parentList{
+    display: flex;
+    flex-direction: row;
+    margin: 7px;
+  }
+  
+  .page-number {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+    user-select: none;
+  }
+
+  .pagesList{
+    padding: 1rem;
+    border: 1px solid white;
+    width: 2rem;
+    height: 2rem;
+    background-color: #2b94f7;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 5px;
+    margin: 1px;
+  }

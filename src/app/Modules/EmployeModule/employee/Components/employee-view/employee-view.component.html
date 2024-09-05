@@ -52,11 +52,9 @@
           </div>
 
           <div class="BTnSec">
+            <div style="color: white; font-size: medium;">Your Projects</div>
             <div>
-              <button class="btn1" [routerLink]="['projectss', paramId]">View Projects</button>
-            </div>
-            <div>
-              <button class="btn1" [routerLink]="['taskss', paramId]">View Tasks</button>
+              <app-employee-project [projectId]="paramId" ></app-employee-project>
             </div>
           </div>
           <router-outlet></router-outlet>

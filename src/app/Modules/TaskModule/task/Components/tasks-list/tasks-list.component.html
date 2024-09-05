@@ -11,12 +11,12 @@
         <h1>Task List</h1>
       </div>
       <div class="searchParent">
-        <div class="inputSec">
+        <div class="inputSec" *ngIf="!EmployeeProjectData">
           <input type="text" placeholder="Search" class="search-input" [(ngModel)]="EpicTaskData.search"
             (keydown.enter)="searchTaskNew()">
           <div><button (click)="searchTaskNew()" [disabled]="EpicTaskData.search?.length == 0" class="submit">Search</button></div>
         </div>
-        <div class="SearchingSec">
+        <div class="SearchingSec" *ngIf="!EmployeeProjectData">
           <div>
             <mat-form-field style="width: 170px; margin: 2px">
               <mat-label>TaskType</mat-label>
@@ -90,7 +90,7 @@
           </div>
         </div>
         <div class="btnSection">
-          <div>
+          <div *ngIf="!EmployeeProjectData">
             <button (click)="SubmitChanges()" class="submit2" [disabled]="disableSubmitBtn"   [ngClass]="{'disabled': disableSubmitBtn}">Submit</button>
           </div>
           <!-- <div>
@@ -98,7 +98,7 @@
           </div> -->
         </div>
       </div>
-      <div class="employeeNo">
+      <div class="employeeNo" *ngIf="!EmployeeProjectData">
         <div>
           <label style="color: grey;" class="label">Total Tasks: {{taskListLength}}</label>
         </div>
@@ -123,17 +123,20 @@
             <th mat-sort-header="CreatedOn">Created On</th>
             <th mat-sort-header="Task Type">Task Type</th>
             <th mat-sort-header="Status">Status</th>
-            <th>Action</th>
+            <th *ngIf="!EmployeeProjectData">Action</th>
           </tr>
         </thead>
         <tbody>
           <!-- Main Task Loop -->
+           <div *ngIf="taskArray.length == 0 || taskArray == null">
+            <div style="color: red; font-size: medium; display: flex; justify-content: center;">No items Present</div>
+           </div>
           <ng-container *ngFor="let task of taskArray; let i = index">
             <tr>
               <td>{{ (currentPage - 1) * pagedItemsCount + (i + 1) }}</td>
               <td>
                 <!-- Show arrow only if there are subtasks -->
-                <button (click)="loadSubTasks(task.id, $event)">
+                <button (click)="loadSubTasks(task.id, $event)" *ngIf="!EmployeeProjectData">
                   <mat-icon>{{ isExpanded(task.id) ? 'expand_less' : 'expand_more' }}</mat-icon>
                 </button>
               </td>
@@ -143,7 +146,7 @@
               <td>{{ task.createdOn | date: 'dd/MM/yyyy' }}</td>
               <td>{{task.taskType | taskType}}</td>
               <td>{{ task.status | task }}</td>
-              <td>
+              <td *ngIf="!EmployeeProjectData">
                 <button class="AddBtn" (click)="openAddTaskDialog(task.taskType, task.id)">
                   <mat-icon class="small-icon">add</mat-icon>
                 </button>
@@ -167,8 +170,8 @@
       <ng-container *ngFor="let subtask of subTasks; let j = index" class="subTaskContainer">
         <tr class="subchildSec">
           <td [style.paddingLeft.px]="level * 40"><mat-icon>check_indeterminate_small</mat-icon></td>
-            <td>
-            <button [style.paddingLeft.px]="level * 40" (click)="loadSubTasks(subtask.id, $event)">
+            <td >
+            <button [style.paddingLeft.px]="level * 40" (click)="loadSubTasks(subtask.id, $event)" *ngIf="subtask.taskType != 3 && subtask.taskType != 4 &&!EmployeeProjectData" >
               <mat-icon>{{ isExpanded(subtask.id) ? 'expand_less' : 'expand_more' }}</mat-icon>
             </button>
           </td>
@@ -199,46 +202,10 @@
 
 
     <footer>
-      <div class="pagination-controls">
-        <div class="entries-per-page">
-          <label for="entries" class="labelOption">Items per page
-            <select id="entries" [(ngModel)]="EpicTaskData.pagedItemsCount" (change)="onPageSizeChange($event)">
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
-          </label>
-        </div>
-
-        <div>
-          <div class="pagination">
-            <div (click)="onPrevious()" [ngClass]="{'disabled': EpicTaskData.pageIndex <= 1}">
-              <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" width="20px"
-                height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="m13.789 7.155c.141-.108.3-.157.456-.157.389 0 .755.306.755.749v8.501c0 .445-.367.75-.755.75-.157 0-.316-.05-.457-.159-1.554-1.203-4.199-3.252-5.498-4.258-.184-.142-.29-.36-.29-.592 0-.23.107-.449.291-.591 1.299-1.002 3.945-3.044 5.498-4.243z" />
-              </svg>
-            </div>
-            <button (click)="onPrevious()" [disabled]="EpicTaskData.pageIndex <= 1">Previous</button>
-            <span class="page-number">{{EpicTaskData.pageIndex}}</span>
-            <div (click)="onNext()" [ngClass]="{'disabled': EpicTaskData.pageIndex >= getTotalPages()}">
-              <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" width="20px" height="20px"
-                stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="m10.211 7.155c-.141-.108-.3-.157-.456-.157-.389 0-.755.306-.755.749v8.501c0 .445.367.75.755.75.157 0 .316-.05.457-.159 1.554-1.203 4.199-3.252 5.498-4.258.184-.142.29-.36.29-.592 0-.23-.107-.449-.291-.591-1.299-1.002-3.945-3.044-5.498-4.243z" />
-              </svg>
-            </div>
-            <button class="pagination-link" (click)="onNext()"
-              [disabled]="EpicTaskData.pageIndex >= getTotalPages()">Next</button>
-          </div>
-
-          <div class="parentList">
-            <div class="pagesList" *ngFor="let i of totalPagesList" (click)="goToPage(i)">{{i}}</div>
-          </div>
-        </div>
-      </div>
+      <div>
+        <app-pagination [pagedItemsCount]="EpicTaskData.pagedItemsCount" [pageIndex]="EpicTaskData.pageIndex" [totalPagesList]="totalPagesList" (pageSizeChange)="onPageSizeChange2($event)"
+  (onPreviousClick)="onPrevious2($event)" (onNextClick)="onNext2($event)" (goToPageValue)="loadPageData2($event)" [totalLength]="taskListLength"></app-pagination>
+</div>
     </footer>
   </div>
 </div>

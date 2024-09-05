@@ -2,7 +2,7 @@
 <div class="add-sprint-container">
     <h2>{{data ? 'Update sprint': 'Add New sprint'}}</h2>
   
-    <form [formGroup]="AddSprintForm" (ngSubmit)="submit()" novalidate *ngIf="AddSprintForm">
+    <form [formGroup]="AddSprintForm" novalidate *ngIf="AddSprintForm">
 
       <div class="form-group">
         <label for="name">Sprint Name</label>

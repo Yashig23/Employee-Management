@@ -9,87 +9,82 @@ import { ApiResponse, DataForSubTask, DataPost, deleteTaskResponse, getTaskDetai
 })
 export class TaskServiceService {
 
-  public url = environment2.apiUrl.Task;
-  public url1 = environment1.apiUrl.Task;
-  public epicURL = environment1.apiUrl.Epic;
-  public pagination = environment1.apiUrl.PaginationTasks;
-  public taskPost = environment1.apiUrl.TaskReview;
-  public paginationEpicUrl = environment1.apiUrl.PaginationEpicTasks
+  public url = environment1.apiUrl.apiUrl;
 
   constructor(private httpClient: HttpClient) { }
   public token = environment1.token;
 
   public getTasksList(): Observable<TaskList>{
-    return this.httpClient.get<TaskList>(this.url1);
+    return this.httpClient.get<TaskList>(`${this.url}/Tasks`);
   }
 
   public deleteTask(id: number): Observable<deleteTaskResponse>{
-    return this.httpClient.delete<deleteTaskResponse>(`${this.url1}/${id}`);
+    return this.httpClient.delete<deleteTaskResponse>(`${this.url}/Tasks/${id}`);
   }
 
   public addTask(data: TaskPostRequest): Observable<TaskPostResponse>{
-    return this.httpClient.post<TaskPostResponse>( this.url1, data);
+    return this.httpClient.post<TaskPostResponse>( `${this.url}/Tasks`, data);
    }
 
   public updatedTask(data: updateTaskRequest, id: number): Observable<updateTaskResponse>{
     console.log("Data ",data);
-    return this.httpClient.put<updateTaskResponse>(`${this.url1}/${id}`, data);
+    return this.httpClient.put<updateTaskResponse>(`${this.url}/Tasks/${id}`, data);
   }
 
   public paginationOnTask(data: DataPost): Observable<PaginationTaskResponse>{
     console.log(data);
-    return this.httpClient.post<PaginationTaskResponse>(this.pagination, data)
+    return this.httpClient.post<PaginationTaskResponse>(`${this.url}/Tasks/pagination`, data)
   }
 
   public getEpics(): Observable<ApiResponse>{
-    return this.httpClient.get<ApiResponse>(this.epicURL)
+    return this.httpClient.get<ApiResponse>(`${this.url}/Tasks/epics`)
   }
 
   public paginatedTaskList(data: PaginatedEpicTask2, id: number): Observable<PaginatedEpicTaskResponse>{
-    return this.httpClient.post<PaginatedEpicTaskResponse>(`${this.paginationEpicUrl}/${id}`, data)
+    return this.httpClient.post<PaginatedEpicTaskResponse>(`${this.url}/Tasks/pagination/${id}`, data)
   }
 
   public getSubTaskList(id: number): Observable<DataForSubTask>{
-    return this.httpClient.get<DataForSubTask>(`https://192.168.1.37:8081/Tasks/task${id}/children`)
+    return this.httpClient.get<DataForSubTask>(`${this.url}/Tasks/task${id}/children`)
   }
 
   public postTaskReview(body: { content: string; }, id: number): Observable<TaskPostRequest>{
-    return this.httpClient.post<TaskPostRequest>(`https://192.168.1.37:8081/TaskReview/${id}`, body)
+    return this.httpClient.post<TaskPostRequest>(`${this.url}/TaskReview/${id}`, body)
   }
 
   public getTaskReviewList(id: number): Observable<getTaskReviewResponse>{
-    return this.httpClient.get<getTaskReviewResponse>(`${this.taskPost}/${id}`);
+    return this.httpClient.get<getTaskReviewResponse>(`${this.url}/TaskReview/${id}`);
   }
 
   public getTaskDetailsById(id: number): Observable<getTaskDetailsById>{
-    return this.httpClient.get<getTaskDetailsById>(`${this.url1}/${id}`);
+    return this.httpClient.get<getTaskDetailsById>(`${this.url}/Tasks/${id}`);
   }
 
   public getProjectEmployeeList(id: number): Observable<ProjectListEmployeeData>{
-    return this.httpClient.get<ProjectListEmployeeData>(`https://192.168.1.37:8081/api/ProjectEmployee/${id}`);
+    return this.httpClient.get<ProjectListEmployeeData>(`${this.url}/api/ProjectEmployee/${id}`);
   }
 
   public getTaskLog(id: number): Observable<TaskLogResponse>{
-    return this.httpClient.get<TaskLogResponse>(`https://192.168.1.37:8081/api/Tasklog/${id}`)
+    return this.httpClient.get<TaskLogResponse>(`${this.url}/api/Tasklog/${id}`)
   }
 
   public getTaskListOfSprintId(id: number): Observable<taskOfSprintResponse>{
-    return this.httpClient.get<taskOfSprintResponse>(`${this.url1}/sprint/${id}`);
+    return this.httpClient.get<taskOfSprintResponse>(`${this.url}/Tasks/sprint/${id}`);
   }
 
   public taskStatusUpdate(id:number, status: number): Observable<deleteTaskResponse>{
-    return this.httpClient.put<deleteTaskResponse>(`${this.url1}/update-status/${id}`, status);
+    return this.httpClient.put<deleteTaskResponse>(`${this.url}/Tasks/update-status/${id}`, status);
   } 
 
   public getParentList(projectId: number, Tasktype: TaskType): Observable<ParentListResponse>{
-    return this.httpClient.get<ParentListResponse>(`${this.url1}/${projectId}/type=${Tasktype}`)
+    return this.httpClient.get<ParentListResponse>(`${this.url}/Tasks/${projectId}/type=${Tasktype}`)
   }
 
   public updateReview(data: string, id: number): Observable<deleteTaskResponse>{
     const body ={
       content: data
     }
-    return this.httpClient.put<deleteTaskResponse>(`https://192.168.1.37:8081/TaskReview/${id}`, body);
+    return this.httpClient.put<deleteTaskResponse>(`${this.url}/TaskReview/${id}`, body);
   }
 
   public updateTask(taskId: number, data: number, path: string): Observable<deleteTaskResponse> {
@@ -107,15 +102,15 @@ export class TaskServiceService {
     });
     console.log(patchData);
   
-    return this.httpClient.patch<deleteTaskResponse>(`https://192.168.1.37:8081/Tasks/${taskId}`, patchData, { headers })
+    return this.httpClient.patch<deleteTaskResponse>(`${this.url}/Tasks/${taskId}`, patchData, { headers })
   }
 
-  public getCounts(): Observable<TaskCountResponse>{
-    return this.httpClient.get<TaskCountResponse>(`https://192.168.1.37:8081/Tasks/Count`)
+  public getCounts(id: number): Observable<TaskCountResponse>{
+    return this.httpClient.get<TaskCountResponse>(`${this.url}/Tasks/Count/${id}`)
   }
 
   public deleteSprint(id: number): Observable<deleteTaskResponse>{
-    return this.httpClient.delete<deleteTaskResponse>(`https://192.168.1.37:8081/api/Sprint/${id}`)
+    return this.httpClient.delete<deleteTaskResponse>(`${this.url}/api/Sprint/${id}`)
   }
 }
 

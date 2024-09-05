@@ -11,12 +11,11 @@ export class SubChildTasksComponent {
 
   constructor(private dialogRef: MatDialogRef<SubChildTasksComponent>){}
 
-  sendTask(): void{
-   this.userStoryType = 3;
-   this.dialogRef.close(this.userStoryType);
+  sendTask(): void {
+    this.dialogRef.close(3);
   }
 
-  sendBug(): void{
-   this.userStoryType = 4;
+  sendBug(): void {
+    this.dialogRef.close(4);
   }
 }

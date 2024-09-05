@@ -1,7 +1,7 @@
 <div class="dashboard-container">
-  <div class="sidebar" style="position: sticky;">
+  <!-- <div class="sidebar" style="position: sticky;">
     <app-side-bar></app-side-bar>
-  </div>
+  </div> -->
   <div *ngIf="progressSpinner === true" class="spinner">
     <div class="spinner-section">
     <mat-spinner  [diameter]="50"></mat-spinner>
@@ -53,11 +53,11 @@
             </span>
           </div> -->
           <div class="NameSec">
-            <div *ngIf="ProjectData.totalTask != null" class="DivSec">
+            <div *ngIf="ProjectData.totalTask"  class="DivSec">
               <div> Total Task</div>
               <div>{{ProjectData.totalTask}}</div>
             </div>
-            <div *ngIf="ProjectData.pendingTask != null" class="DivSec">
+            <div *ngIf="ProjectData.pendingTask" class="DivSec">
               <div> Pending Task</div>
               <div>{{ProjectData.pendingTask}}</div>
             </div>

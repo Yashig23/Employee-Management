@@ -52,4 +52,48 @@
       }
     }
   }
+
+  li{
+    font-size: small;
+  }
+
+  mat-icon{
+   position: relative;
+   margin-left: 1rem;
+   margin-top: 5px;
+  }
+
+  .grid-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 5px;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .grid-menu li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #2a49e2;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .grid-menu li:hover {
+    background-color: #e0e0e0;
+    color:  #2a49e2;
+  }
+  
+  .grid-menu a {
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .grid-menu mat-icon {
+    font-size: 24px;
+    color: #ffffff;
+  }
+  
   

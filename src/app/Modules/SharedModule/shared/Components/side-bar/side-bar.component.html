@@ -1,17 +1,31 @@
 <div class="sidebar">
     <div class="project-name">
-      <h2>Project Name</h2>
+      <!-- <h2>Project Name</h2> -->
     </div>
     <nav>
-      <ul>
-        <!-- <li><a routerLink="#">Overview</a></li> -->
-        <li><a routerLink="/homepage">Home Page</a></li>
-        <li><a routerLink="/departments" >Departments</a></li>
-        <li><a routerLink="/employees">Employees</a></li>
-        <li><a routerLink="/projects">Projects</a></li>
-        <li><a [routerLink]="['/employees/view', userId]">Profile</a></li>
-        <li><a (click)="logout()">Logout</a></li>
+      <ul class="grid-menu">
+        <li routerLink="/departments" *ngIf="role != 0">
+          <a >DEPARTMENTS</a>
+          <mat-icon style="margin-bottom: 1rem; margin-right: 3.5rem;">domain</mat-icon>
+        </li>
+        <li routerLink="/employees" *ngIf="role != 0">
+          <a >EMPLOYEES</a>
+          <mat-icon style="margin-bottom: 1rem; margin-right: 3.5rem;">groups</mat-icon>
+        </li>
+        <li routerLink="/projects">
+          <a >PROJECTS</a>
+          <mat-icon style="margin-bottom: 1rem; margin-right: 3.5rem;">web_stories</mat-icon>
+        </li>
+        <li [routerLink]="['/employees/view', userId]">
+          <a >PROFILE</a>
+          <mat-icon style="margin-bottom: 1rem; margin-right: 3.5rem;">account_circle</mat-icon>
+        </li>
+        <li (click)="logout()">
+          <a>LOGOUT</a>
+          <mat-icon style="margin-bottom: 1rem; margin-right: 3.5rem;">logout</mat-icon>
+        </li>
       </ul>
+      
     </nav>
     <div class="teams">
       <!-- <h3>Teams</h3> -->

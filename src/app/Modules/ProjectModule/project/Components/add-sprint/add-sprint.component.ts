@@ -23,29 +23,12 @@ export class AddSprintComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.projectIdByTask);
-    debugger;
     this.AddSprintForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(3)]),
       startDate: new FormControl('', [Validators.required]),
       endDate: new FormControl('', [Validators.required]),
       projectId: new FormControl(this.projectIdByTask ?this.projectIdByTask.projectId: this.projectData.projectId)
     })
-    // if(this.data?.sprintId != null && 0){
-    //   this.getSprintIdDetails();
-    //   console.log(this.data);
-    // }
-    // this.activatedRoute.paramMap.subscribe(paramMap => {
-    //   console.log(paramMap);
-    //   this.paramId = Number(paramMap.get('id'));
-    //   if(this.paramId){
-    //     this.isEdit = true;
-    //     console.log(this.isEdit);
-    //     if(this.data?.sprintId != null && 0){
-    //       this.getSprintIdDetails();
-    //       console.log(this.data);
-    //     }
-    //   }
-    // });
 
     if(this.projectIdByTask.projectId != null && this.data.sprintId !=null){
       console.log("Project Id", this.projectIdByTask.projectId)

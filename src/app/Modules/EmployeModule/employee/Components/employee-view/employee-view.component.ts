@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { EmployeServiceService } from '../../Service/employe-service.service';
 import { EmployeeDto } from '../../../../../Components/Models/Login.model';
-import { GetEmployeeResponseById } from '../../Models/Employee.model';
+import { GetEmployeeResponseById, GetEmployeeResponseById2 } from '../../Models/Employee.model';
 import { ToastService } from '../../../../SharedModule/shared/Services/toast.service';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -42,15 +42,15 @@ export class EmployeeViewComponent implements OnInit{
       if(this.paramId){
         this.isEdit = true;
         this.getEmployeeByID();
-        console.log(this.EmployeeData.departmentName)
+        // console.log(this.EmployeeData.departmentName)
       }
     });
   }
 
   public getEmployeeByID(): void {
     this.progressSpinner = true;
-    this.employeeService.getEmployeeById(this.paramId).subscribe({
-        next: (data: GetEmployeeResponseById) => {
+    this.employeeService.getEmployeeByIdDetailsOnView(this.paramId).subscribe({
+        next: (data: GetEmployeeResponseById2) => {
             this.progressSpinner = false;
             const Data = data.data;
             console.log(Data);

@@ -5,7 +5,7 @@
   </div>
   </div> -->
 
-  <div class="main-content" >
+  <div class="main-content">
     <header>
       <div class="Formsection">
         <div *ngIf="data?.projectName">
@@ -41,7 +41,8 @@
                 </select>
                 <div
                   *ngIf="taskForm.controls['taskType']!.invalid && (taskForm.controls['taskType']!.touched || taskForm.controls['taskType']?.dirty)">
-                  <div *ngIf="taskForm.controls['taskType']?.errors?.['required']" class="warn">Task Type is required.</div>
+                  <div *ngIf="taskForm.controls['taskType']?.errors?.['required']" class="warn">Task Type is required.
+                  </div>
                 </div>
               </td>
               <td>
@@ -49,19 +50,19 @@
             </tr>
             <tr>
               <td>
-            <div>
-              <mat-form-field >
-                <mat-label>Select Sprint</mat-label>
-                <mat-select formControlName="sprintId">
-                  <mat-option *ngFor="let sprint of sprintList" [value]="sprint.id">
-                  {{ sprint.name }}
-                  </mat-option>
-                  <!-- <mat-option (click)="onSprintNone()">None</mat-option> -->
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </td>
-          </tr>
+                <div>
+                  <mat-form-field>
+                    <mat-label>Select Sprint</mat-label>
+                    <mat-select formControlName="sprintId">
+                      <mat-option *ngFor="let sprint of sprintList" [value]="sprint.id">
+                        {{ sprint.name }}
+                      </mat-option>
+                      <!-- <mat-option (click)="onSprintNone()">None</mat-option> -->
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+            </tr>
             <tr>
               <td><label for="name">Name:</label></td>
               <td>
@@ -82,9 +83,11 @@
                 </textarea>
                 <div
                   *ngIf="taskForm.controls['description']!.invalid && (taskForm.controls['description']!.touched || taskForm.controls['description']?.dirty)">
-                  <div *ngIf="taskForm.controls['description']?.errors?.['required']" class="warn">Description is required.
+                  <div *ngIf="taskForm.controls['description']?.errors?.['required']" class="warn">Description is
+                    required.
                   </div>
-                  <div *ngIf="taskForm.controls['description']?.errors?.['minlength']" class="warn">Description must be at
+                  <div *ngIf="taskForm.controls['description']?.errors?.['minlength']" class="warn">Description must be
+                    at
                     least 15 characters long.</div>
                 </div>
               </td>
@@ -99,10 +102,11 @@
               </td>
             </tr>
             <!-- <tr > -->
-              <tr *ngIf="(taskForm.controls['taskType']?.value == 3 || taskForm.controls['taskType']?.value == 4)">
+            <tr *ngIf="(taskForm.controls['taskType']?.value == 3 || taskForm.controls['taskType']?.value == 4)">
               <td><label for="assignedTo">Total Estimated Hours:</label></td>
               <td>
-                <input id="time" type="number" formControlName="originalEstimateHours" placeholder="Estimated Hours" class="input-field">
+                <input id="time" type="number" formControlName="originalEstimateHours" placeholder="Estimated Hours"
+                  class="input-field">
                 <!-- <select id="assignedTo" formControlName="originalEstimateHours" class="input-field">
                   <option *ngFor="let employee of employeeList" [value]="employee.employeeId">{{employee.employeeName}}
                   </option>
@@ -112,7 +116,7 @@
             <tr>
               <td colspan="2" class="form-buttons">
                 <button type="submit" [disabled]="!taskForm.valid" class="submit-button"
-                  style="margin-right: 1rem; margin-top: 7px" (click)="submit()"  [ngStyle]="{
+                  style="margin-right: 1rem; margin-top: 7px" (click)="submit()" [ngStyle]="{
                     'background-color': (!taskForm.valid || disableSubmitBtn) ? '#d6d6d6' : '#007bff',
                     'color': (!taskForm.valid || disableSubmitBtn) ? '#a1a1a1' : 'white',
                     'cursor': (!taskForm.valid || disableSubmitBtn) ? 'not-allowed' : 'pointer'

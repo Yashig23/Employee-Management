@@ -20,8 +20,8 @@ export enum EmployeeRole {
     // email: string;
     role: EmployeeRole; // Enum
     salary: number; // Double
-    departmentId: number | null; // Nullable integer
-    managerId: number | null; // Nullable integer
+    departmentID: number | null; // Nullable integer
+    managerID: number | null; // Nullable integer
     isMember?: boolean;
   }
   
@@ -39,6 +39,33 @@ export enum EmployeeRole {
     data: EmployeeIdData;
   }
 
+  export interface GetEmployeeResponseById2 {
+    success: boolean;
+    status: number;
+    message: string;
+    data: EmployeeIdData2;
+  }
+
+  export interface EmployeeIdData2 {
+    createdBy: number// Nullable integer
+    updatedBy: number | null; // Nullable integer
+    createdOn: string // Nullable date-time string
+    updatedOn: string | null; // Nullable date-time string
+    id: number 
+    name: string ;
+    departmentName: string | null; // Nullable string
+    managerName: string | null; // Nullable string
+    email: string;
+    role: EmployeeRole; // Enum
+    salary: number; // Double
+    address: string;
+    imageUrl: string;
+    phone: string;
+    departmentID: number | null; // Nullable integer
+    managerID: number | null; // Nullable integer
+    isMember?: boolean;
+  }
+
   export interface GetEmployeeDepartmentById{
     success: boolean;
     status: number,
@@ -46,23 +73,16 @@ export enum EmployeeRole {
     data: OnlyEmployeeData[]
   }
 
-  export interface EmployeeIdData{
-    createdBy: number// Nullable integer
-    // updatedBy: number | null; // Nullable integer
-    createdOn: string // Nullable date-time string
-    // updatedOn: string | null; // Nullable date-time string
-    id: number 
+  export interface EmployeeIdData{ 
     name: string ;
-    departmentName: string | null; // Nullable string
-    managerName: string | null; // Nullable string
     email: string;
     address: string;
     imageUrl: string;
     phone: string;
     role: EmployeeRole; // Enum
     salary: number; // Double
-    // departmentId: number | null; // Nullable integer
-    // managerId: number | null; // Nullable integer
+    departmentID: number | null; // Nullable integer
+    managerId: number | null; // Nullable integer
   }
   
   export interface EmployeeForm {
@@ -74,8 +94,8 @@ export enum EmployeeRole {
     phone: FormControl<number>;
     departmentName: FormControl<string>;
     managerName: FormControl<string>;
-    departmentId: FormControl<number|null>;
-    managerId: FormControl<number|null>;
+    departmentID: FormControl<number|null>;
+    managerID: FormControl<number|null>;
     role: FormControl<EmployeeRole>;
 } 
 
@@ -87,8 +107,8 @@ export interface AddEmployeeRequest{
     email: string,
     address: string,
     salary: number,
-    departmentId: number|null,
-    managerId: number|null,
+    departmentID: number|null,
+    managerID: number|null,
     role: number
 }
 
@@ -106,15 +126,15 @@ export interface OnlyEmployeeData{
 }
 
 export interface UpdateEmployeeRequest{
-  username: string,
-  password: string,
+  // username: string,
+  // password: string,
   name: string,
   phone: string,
   email: string,
   address: string,
   salary: number,
-  departmentId: number|null,
-  managerId: number|null,
+  departmentID: number|null,
+  managerID: number|null,
   role: number
 }
 
@@ -174,8 +194,8 @@ export enum SortedOrder {
     managerName: string | null;
     role: number;
     salary: number;
-    departmentId: number | null;
-    managerId: number | null;
+    departmentID: number | null;
+    managerID: number | null;
     createdBy: number;
     updatedBy: number | null;
     createdOn: string;
@@ -236,4 +256,11 @@ export enum SortedOrder {
   export interface projectDialogData{
     projectName: string ,
     projectId: number,
+  }
+
+  export interface UpdatedEmployeeResponse2{
+    success: boolean,
+    status: number,
+    message: string,
+    data: boolean
   }

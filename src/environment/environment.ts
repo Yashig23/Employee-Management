@@ -2,19 +2,7 @@
 export const environment1 = {
     production: false,
     apiUrl: {
-      Department: 'https://192.168.1.37:8081//Department',
-      Employee: 'https://192.168.1.37:8081/Employee',
-      Project: 'https://192.168.1.37:8081/Project',
-      Task:   'https://192.168.1.37:8081/Tasks',
-      Epic: 'https://192.168.1.37:8081/Tasks/epics',
-      Login: 'https://192.168.1.37:8081/Login',
-      Pagination:  'https://192.168.1.37:8081/Employee/pagination' ,
-      PaginationDepartments:  'https://192.168.1.37:8081/Department/pagination',
-      PaginationProjects: 'https://192.168.1.37:8081/Project/pagination',
-      PaginationTasks:  'https://192.168.1.37:8081/Tasks/pagination',
-      PaginationEpicTasks: 'https://192.168.1.37:8081/Tasks/pagination',
-      TaskReview: 'https://192.168.1.37:8081/TaskReview',
-      Sprint: 'https://192.168.1.37:8081/api/Sprint'
+      apiUrl: 'https://192.168.1.7:8081'
     },
     token: "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiUHJpbmNlIFJhZ2h1d2Fuc2hpIiwiVXNlcklkIjoiMiIsImp0aSI6IjYwMTYxZDA3LWE2YjUtNGYyZC04ODI4LTU3ZmUyODljZDhhMCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJSb2xlIjoiU3VwZXJBZG1pbiIsIkRhdGUiOiIyOC0wOC0yMDI0IDE3OjMwOjIxIiwiZXhwIjoxNzI1Mjc4NDIxLCJpc3MiOiJKd3RJc3N1ZXIiLCJhdWQiOiJKd3RBdWRpZW5jZSJ9.X2QJ0VkbErnc9zYsvUPQdQJX9lvTLZ5n70cQom5wCwI"
   };

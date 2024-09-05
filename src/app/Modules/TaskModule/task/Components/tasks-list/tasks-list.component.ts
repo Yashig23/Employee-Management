@@ -12,6 +12,8 @@ import { SprintData2, projectData, getSprintsList } from '../../../../ProjectMod
 import { DeleteDialogService } from '../../../../SharedModule/shared/Services/delete-dialog.service';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { TaskViewComponent } from '../task-view/task-view.component';
+import { SubChildTasksComponent } from '../sub-child-tasks/sub-child-tasks.component';
+import { EmployeeIdData } from '../../../../EmployeModule/employee/Models/Employee.model';
 
 @Component({
   selector: 'app-tasks-list',
@@ -34,8 +36,9 @@ export class TasksListComponent implements OnChanges{
   public openUserStoryType!: boolean;
   public subTask: Data[]=[];
   // public type!: string; 
+  public EmployeeProjectData!: {projectId: number, assignedTo: number[]};
   public showSubChild!: boolean; 
-  public newTaskType!: number;
+  public newTaskType!: number ;
   public pagedItemsCount: number = 10;
   public currentPage: number = 1;
   public runSearch: boolean = false;
@@ -80,7 +83,23 @@ types: null,
   }
 
   ngOnInit() {
+    if(this.EmployeeProjectData){
+      console.log("inisde employee Project");
+      this.EpicTaskData.assignedTo = this.EmployeeProjectData.assignedTo;
       this.getTaskEpicList();
+      if(this.EmployeeProjectData.projectId != undefined && null){
+        this.getTaskEpicList();
+        this.getSprintListOfProject(this.EmployeeProjectData.projectId);
+        this.getEmployeeList(this.EmployeeProjectData.projectId);
+        this.range.valueChanges.subscribe((value) => {
+          this.updateDateRange(value);
+        });
+        this.EmployeeName = localStorage.getItem('EmployeeName');
+      }
+    }
+    else{
+      this.getTaskEpicList();
+      this.FilterChange();
       this.getSprintListOfProject(this.projectId);
       this.getEmployeeList(this.projectId);
       this.getTaskCount();
@@ -88,7 +107,8 @@ types: null,
         this.updateDateRange(value);
       });
       this.EmployeeName = localStorage.getItem('EmployeeName');
-        console.log("EmployeeName", this.EmployeeName);
+      console.log(this.disableSubmitBtn);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -101,6 +121,23 @@ types: null,
 
   public getTaskEpicList(): void{
     console.log(this.EpicTaskData);
+    if(this.EmployeeProjectData){
+      this.taskService.paginatedTaskList(this.EpicTaskData, this.EmployeeProjectData.projectId).subscribe({
+        next: (data)=>{
+          const Data = data.data.data;
+          this.taskArray = Data;
+          // this.FilterChange();
+          this.taskArrayLengthChanged.emit(this.taskArray.length);
+          console.log(this.taskArray)
+          console.log(Data);
+          console.log(data)
+        },
+        error(err) {
+            console.log(err);
+        },
+       })
+    }
+    else{
      this.taskService.paginatedTaskList(this.EpicTaskData, this.projectId).subscribe({
       next: (data)=>{
         const Data = data.data.data;
@@ -115,6 +152,7 @@ types: null,
           console.log(err);
       },
      })
+    }
   }
 
   public updateDateRange(value: any) {
@@ -188,51 +226,78 @@ public onNext(): void {
   }
 }
 
-  public openAddTaskDialog(Type: number, Id: number): void{
-    
-    switch (Type) {
-      case 0:
-        this.newTaskType = 1;
-        break;
-      case 1:
-        this.newTaskType = 2;
-        break;
-      case 2:
-        this.newTaskType = this.askUserToChoose();  
-        break;
-      default:
-        this.newTaskType = 1;
-        break;
-    }
+public async openAddTaskDialog(Type: number, Id: number): Promise<void> {
+  switch (Type) {
+    case 0:
+      this.newTaskType = 1;
+      break;
+    case 1:
+      this.newTaskType = 2;
+      break;
+    case 2:
+      this.newTaskType = await this.askUserToChoose(); 
+      break;
+    default:
+      this.newTaskType = 1;
+      break;
+  }
 
-    const taskDialog: TaskTypeDialogData = {taskType: this.newTaskType, taskId: Id, projectId: this.projectId, isEdit: false }
+  const taskDialog: TaskTypeDialogData = {
+    taskType: this.newTaskType,
+    taskId: Id,
+    projectId: this.projectId,
+    isEdit: false
+  };
 
-    console.log(taskDialog);
-    const dialogRef = this.dialog.open(TaskComponent, {
-      width: '1000px',
-      height: '600px',
-      disableClose: false,
+  console.log(taskDialog);
   
-    }); 
-    dialogRef.componentInstance.taskTypeDialog = taskDialog
+  const dialogRef = this.dialog.open(TaskComponent, {
+    width: '1000px',
+    height: '700px',
+    disableClose: false,
+  });
+
+  dialogRef.componentInstance.taskTypeDialog = taskDialog;
+
+  return new Promise<void>((resolve, reject) => {
     dialogRef.afterClosed().subscribe({
-      next: (data)=>{
-        console.log("Task added successfully");
-        // this.taskList = data;
-        console.log(data)
+      next: (data) => {
+        // console.log("Task added successfully");
+        console.log(data);
+        resolve(); // Always resolve or return at the end of a promise-based function
       },
-      error: (err)=>{
+      error: (err) => {
         console.log(err);
+        reject(err); // Reject in case of errors
       }
-    })
-  }
+    });
+  });
+}
 
-  private askUserToChoose(): number {
-    // const DialogRef = this.dialog.open(SubChildTasksComponent);
-    const choice = window.confirm("Do you want to add a Task? Click 'Cancel' for Bug");
-    return choice ? 3 : 4;
-  }
+// askUserToChoose function (no changes needed)
+private askUserToChoose(): Promise<number> {
+  const dialogRef = this.dialog.open(SubChildTasksComponent);
 
+  return new Promise<number>((resolve, reject) => {
+    dialogRef.afterClosed().subscribe({
+      next: (data) => {
+        if (data !== undefined) {
+          console.log(data);
+          resolve(data);
+        } else {
+          resolve(0);
+        }
+      },
+      error: (err) => {
+        console.log(err);
+        this.toaster.showWarning("Number is undefined");
+        reject(err);
+      }
+    });
+  });
+}
+
+  
   public onPageSizeChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     this.EpicTaskData.pagedItemsCount = Number(selectElement.value);
@@ -252,10 +317,38 @@ public onNext(): void {
     }
   }
 
+  public loadPageData2(pageNumber: number): void {
+    this.EpicTaskData.pageIndex = pageNumber;
+    this.FilterChange();
+  }
+
+  public onPrevious2(pageNumber: number): void {
+    this.EpicTaskData.pageIndex = pageNumber;
+      this.FilterChange();
+  }
+
+  public onNext2(pageNumber: number): void {
+    // const totalPages = this.getTotalPages();
+    this.EpicTaskData.pageIndex = pageNumber;
+    this.FilterChange();
+    // if (this.dataPage.pageIndex < totalPages) {
+    //   this.dataPage.pageIndex++;
+    //   this.FilterChange();
+    // }
+  }
+
+  public onPageSizeChange2(pageSize: number): void {
+    const newPageSize = pageSize;
+    this.EpicTaskData.pagedItemsCount = Number(newPageSize);
+    this.EpicTaskData.pageIndex = 1; 
+    this.currentPage = 1;
+    this.pagedItemsCount = Number(newPageSize);
+    this.FilterChange(); 
+  }
+
   public FilterChange(): void {
     this.progressSpinner = true;
     this.disableSubmitBtn = true;
-    console.log(this.EpicTaskData);
     this.taskService.paginatedTaskList(this.EpicTaskData, this.projectId).subscribe({
       next: (data) => {
         this.progressSpinner = false;
@@ -396,26 +489,6 @@ public onTaskNone(): void{
   // this.updateFilters(newData.item1, newData.item2)
 }
 
-
-
-// private updateFilters(item1: string, item2: number): void {
-//   const filters = this.EpicTaskData.filters || [];
-//   const existingFilterIndex = filters.findIndex(
-//     (filter) => {filter.item1 === item1 && filter.item2 === item2}
-//   );
-
-//   if (existingFilterIndex > -1) {
-//     filters[existingFilterIndex] = { item1, item2 };
-//   } else {
-//     filters.push({ item1, item2 });
-//   }
-
-//   this.EpicTaskData.filters = filters;
-//   console.log(this.EpicTaskData);
-//   this.searchTaskNew();
-//   // this.FilterChange();
-// }
-
 public onSprintChange(event: MatSelectChange){
   const sprint = event.value;
   this.EpicTaskData.sprintId = sprint;
@@ -437,7 +510,7 @@ public SubmitChanges(){
 }
 
 public getTaskCount(): void{
-  this.taskService.getCounts().subscribe({
+  this.taskService.getCounts(this.projectId).subscribe({
     next: (data)=>{
       console.log(data);
       // console.log(data.data);
@@ -463,7 +536,7 @@ const DialogRef = this.dialog.open(AddSprintComponent, {
  DialogRef.afterClosed().subscribe({
   next: (data)=>{
     console.log(data);
-    this.toaster.showSuccess("Task Added successfully");
+    // this.toaster.showSuccess("Sprint Added successfully");
     this.getSprintListOfProject(this.projectId);
   },
   error: (err)=>{
@@ -530,43 +603,6 @@ public deleteSprint(id: number): void{
           }
         }
       });
-}
-
-public updateTask(id: number, Type: number){   
-  switch (Type) {
-    case 0:
-      this.newTaskType = 1;
-      break;
-    case 1:
-      this.newTaskType = 2;
-      break;
-    case 2:
-      this.newTaskType = this.askUserToChoose();  
-      break;
-    default:
-      this.newTaskType = 1;
-      break;
-  }
-
-  const Data = {projectId: this.projectId, isEdit: true, taskType: this.newTaskType, taskId: id};
-  const dialogRef = this.dialog.open(TaskComponent, {
-    width: '1000px',
-    height: '600px',
-    disableClose: false,
-
-  }); 
-  dialogRef.componentInstance.updateData = Data;
-  dialogRef.afterClosed().subscribe({
-    next: (data)=>{
-      this.getTaskEpicList();
-      // this.taskList = data;
-      // console.log(data)
-    },
-    error: (err)=>{
-      console.log(err);
-      this.toaster.showWarning("Error occured while updating task")
-    }
-  })
 }
 
 public getSprintListOfProject(id: number): void{

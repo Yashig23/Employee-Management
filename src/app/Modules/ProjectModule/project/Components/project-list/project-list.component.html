@@ -1,9 +1,6 @@
 
   <div ngSkipHydration>
   <div class="dashboard-container" >
-    <div style="background-color: #2a49e2; position: sticky;">
-      <app-side-bar></app-side-bar>
-    </div>
     <div class="loader-wrapper">
     <div *ngIf="progressSpinner === true" class="spinner-container" >
       <div class="spinner-section">
@@ -27,7 +24,8 @@
               <input type="text" placeholder="Search" class="search-input" [(ngModel)]="dataPage.search"
                 (keydown.enter)="searchProjectNew()">
             </div>
-            <div><button (click)="searchProjectNew()" class="submit">Submit</button></div>
+            <div><button (click)="searchProjectNew()" [disabled]="dataPage.search?.length == 0" class="submit">Submit</button></div>
+            <div><button (click)="reset()" [disabled]="dataPage.search?.length == 0" class="reset">Reset</button></div>
             <div>
               <mat-form-field style="width: 200px; margin: 2px">
                 <mat-label>Enter a date range</mat-label>
@@ -80,7 +78,11 @@
       </div>
   
       <footer>
-        <div class="pagination-controls">
+        <div>
+          <app-pagination [pagedItemsCount]="dataPage.pagedItemsCount" [pageIndex]="dataPage.pageIndex" [totalPagesList]="totalPagesList" (pageSizeChange)="onPageSizeChange2($event)"
+    (onPreviousClick)="onPrevious2($event)" (onNextClick)="onNext2($event)" (goToPageValue)="loadPageData2($event)" [totalLength]="projectListLength"></app-pagination>
+  </div>
+         <!-- <div class="pagination-controls">
           <div class="entries-per-page">
             <label for="entries" class="labelOption">Items per page
               <select id="entries" [(ngModel)]="dataPage.pagedItemsCount" (change)="onPageSizeChange($event)" >
@@ -97,9 +99,9 @@
             <div class="pagination">
               <div (click)="onPrevious()"   [ngClass]="{'disabled': dataPage.pageIndex <= 1}" >
                 <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m13.789 7.155c.141-.108.3-.157.456-.157.389 0 .755.306.755.749v8.501c0 .445-.367.75-.755.75-.157 0-.316-.05-.457-.159-1.554-1.203-4.199-3.252-5.498-4.258-.184-.142-.29-.36-.29-.592 0-.23.107-.449.291-.591 1.299-1.002 3.945-3.044 5.498-4.243z"/></svg>
-            </div>
+            </div> -->
               <!-- <button (click)="onPrevious()" [disabled]="dataPage.pageIndex <= 1">Previous</button> -->
-              <span class="page-number">{{dataPage.pageIndex}}</span>
+              <!-- <span class="page-number">{{dataPage.pageIndex}}</span>
               <div (click)="onNext()"    [ngClass]="{'disabled': dataPage.pageIndex >= getTotalPages()}">
                 <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" width="20px" height="20px" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m10.211 7.155c-.141-.108-.3-.157-.456-.157-.389 0-.755.306-.755.749v8.501c0 .445.367.75.755.75.157 0 .316-.05.457-.159 1.554-1.203 4.199-3.252 5.498-4.258.184-.142.29-.36.29-.592 0-.23-.107-.449-.291-.591-1.299-1.002-3.945-3.044-5.498-4.243z"/></svg>
             </div>
@@ -109,7 +111,7 @@
               <div class="pagesList" *ngFor="let i of totalPagesList" (click)="goToPage(i)">{{i}}</div>
             </div>
           </div>
-        </div>
+        </div>  -->
       </footer>
     </div>
   </div>

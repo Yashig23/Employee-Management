@@ -80,7 +80,9 @@ export class ViewProjectComponent implements OnInit {
     this.progressSpinner = true;
        this.projectService.getProjectById(this.paramId).subscribe({
         next: (data: ProjectByIdResponse) => {
-          // console.log(data);
+          console.log("Dtaaaaa",data);
+          console.log(data.data.pendingTask);
+          console.log(data.data.totalTask);
           this.progressSpinner = false;
           const Data = data.data 
           this.ProjectData.name = Data.name,
@@ -109,7 +111,7 @@ export class ViewProjectComponent implements OnInit {
     const taskDialog: projectDialogData ={projectName: this.projectName, projectId: this.paramId }
     const dialogRef = this.dialog.open(TaskComponent, {
       width: '1000px',
-      height: '600px',
+      height: '700px',
       disableClose: false,
 
     }); 
@@ -117,7 +119,7 @@ export class ViewProjectComponent implements OnInit {
     dialogRef.afterClosed().subscribe({
       next: (data)=>{
         // this.getTaskEpicList();
-        this.toaster.showSuccess("Task added successfully");
+        // this.toaster.showSuccess("Task added successfully");
         console.log("Task added successfully");
         this.openReviewBox = !this.openReviewBox;
         // this.taskUpdateService.reloadTaskList == true;

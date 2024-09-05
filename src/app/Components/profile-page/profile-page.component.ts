@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GetEmployeeResponseById } from '../../Modules/EmployeModule/employee/Models/Employee.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeServiceService } from '../../Modules/EmployeModule/employee/Service/employe-service.service';
@@ -11,7 +11,7 @@ import { LoginService } from '../Services/login.service';
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss'
 })
-export class ProfilePageComponent {
+export class ProfilePageComponent implements OnInit{
   public paramId!: number;
   public isEdit!: boolean;
   public avatarUrl!: string;
@@ -35,13 +35,17 @@ export class ProfilePageComponent {
   constructor(public router: Router, private activatedRoute: ActivatedRoute, private employeeService: EmployeServiceService, private toster: ToastService,   public dialog: MatDialog,
     public loginService: LoginService
   ){
-    this.paramId = Number(localStorage.getItem('userId'));
-    console.log(this.paramId);
-    if(this.paramId){
-      this.isEdit = true;
-        this.getEmployeeByID();
-  }  
+
 }
+
+ ngOnInit(): void {
+  this.paramId = Number(localStorage.getItem('userId'));
+  console.log(this.paramId);
+  if(this.paramId){
+    this.isEdit = true;
+      this.getEmployeeByID();
+}  
+ }
 
   public getEmployeeByID(): void {
     this.progressSpinner = true;
@@ -51,12 +55,12 @@ export class ProfilePageComponent {
             const Data = data.data;
             console.log(Data);
             this.EmployeeData.name = Data.name;
-            this.EmployeeData.departmentName = Data.departmentName;
-            this.EmployeeData.managerName = Data.managerName;
+            // this.EmployeeData.departmentName = Data.departmentName;
+            // this.EmployeeData.managerName = Data.managerName;
             this.EmployeeData.role = Data.role;
             this.EmployeeData.salary = Data.salary;
-            this.EmployeeData.createdBy = Data.createdBy;
-            this.EmployeeData.createdOn = Data.createdOn;
+            // this.EmployeeData.createdBy = Data.createdBy;
+            // this.EmployeeData.createdOn = Data.createdOn;
             this.EmployeeData.address = Data.address;
             this.EmployeeData.phone = Data.phone;
             this.EmployeeData.email = Data.email;

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { EmployeServiceService } from '../../../../EmployeModule/employee/Service/employe-service.service';
-import { DialogService, Employee, EmployeeResponse } from '../../../../EmployeModule/employee/Models/Employee.model';
+import { DialogService, Employee, EmployeeAddedList, EmployeeResponse } from '../../../../EmployeModule/employee/Models/Employee.model';
 import { ToastService } from '../../../../SharedModule/shared/Services/toast.service';
 import { EmployeListComponent } from '../../../../EmployeModule/employee/Components/employe-list/employe-list.component';
 import { DialogData } from '../../../../SharedModule/shared/Model/delete.model';
@@ -75,13 +75,17 @@ export class AddProjectComponent implements OnInit {
   }
 
   public submit(): void {
+    console.log("Submitted");
     this.disableSubmitBtn = true;
+    const formValue = this.ProjectForm.value;
+    const members1 = formValue.members;
+    const employeeId = members1.map((item: EmployeeAddedList) => ({ employeeId: item.employeeId }));
     if (this.ProjectForm.valid) {
       const body = {
         name: this.ProjectForm.value.name,
         description: this.ProjectForm.value.description,
         status: this.ProjectForm.value.role,
-        members: this.ProjectForm.value.members
+        members: employeeId,
       };
       if (this.isEdit == true) {
         console.log(body);
@@ -107,6 +111,7 @@ export class AddProjectComponent implements OnInit {
             this.ProjectForm.reset();
             this.toaster.showSuccess("Submitted successfully");
             this.addedMembersList = [];
+            this.router.navigateByUrl(`/projects`);
           },
           error: (err) => {
             console.log(err);
