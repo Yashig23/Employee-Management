@@ -27,7 +27,11 @@ import { MatIconModule } from '@angular/material/icon';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { SideBarComponent } from './Modules/SharedModule/shared/Components/side-bar/side-bar.component';
 import { customInterceptor } from './Components/Services/custom.interceptor';
-
+import { SharedModule } from './Modules/SharedModule/shared/shared.module';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { RatingModule } from 'primeng/rating';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -45,17 +49,23 @@ import { customInterceptor } from './Components/Services/custom.interceptor';
     HttpClientModule,
     MatDialogActions,
     MatDialogClose,
+    TableModule,
     MatDialogContent,
     MatDialogTitle,
     MatSlideToggle,
     MatDialogModule,
+    TagModule,
+    RatingModule,
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
     MatPaginatorModule,
     TaskModule,
+    SharedModule,
     MatProgressSpinnerModule,
     MatIconModule,
+    BrowserAnimationsModule,
+    // SideBarComponent,
     ToastrModule.forRoot({
       positionClass: 'toast-upper-right',
       timeOut: 3000,

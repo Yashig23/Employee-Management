@@ -17,8 +17,8 @@ export enum Role {
     managerName?: string | null;
     role?: Role[];
     salary?: number;
-    departmentId?: number | null;
-    managerId?: number | null;
+    departmentID?: number | null;
+    managerID?: number | null;
   }
   
   // Define the LoginUserDto interface

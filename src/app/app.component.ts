@@ -9,17 +9,27 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit{
   title = 'EmployeeManagement';
   public token!: string | null;
+  public showSidebar!: boolean;
 
-  constructor(public router: Router){}
+
+  constructor(public router: Router){
+    this.router.events.subscribe(()=>{
+      this.showSidebar = !this.router.url.includes('/login');
+    })
+  }
 
   ngOnInit(): void {
-      this.token = localStorage?.getItem('token');
-      if(this.token== null){
-        this.router.navigateByUrl('/login');
-      }
-      else{
-        this.router.navigateByUrl('homepage');
-        console.log(this.token);
-      }
+    if (typeof localStorage !== 'undefined') {
+      this.token = localStorage.getItem('token');
+    } else {
+      this.token = null;
+    }
+
+    if (this.token == null) {
+      this.router.navigateByUrl('/login');
+    } else {
+      this.router.navigateByUrl('projects');
+      console.log(this.token);
+    }
   }
 }

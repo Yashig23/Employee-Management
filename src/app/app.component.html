@@ -1,1 +1,12 @@
-<router-outlet />
+<div *ngIf="showSidebar" style="display: flex;">
+    <div style="background-color: #2a49e2;">
+      <app-side-bar></app-side-bar>
+    </div>
+    <div style="width: 100%">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <div *ngIf="!showSidebar">
+    <router-outlet></router-outlet>
+  </div>
+  

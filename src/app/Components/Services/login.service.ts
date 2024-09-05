@@ -9,7 +9,7 @@ import { ApiResponse } from '../Models/Login.model';
   providedIn: 'root'
 })
 export class LoginService {
-  public url = environment1.apiUrl.Login;
+  public url = environment1.apiUrl.apiUrl;
   public isLogin!: boolean;
   public Admin!: boolean;
   public isEmployee!: boolean;
@@ -19,7 +19,7 @@ export class LoginService {
   constructor(private httpClient: HttpClient) {}
 
   public postLogin(data: LoginRequest): Observable<ApiResponse> {
-    return this.httpClient.post<ApiResponse>(this.url, data);
+    return this.httpClient.post<ApiResponse>(`${this.url}/Login`, data);
   }
 
   public saveUserDetails(user: any): void {

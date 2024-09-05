@@ -23,16 +23,16 @@ export const roleGuard: CanActivateFn = (
 
   const restrictedRoutes = ['/employeeList', '/departmentList'];
   if (isAdmin) {
-    return router.createUrlTree(['/homepage']);
+    return router.createUrlTree(['/projectList']);
   }
 
   if (isSuperAdmin) {
-    return router.createUrlTree(['/homepage']);
+    return router.createUrlTree(['/projectList']);
   }
 
   if (isEmployee && restrictedRoutes.includes(state.url)) {
-    return router.createUrlTree(['/homepage']);
+    return router.createUrlTree(['/projectList']);
   }
 
-  return router.createUrlTree(['/homepage']);
+  return router.createUrlTree(['/projectList']);
 };

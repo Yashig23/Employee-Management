@@ -2,8 +2,8 @@
   <div class="form-wrapper">
     <div class="form-card">
       <div class="form-content">
-        <h1 class="title">Sign Up</h1>
-        <form [formGroup]="SignupForm" (ngSubmit)="onSubmit()">
+        <h1 class="title">Login</h1>
+        <form [formGroup]="SignupForm">
           <div class="form-group">
             <label for="username" class="label">Your Username</label>
             <input
@@ -19,23 +19,6 @@
               <div *ngIf="SignupForm.controls['username']!.errors?.['required']">Username is required.</div>
               <div *ngIf="SignupForm.controls['username']!.errors?.['minlength']">Username must be at least 4 characters long.</div>
               <div *ngIf="SignupForm.controls['username']!.errors?.['pattern']">Username can only contain letters, numbers, and underscores.</div>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="email" class="label">Your email</label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              class="input"
-              placeholder="name@company.com"
-              required
-              formControlName="email"
-            />
-            <div class="error-message" *ngIf="SignupForm.controls['email']!.invalid && (SignupForm.controls['email']!.dirty || SignupForm.controls['email']!.touched)">
-              <div *ngIf="SignupForm.controls['email']!.errors?.['required']">Email is required.</div>
-              <div *ngIf="SignupForm.controls['email']!.errors?.['email']">Please enter a valid email address.</div>
             </div>
           </div>
           
@@ -56,7 +39,7 @@
             </div>
           </div>
 
-          <button type="submit" class="submit-btn" [disabled]="SignupForm.invalid">Sign Up</button>
+          <button class="submit-btn" [disabled]="!SignupForm.valid" (click)="onSubmit()">Login</button>
         </form>
       </div>
     </div>
