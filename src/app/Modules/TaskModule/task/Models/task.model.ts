@@ -1,9 +1,15 @@
 export interface DataPost{
         pageIndex: number,
         pagedItemsCount: number,
-        orderKey: string,
+        orderKey: string | null,
         sortedOrder: number,
         search: string | null
+        dateRange: DateRange| null
+}
+
+export interface DateRange{
+  startDate: string,
+  endDate: string
 }
 
 export interface PaginationTaskResponse{
@@ -53,6 +59,7 @@ export interface TaskPostRequest{
     projectId: number|null,
     taskType: number,
     parentId: number | null,
+    originalEstimateHours: number | null,
     status: number,
     sprintId: number|null
 }
@@ -76,8 +83,16 @@ export interface deleteTaskResponse{
 // update task
 
 export interface updateTaskRequest{
-    // id: number,
-    status: Status | null
+  name: string,
+  description: string,
+  assignedTo: AssignedTo | null,
+  taskType: TaskType,
+  parentId: number| null,
+  projectId: number,
+  originalEstimateHours: number|null,
+  // remainingEstimateHours: number|null,
+  sprintId: number | null,
+  status: Status
 }
 
 export enum Status{
@@ -269,15 +284,26 @@ export interface taskByIdResponse{
       status: number,
       projectId: number,
       taskType: number,
+      sprintId: number,
+      originalEstimateHours: number | null,
+      remainingEstimateHours: number|null;
       assignerName: string,
       assigneeName: string | null,
+      assignedTo: number;
       createdOn: string
   }
 
  export interface Tasks{
   task : taskData;
   reviews: TaskReviewData[];
-  subTasks: subTasks[]
+  subTasks: subTasks[];
+  parent: Parent;
+ }
+
+ export interface Parent{
+  id: number,
+  name: string,
+  taskType: TaskType
  }
 
  export interface taskOfSprintResponse{
@@ -296,7 +322,8 @@ export interface taskByIdResponse{
  export interface TaskTypeDialogData{
   taskType: number,
   taskId: number,
-  projectId: number
+  projectId: number,
+  isEdit: boolean
  }
 
  export interface ProjectListEmployeeData{
@@ -321,4 +348,50 @@ export interface taskByIdResponse{
 
  export interface DataForTaskLog{
   message: string
+ }
+
+ export interface ParentListResponse{
+  success: boolean,
+  status: number,
+  message: string,
+  data: DataOfParent[] | null
+ }
+
+ export interface DataOfParent{
+  id: number,
+  taskType: TaskType;
+  name: string
+ }
+
+ export interface TaskCountResponse{
+  total: number,
+  typeCount: typeCount,
+  statusCount: statusCount,
+  assignCount: assignCount
+ }
+
+ export interface DataForTaskCount{
+  total: number,
+  typeCount: typeCount,
+  statusCount: statusCount,
+  assignCount: assignCount
+ }
+
+ export interface typeCount{
+  epic: number,
+  feature: number,
+  userStory: number,
+  task: number,
+  bug: number
+ }
+
+ export interface statusCount{
+  active: number,
+  pending: number,
+  completed: number
+ }
+
+ export interface assignCount{
+  assigned: number,
+  unAssigned: number
  }

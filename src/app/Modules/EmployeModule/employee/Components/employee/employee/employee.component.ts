@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DepartmentServiceService } from '../../../../../DepartmentModule/department/Service/department-service.service';
 import { Department, DepartmentResponse } from '../../../../../DepartmentModule/department/Models/department.model';
 import { EmployeServiceService } from '../../../Service/employe-service.service';
 import { ToastService } from '../../../../../SharedModule/shared/Services/toast.service';
-import { OnlyEmployeeData } from '../../../Models/Employee.model';
+import { GetEmployeeResponseById, OnlyEmployeeData } from '../../../Models/Employee.model';
+import { Subject, takeUntil } from 'rxjs';
 
 export enum EmployeeRole {
   Admin = 1,
@@ -18,16 +19,17 @@ export enum EmployeeRole {
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.scss']
 })
-export class EmployeeComponent implements OnInit {
+export class EmployeeComponent implements OnInit, OnDestroy {
   public employeeForm!: FormGroup;
   public isEdit = false;
   public paramId!: number;
   public progressSpinner!: boolean;
   public showManagerList: boolean = false;
-  public departmentName!: string | null;
+  public departmentID!: number | null;
   public departmentList: Department[]=[];
   public adminNameList: OnlyEmployeeData[]=[];
-  public disableSubmitBtn!: boolean;
+  public disableSubmitBtn: boolean = false;
+  private destroy$ = new Subject<void>();
   constructor(public router: Router, private activatedRoute: ActivatedRoute, private departmentService: DepartmentServiceService, private employeeService: EmployeServiceService,
     public toaster: ToastService
   ) {}
@@ -48,12 +50,12 @@ export class EmployeeComponent implements OnInit {
       address: new FormControl('', [Validators.required, Validators.minLength(1),
         Validators.maxLength(200)]),
       salary: new FormControl(null, [Validators.required, Validators.min(1)]),
-      departmentId: new FormControl(''),
-      managerId: new FormControl(''),
+      departmentID: new FormControl(null),
+      managerID: new FormControl(null),
       role: new FormControl(0)
     });
 
-    this.activatedRoute.paramMap.subscribe(paramMap => {
+    this.activatedRoute.paramMap.pipe(takeUntil(this.destroy$)).subscribe(paramMap => {
       console.log(paramMap);
       this.paramId = Number(paramMap.get('id'));
       if(this.paramId){
@@ -61,33 +63,39 @@ export class EmployeeComponent implements OnInit {
         this.getEmployeeNamesById(this.paramId);
         this.disableSubmitBtn = false;
         this.getEditData();
+        console.log("Edit Value", this.isEdit);
       }
     });
+    this.employeeForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((formValues) => {
+      console.log(this.employeeForm.valid);
+    });
+    
   }
+ 
+  ngOnDestroy(): void {
+      console.log("destroyed");
+      this.destroy$.next();
+      this.destroy$.complete();
+  }
+  
 
   public onSubmit(): void {
     this.disableSubmitBtn = true;
-    console.log('submit')
-    console.log(this.employeeForm.value);
-    if(this.employeeForm.valid) {
-      console.log("Valid form");
-      const  formValue = this.employeeForm.value;
-      console.log(formValue);
-      const body = {
-        username: this.employeeForm.value.username,
-        password: this.employeeForm.value.password,
-        name: this.employeeForm.value.name,
-        phone: this.employeeForm.value.phone,
-        email: this.employeeForm.value.email,
-        address: this.employeeForm.value.address,
-        salary: Number(this.employeeForm.value.salary),
-        departmentId: Number(this.employeeForm.value.departmentId),
-        managerId: Number(this.employeeForm.value.managerId),
-        role: Number(0)
-      };
-      console.log(body);
-      if(this.isEdit == true){
-        this.employeeService.updatedEmployee(body, this.paramId).subscribe({
+    console.log("From Valid",this.employeeForm.valid);
+    const body = {
+      name: this.employeeForm.value.name,
+      phone: this.employeeForm.value.phone,
+      email: this.employeeForm.value.email,
+      address: this.employeeForm.value.address,
+      salary: Number(this.employeeForm.value.salary),
+      departmentID: Number(this.employeeForm.value.departmentID),
+      managerID: Number(this.employeeForm.value.managerID),
+      role: Number(0)
+    };
+    if(this.isEdit == true){
+      this.employeeForm.removeControl('username');
+      this.employeeForm.removeControl('password');
+        this.employeeService.updatedEmployee(body, this.paramId).pipe(takeUntil(this.destroy$)).subscribe({
           next: (data)=>{
             this.toaster.showSuccess("Employee updated successfully");
             this.employeeForm.reset();
@@ -97,27 +105,81 @@ export class EmployeeComponent implements OnInit {
             this.toaster.showWarning("Error while updating the employee");
           }
         })
+      
+    }
+    if(this.employeeForm.valid) {
+      console.log("Valid form");
+      if(this.employeeForm.valid){
+      const body = {
+        username: this.employeeForm.value.username,
+        password: this.employeeForm.value.password,
+        name: this.employeeForm.value.name,
+        phone: this.employeeForm.value.phone,
+        email: this.employeeForm.value.email,
+        address: this.employeeForm.value.address,
+        salary: Number(this.employeeForm.value.salary),
+        departmentID: Number(this.employeeForm.value.departmentID),
+        managerID: Number(this.employeeForm.value.managerID),
+        role: Number(0)
+      };
+      const  formValue = this.employeeForm.value;
+      if(this.isEdit== true){
+        this.employeeForm.removeControl('username');
+          this.employeeForm.removeControl('password');
+          const { username, password, ...updatedBody } = body;
+          this.employeeService.updatedEmployee(updatedBody, this.paramId).subscribe({
+            next: (data)=>{
+              this.toaster.showSuccess("Employee updated successfully");
+              this.employeeForm.reset();
+            },
+            error: (err)=>{
+              console.log(err);
+              this.toaster.showWarning("Error while updating the employee");
+            }
+          })
       }
       else{
-      this.employeeService.addEmployee(body).subscribe({
-        next: (data)=>{
-          console.log(data);
-          this.toaster.showSuccess('Employee added successfully');
-           this.employeeForm.reset();
-           this.disableSubmitBtn = false;
-        },
-        error: (err)=>{
-          console.log(err);
-          this.toaster.showWarning('Error while adding employee');
-          this.disableSubmitBtn = false;
-        }
-      })
-    }
-    }
+        this.employeeService.addEmployee(body).pipe(takeUntil(this.destroy$)).subscribe({
+          next: (data)=>{
+            console.log(data);
+            this.toaster.showSuccess('Employee added successfully');
+             this.employeeForm.reset();
+             this.disableSubmitBtn = false;
+          },
+          error: (err)=>{
+            console.log(err);
+            this.toaster.showWarning('Error while adding employee');
+            this.disableSubmitBtn = false;
+          }
+        })
+      }
+      // console.log(formValue);
+      // console.log(body);
+      // console.log(this.isEdit);
+    //   this.employeeService.addEmployee(body).subscribe({
+    //     next: (data)=>{
+    //       console.log(data);
+    //       this.toaster.showSuccess('Employee added successfully');
+    //        this.employeeForm.reset();
+    //        this.disableSubmitBtn = false;
+    //     },
+    //     error: (err)=>{
+    //       console.log(err);
+    //       this.toaster.showWarning('Error while adding employee');
+    //       this.disableSubmitBtn = false;
+    //     }
+    //   })
+    // }
+  }
+  else{
+    console.log("Form is invalid");
+    this.toaster.showWarning("Form is invalid");
+  }
   }
+  }
 
   public getDepartmentData(): void {
-    this.departmentService.getDepartmentList().subscribe({
+    this.departmentService.getDepartmentList().pipe(takeUntil(this.destroy$)).subscribe({
       next: (response: DepartmentResponse) => {
         this.departmentList = response.data || [];
       },
@@ -127,15 +189,29 @@ export class EmployeeComponent implements OnInit {
     });
   } 
 
-  private getEditData(): void {
+  public onPhoneInput(event: any): void {
+    console.log("enteres");
+    const input = event.target;
+    if (input.value.length > 10) {
+      input.value = input.value.slice(0, 10); 
+    }
+    else if(input.value.length == 10){
+      this.employeeForm.controls['phone'].setValue(input.value);
+      console.log(this.employeeForm.controls['phone'].value);
+    }
+  }
+
+  public getEditData(): void {
     // this.progressSpinner = true;
-    this.employeeService.getEmployeeById(this.paramId).subscribe({
-      next: (response)=>{
+    this.employeeService.getEmployeeById(this.paramId).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (response: GetEmployeeResponseById)=>{
         // this.progressSpinner = false;
         const employeeDataOfId = response.data;
-        console.log(employeeDataOfId);
-        this.departmentName = employeeDataOfId.departmentName;
-        this.getEmployeeNamesById(this.paramId);
+        console.log(response.data);
+        this.departmentID = employeeDataOfId.departmentID;
+        if(this.departmentID != null){
+          this.getEmployeeNamesById(this.departmentID);
+        }
         this.employeeForm.patchValue(employeeDataOfId)
       },
       error: (err)=>{
@@ -147,18 +223,18 @@ export class EmployeeComponent implements OnInit {
 
   public onDepartmentChange(event: any): void {
     const target = event.target as HTMLSelectElement;
-    const selectedDepartmentId = target.value;
-    const departmentId = Number(selectedDepartmentId);
-    if (departmentId) {
-      console.log(departmentId);
-      this.getEmployeeNamesById(departmentId);
+    const selectedDepartmentID = target.value;
+    const departmentID = Number(selectedDepartmentID);
+    if (departmentID) {
+      console.log(departmentID);
+      this.getEmployeeNamesById(departmentID);
     } else {
       this.showManagerList = false; 
     }
   }
 
   public getManagerByDepartment(data: number): void{
-    this.employeeService.getDepartmentDetailsByName(data).subscribe({
+    this.employeeService.getDepartmentDetailsByName(data).pipe(takeUntil(this.destroy$)).subscribe({
       next: (response)=>{
         console.log(response)
         if(this.adminNameList == null){
@@ -173,11 +249,13 @@ export class EmployeeComponent implements OnInit {
   }
 
 public getEmployeeNamesById(id: number): void{
-  this.employeeService.getEmployeeNamesByDepartmentId(id).subscribe({
+  this.employeeService.getEmployeeNamesByDepartmentId(id).pipe(takeUntil(this.destroy$)).subscribe({
     next: (data) =>{
       this.showManagerList = true;
       const Data = data.data;
       this.adminNameList = Data;
+      console.log(this.adminNameList);
+      console.log(Data);
     },
     error: (err)=>{
       console.log(err);

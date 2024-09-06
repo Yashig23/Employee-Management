@@ -21,7 +21,6 @@ export class EmployeeTasksComponent {
   constructor(private activatedRoute: ActivatedRoute, private httpClient: HttpClient, private employeeService: EmployeServiceService
     , public dialog: MatDialog
   ){
-    console.log("Employee Project");
   }
 
   ngOnInit(): void {

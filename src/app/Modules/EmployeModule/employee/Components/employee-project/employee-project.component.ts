@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ProjectService } from '../../../../ProjectModule/project/Service/project.service';
@@ -8,6 +8,8 @@ import { DialogRef } from '@angular/cdk/dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskComponent } from '../../../../TaskModule/task/Components/task/task.component';
 import { DialogData } from '../../../../SharedModule/shared/Model/delete.model';
+import { TasksListComponent } from '../../../../TaskModule/task/Components/tasks-list/tasks-list.component';
+import { AssignedTo } from '../../../../TaskModule/task/Models/task.model';
 
 @Component({
   selector: 'app-employee-project',
@@ -15,11 +17,13 @@ import { DialogData } from '../../../../SharedModule/shared/Model/delete.model';
   styleUrl: './employee-project.component.scss'
 })
 export class EmployeeProjectComponent implements OnInit {
+  @Input() projectId!: number;
   public paramId!: number;
   public isEdit!: boolean;
   public projectName!: string;
   public projectList: ProjectDetails[]=[];
   public progressSpinner!: boolean;
+  public assignedTo!: number;
 
   constructor(private activatedRoute: ActivatedRoute, private httpClient: HttpClient, private projectService: ProjectService, private employeeService: EmployeServiceService
     ,public router: Router, public dialog: MatDialog,
@@ -34,7 +38,8 @@ export class EmployeeProjectComponent implements OnInit {
     if(this.paramId){
       console.log(this.paramId);
       this.isEdit = true;
-      this.getProjectsListOfEmployee(this.paramId);
+      this.getProjectsListOfEmployee(this.projectId);
+      this.assignedTo = Number(localStorage.getItem('userId'));
       // this.getEditData();
     }
   });   
@@ -57,45 +62,14 @@ export class EmployeeProjectComponent implements OnInit {
     })
   }
 
-  // public openAddtask(id: number): void{
-  //   const dialogData: projectDialogData = { projectId: this.paramId };
-  //    const dialogRef = this.dialog.open(TaskComponent, {
-  //     height: '800px',
-  //     width: '1000px',
-  //     disableClose: false,
-  //    })
-  //    dialogRef.afterClosed().subscribe({
-  //     next: (data)=>{
-  //       console.log(data)
-  //     },
-  //     error: (err)=>{
-  //       console.log(err);
-  //     }
-  //    })
-  //    dialogRef.componentInstance.projectDialog = dialogData; 
-  // }
-
   public openAddTask(id: number): void{
     console.log(id);
   }
-  // public openAddTaskDialog(): void{
-  //   const taskDialog: projectDialogData ={projectName: this.projectName, projectId: this.paramId }
-  //   const dialogRef = this.dialog.open(TaskComponent, {
-  //     width: '1000px',
-  //     height: '600px',
-  //     disableClose: false,
 
-  //   }); 
-  //   dialogRef.componentInstance.data = taskDialog
-  //   dialogRef.afterClosed().subscribe({
-  //     next: (data)=>{
-  //       console.log("Task added successfully");
-  //       // this.taskList = data;
-  //       // console.log(data)
-  //     },
-  //     error: (err)=>{
-  //       console.log(err);
-  //     }
-  //   })
-  // }
+  public openTaskListDialog(id: number):void{
+    console.log(id);
+    const TaskData = {projectId: id, assignedTo: [this.assignedTo]}
+    const Dialog = this.dialog.open(TasksListComponent);
+    Dialog.componentInstance.EmployeeProjectData = TaskData;
+  } 
 }

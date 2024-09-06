@@ -1,39 +1,37 @@
+<div class="card-header">
+    <span class="task-id">{{task.id}}</span>
+    <span class="task-title">{{task.name}}</span>
+</div>
 
-    <div class="card-header">
-        <span class="task-id">{{task.id}}</span>
-        <span class="task-title">{{task.name}}</span>
+<div class="card-content">
+    <div class="assignee">
+        <div class="assignee-avatar">
+            <span class="AssigneeName">{{assigneeInitials}}</span>
+        </div>
+        <span class="assignee-name">{{task.assigneeName}}</span>
+        <span class="story-points">8</span>
     </div>
 
-    <div class="card-content">
-        <div class="assignee">
-            <div class="assignee-avatar">
-                <span class="AssigneeName">{{initailName()}}</span>
-            </div>
-            <span class="assignee-name">{{task.assigneeName}}</span>
-            <span class="story-points">8</span>
+    <div class="task-details">
+        <div class="state">
+            <span class="state-label">State</span>
+            <span class="status-new" [ngClass]="{
+                'status-new': task.status === 0,
+                'status-active': task.status === 1,
+                'status-completed': task.status === 2
+            }">
+                {{statusLabel}}
+            </span>
         </div>
-
-        <div class="task-details">
-            <div class="state">
-                <span class="state-label">State</span>
-                <span class="status-new" [ngClass]="{
-                    'status-new': task.status === 0,
-                    'status-active': task.status === 1,
-                    'status-completed': task.status === 2
-                }">
-                    {{ getStatusLabel(task.status) }}
-                </span>
-            </div>
-        
-            <div class="parent">
-                <span class="parent-label">Parent ID</span>
-                <span class="parent-name">{{task.projectId}}</span>
-            </div>
-        
-            <div class="area-path">
-                <span class="area-path-label">Area Path</span>
-                <span class="area-path-value">{{task.taskType}}</span>
-            </div>
+    
+        <div class="parent">
+            <span class="parent-label">Parent ID</span>
+            <span class="parent-name">{{task.projectId}}</span>
         </div>
-        
+    
+        <div class="area-path">
+            <span class="area-path-label">Area Path</span>
+            <span class="area-path-value">{{task.taskType}}</span>
+        </div>
     </div>
+</div>

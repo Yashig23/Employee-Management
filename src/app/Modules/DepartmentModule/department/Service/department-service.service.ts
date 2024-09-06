@@ -9,34 +9,29 @@ import { environment2 } from '../../../../../environment/environment';
   providedIn: 'root'
 })
 export class DepartmentServiceService {
-  public url = environment1.apiUrl;
-  public url1 =  environment2.apiUrl;
-  public pagination = environment1.apiUrl.PaginationDepartments;
+  public url = environment1.apiUrl.apiUrl;
 
   public token = environment1.token;
   constructor(private httpClient: HttpClient) { }
-  private headers = new HttpHeaders({
-    'Authorization': `Bearer ${this.token}` // Use Bearer token
-  });
 
   public getDepartmentList(): Observable<DepartmentResponse>{
-    return this.httpClient.get<DepartmentResponse>(this.url.Department,{headers:this.headers});
+    return this.httpClient.get<DepartmentResponse>(`${this.url}/Department`);
   }
 
   public deleteDepartment(id: number): Observable<DepartmentDeleteResponse>{
-    return this.httpClient.delete<DepartmentDeleteResponse>(`${this.url.Department}/${id}`, {headers:this.headers});
+    return this.httpClient.delete<DepartmentDeleteResponse>(`${this.url}/Department/${id}`);
   }
 
    public getDepartmentById(id:number): Observable<DepartmentResponse>{
-    return this.httpClient.get<DepartmentResponse>(`${this.url.Department}/${id}`,{headers:this.headers} )
+    return this.httpClient.get<DepartmentResponse>(`${this.url}/Department/${id}`)
    }
 
    public AddDepartment(data: DepartmentRequest): Observable<AddDepartmentResponse>{
-    return this.httpClient.post<AddDepartmentResponse>( this.url.Department, data,{headers:this.headers});
+    return this.httpClient.post<AddDepartmentResponse>( `${this.url}/Department`, data);
    }
 
    public paginationOnDepartments(data: DataPage): Observable< DepartmentResponsePagination>{
     console.log(data);
-    return this.httpClient.post<DepartmentResponsePagination>(this.pagination, data, {headers: this.headers})
+    return this.httpClient.post<DepartmentResponsePagination>(`${this.url}/Department/pagination`, data)
   }
 }

@@ -356,6 +356,71 @@ button{
   font-size: 20px;
 }
 
+.submit{
+  position: relative;
+  top: 15px;
+  bottom: 4px;
+  left: 5px;
+  right: 5px;
+  font:bold;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 7px;
+  background-color: rgb(150, 245, 77);
+  box-shadow: #ccc;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.submit:disabled{
+  cursor: not-allowed;
+  background-color: rgb(118, 168, 118);
+  color: white;
+  position: relative;
+  top: 15px;
+  bottom: 4px;
+  left: 5px;
+  right: 5px;
+  font:bold;
+  padding: 0.5rem 1rem;
+  border-radius: 7px;
+  box-shadow: #ccc;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.reset:disabled{
+  background-color: grey;
+  color: white;
+  position: relative;
+  top: 15px;
+  bottom: 4px;
+  left: 5px;
+  right: 5px;
+  font:bold;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 7px;
+  box-shadow: #ccc;
+  cursor:not-allowed;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.reset{
+  background-color: rgb(236, 192, 82);
+  color: white;
+  position: relative;
+  top: 15px;
+  bottom: 4px;
+  left: 5px;
+  right: 5px;
+  font:bold;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 7px;
+  box-shadow: #ccc;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+
 
 
 ::ng-deep .mat-sort-header-arrow {

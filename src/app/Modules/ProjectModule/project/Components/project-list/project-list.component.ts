@@ -3,9 +3,10 @@ import { ProjectService } from '../../Service/project.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeleteDialogService } from '../../../../SharedModule/shared/Services/delete-dialog.service';
 import { AddProjectComponent } from '../add-project/add-project.component';
-import { DataPage, Project, ProjectResponse } from '../../Models/Project.model';
+import { DataPage, Project, ProjectResponse, DateRange } from '../../Models/Project.model';
 import {ToastService} from '../../../../SharedModule/shared/Services/toast.service';
 import { AddSprintComponent } from '../add-sprint/add-sprint.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-project-list',
@@ -14,34 +15,46 @@ import { AddSprintComponent } from '../add-sprint/add-sprint.component';
 })
 export class ProjectListComponent implements OnInit {
 
-  public projectList: Project[] = [];
+  public projectList: Project[] |null = [];
   // public searchQuery: string = '';
-  public filteredProjectData: Project[] = []; 
+  public filteredProjectData: Project[] | null= []; 
   public projectListLength!: number;
   public currentPage: number = 1;
   public pagedItemsCount: number = 10;
   public totalPages!: number;
   public totalPagesList!: number[];
   public progressSpinner!: boolean;
+  public range: FormGroup;
+  public role!: number;
    public dataPage: DataPage = {
     "pageIndex": 1,
     "pagedItemsCount": 10,
-    "orderKey": "Name",
-    "sortedOrder": 2,
-    "search": ""
+    "orderKey": "id",
+    "sortedOrder": 0,
+    "search": "",
+    "dateRange": null
   };
 
   constructor(
     private projectService: ProjectService,
     private dialogService: DeleteDialogService,
     public dialog: MatDialog,
-    public toaster: ToastService
+    public toaster: ToastService,
+    public fb: FormBuilder
   ) {
+    this.range = this.fb.group({
+      start: [null, Validators.required],
+      end: [null, Validators.required],
+    });
   }
 
   ngOnInit(): void {
     this.getProjectData();
     // this.FilterChange();
+    this.role = Number(localStorage.getItem('role'));
+    this.range.valueChanges.subscribe((value) => {
+      this.updateDateRange(value);
+    });
   }
 
   // function for adding a new department
@@ -63,6 +76,23 @@ export class ProjectListComponent implements OnInit {
       }
     });
   }
+
+  public updateDateRange(value: any) {
+    console.log(value);
+    const { start, end } = value;
+    if (start) {
+      this.dataPage.dateRange = {
+        startDate: new Date(start).toISOString(),
+        endDate: end ? new Date(end).toISOString(): new Date(Date.now()).toISOString(),
+      };
+      console.log(this.dataPage);
+      this.FilterChange();
+    } else {
+      console.error("Invalid date range");
+      this.toaster.showWarning("Invalid Date Range");
+    }
+  }
+
 
   public getProjectData(): void{
     this.progressSpinner = true;
@@ -142,6 +172,44 @@ export class ProjectListComponent implements OnInit {
       this.currentPage = pageNumber;
       this.loadPageData(pageNumber);
     }
+
+    public loadPageData2(pageNumber: number): void {
+      this.dataPage.pageIndex = pageNumber;
+      this.FilterChange();
+    }
+  
+    public onPrevious2(pageNumber: number): void {
+      this.dataPage.pageIndex = pageNumber;
+        this.FilterChange();
+    }
+  
+    public onNext2(pageNumber: number): void {
+      // const totalPages = this.getTotalPages();
+      this.dataPage.pageIndex = pageNumber;
+      this.FilterChange();
+      // if (this.dataPage.pageIndex < totalPages) {
+      //   this.dataPage.pageIndex++;
+      //   this.FilterChange();
+      // }
+    }
+  
+    public onPageSizeChange2(pageSize: number): void {
+      const newPageSize = pageSize;
+      this.dataPage.pagedItemsCount = Number(newPageSize);
+      this.dataPage.pageIndex = 1; 
+      this.currentPage = 1;
+      this.pagedItemsCount = Number(newPageSize);
+      this.FilterChange(); 
+    }
+
+    public reset(): void{
+      this.dataPage.search = '';
+      this.dataPage.pageIndex = 1;
+      this.dataPage.pagedItemsCount = 10;
+      this.currentPage =1;
+      this.pagedItemsCount = 10;
+      this.FilterChange();
+    }
     
     public loadPageData(pageNumber: number): void {
       console.log(`Loading data for page ${pageNumber}`);
@@ -177,7 +245,7 @@ export class ProjectListComponent implements OnInit {
    DialogRef.afterClosed().subscribe({
     next: (data)=>{
       console.log(data);
-      this.toaster.showSuccess("Task Added successfully");
+      // this.toaster.showSuccess("Task Added successfully");
     },
     error: (err)=>{
       console.log(err);

@@ -89,6 +89,12 @@
     orderKey: string | null; 
     sortedOrder: SortedOrder; 
     search: string | null; 
+    dateRange: DateRange | null;
+  }
+
+  export interface DateRange{
+    startDate: string,
+    endDate: string
   }
 
   
@@ -113,7 +119,7 @@ export interface ProjectResponsePagination {
 }
 
 interface ProjectData {
-  data: Project[];
+  data: Project[] | null;
   totalPages: number;
   totalItems: number;
 }
@@ -134,7 +140,7 @@ export interface ProjectByEmployeeId{
   success: boolean;
   status: number;
   message: string;
-  data: ProjectListOfEmployee[];
+  data: ProjectListOfEmployee[] | null;
 }
 
 export interface ProjectListOfEmployee{
@@ -155,7 +161,7 @@ export interface updateProjectByIdRequest{
   name: string,
   description: string,
   status: number,
-  members: employeeUpdate[]
+  members: employeeUpdate[] | null
 }
 
 export interface updateProjectByIdResponse{

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../../Service/project.service';
 import { ToastService } from '../../../../SharedModule/shared/Services/toast.service';
 import { EmployeeForProjects, Members } from '../../Models/Project.model';
@@ -23,7 +23,9 @@ export class EditProjectComponent implements OnInit {
   public addedMembersList: EmployeeForProjects[] = [];
   // public add
 
-  constructor(public activatedRoute: ActivatedRoute, public projectService: ProjectService, public toaster: ToastService, public dialog: MatDialog) { }
+  constructor(public activatedRoute: ActivatedRoute, public projectService: ProjectService, public toaster: ToastService, public dialog: MatDialog
+    , public router: Router
+  ) { }
 
   ngOnInit(): void {
     this.ProjectForm = new FormGroup({
@@ -50,7 +52,6 @@ export class EditProjectComponent implements OnInit {
         console.log(data)
         const Data = data.data;
         this.ProjectForm.patchValue(Data);
-        console.log("Members Dtaa", this.ProjectForm.controls['members']);
       },
       error: (err) => {
         this.progressSpinner = false;
@@ -69,17 +70,20 @@ export class EditProjectComponent implements OnInit {
     if (indexToRemove !== -1) {
       currentMembers.splice(indexToRemove, 1);
       this.ProjectForm.controls['members'].setValue([...currentMembers]);
+      this.ProjectForm.controls['members']!.markAsDirty();
     }
   }
 
   public addMembers(): void {
     this.DialogDataFlag = true;
     const dialogData: DialogService = { isActive: this.DialogDataFlag };
+    // const dialogData2 = this.addedMembersList;
     const dialogRef = this.dialog.open(EmployeListComponent, {
       height: '1000px',
       width: '1200px',
       disableClose: true,
     });
+    this.ProjectForm.controls['members']!.markAsDirty();
 
     dialogRef.componentInstance.data = dialogData;
 
@@ -105,6 +109,7 @@ export class EditProjectComponent implements OnInit {
 
   submit() {
     if (this.ProjectForm.valid) {
+      console.log("submitted on update");
       const formValue = this.ProjectForm.value;
       const members1 = formValue.members;
       const employeeId = members1.map((item: EmployeeAddedList) => ({ employeeId: item.employeeId }));
@@ -119,8 +124,10 @@ export class EditProjectComponent implements OnInit {
         console.log(body);
         this.projectService.updateProjectById(body, this.paramId).subscribe({
           next: (data) => {
+            console.log("updated successfully");
             this.toaster.showSuccess("Project updated successfully");
             this.ProjectForm.reset();
+            this.router.navigateByUrl(`/projects/view/${this.paramId}`);
           },
           error: (err) => {
             console.log(err);

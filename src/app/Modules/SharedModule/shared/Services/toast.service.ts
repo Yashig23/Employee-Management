@@ -10,20 +10,22 @@ export class ToastService{
     constructor(private toastr: ToastrService) { }
 
     private info ={
-        timeOut: 10000, 
+        timeOut: 10000000, 
         tapToDismiss: true,
-        closeButton: true
+        closeButton: true,
+        positionClass: 'toast-custom-position'
     }
 
     public showSuccess(msg: string) {
-        this.toastr.success(msg, '', this.info);
+        console.log("entered inside toaster");
+        this.toastr.success(msg, 'Success', this.info);
       }
 
     public showWarning(msg: string){
-        this.toastr.warning(msg,'', this.info);
+        this.toastr.warning(msg,'Warning', this.info);
     }
 
     public showInfo(msg: string){
-        this.toastr.info(msg, '', this.info);
+        this.toastr.info(msg, 'Info', this.info);
     }
 }

@@ -12,7 +12,7 @@ const routes: Routes = [
   {path:"edit/:id", component: TaskComponent},
   {path:"view/:id", component: TaskViewComponent},
   {path:"sprint/tasks/:id", component: FullTaskListComponent},
-  {path:"taskslog", component: TaskListComponent}
+  {path:"log/:id", component:TaskListComponent},
 ];
 
 @NgModule({

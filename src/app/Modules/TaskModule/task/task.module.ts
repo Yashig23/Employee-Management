@@ -26,6 +26,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { TasksCardComponent } from './Components/tasks-card/tasks-card.component';
+import { ToastService } from '../../SharedModule/shared/Services/toast.service';
 @NgModule({
   declarations: [
     TaskListComponent,
@@ -62,6 +63,6 @@ import { TasksCardComponent } from './Components/tasks-card/tasks-card.component
     TaskComponent,
     TasksListComponent
   ],
-  providers: [provideNativeDateAdapter()]
+  providers: [provideNativeDateAdapter(), ToastService]
 })
 export class TaskModule { }

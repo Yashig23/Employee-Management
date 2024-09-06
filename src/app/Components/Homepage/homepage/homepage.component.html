@@ -1,4 +1,4 @@
-<section class="homePageSec">
+<section class="homePageSec" *ngIf="role != 0">
 <div class="homepage">
     <div class="section-box employee" routerLink="/employees">
       <div class="section-content">
@@ -23,3 +23,22 @@
   </div>
 </section>  
   
+<section class="homePageSec" *ngIf="role == 0">
+   <div class="homepage">
+    <div class="section-box employee" routerLink="/employees">
+      <div class="section-content">
+        <h2>View Your Projects</h2>
+      </div>
+    </div>
+    <div class="section-box department" routerLink="/departments">
+      <div class="section-content">
+        <h2>View Your Tasks</h2>
+      </div>
+    </div>
+    <div class="section-box projects" routerLink="/projects">
+      <div class="section-content">
+        <h2>View Your Profile</h2>
+      </div>
+    </div>
+   </div>
+</section>

@@ -26,7 +26,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let task of taskList" class="task-row">
-            <td class="task-name">{{task.name}}</td>
+            <td class="task-name" [routerLink]="['/tasks/view', task.id]">{{task.name}}</td>
             <td class="task-description">{{task.description}}</td>
             <td class="task-status">{{task.assigneeName}}</td>
             <td class="task-status">{{task.status | status}}</td>

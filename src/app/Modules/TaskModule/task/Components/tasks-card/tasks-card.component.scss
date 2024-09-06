@@ -1,172 +1,157 @@
-.card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    width: 250px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    padding: 16px;
-    margin: 10px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-    border-bottom: 2px solid #d4af37;
-    padding-bottom: 8px;
-  }
-  
-  .task-id {
-    color: #d4af37;
-    margin-right: 5px;
-  }
-  
-  .assignee {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-  }
-  
-  .assignee-avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: #673ab7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-weight: bold;
-    margin-right: 8px;
-  }
-  
-  .assignee-name {
-    flex: 1;
-    font-size: 14px;
-    color: #333;
-  }
-  
-  .story-points {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .task-details {
-    margin-top: 16px;
-    font-size: 12px;
-    color: #666;
-  }
-  
-  .task-details div {
-    margin-bottom: 8px;
-  }
-  
-  .state-label,
-  .parent-label,
-  .area-path-label {
-    font-weight: bold;
-  }
-  
-  .state-indicator {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #bbb;
-    margin-right: 5px;
-  }
-  .status-new {
-    background-color: green;
-    color: white;
-    padding: 5px;
-    border-radius: 3px;
-  }
-  
-  .status-active {
-    background-color: orange;
-    color: white;
-    padding: 5px;
-    border-radius: 3px;
-  }
-  
-  .status-completed {
-    background-color: blue;
-    color: white;
-    padding: 5px;
-    border-radius: 3px;
-  }
-  
-  .state-indicator {
-    display: inline-block;
-  }
-  
-  
-  .AssigneeName{
-    color: white;
-  }
-  .parent-name,
-  .area-path-value {
-    color: #1e88e5;
-    text-decoration: underline;
+/* General Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 0;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 10px 15px;
+  border-radius: 8px 8px 0 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.task-id {
+  font-size: 12px;
+  color: #9e9e9e;
+  font-weight: 500;
+}
+
+.task-title {
+  font-size: 18px;
+  color: #333333;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Card Content */
+.card-content {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+  margin-bottom: 20px;
+}
+
+.card-content:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.assignee {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.assignee-avatar {
+  width: 45px;
+  height: 45px;
+  background-color: #00796b;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.assignee-name {
+  font-size: 16px;
+  color: #555555;
+  font-weight: 500;
+}
+
+.story-points {
+  background-color: #ffb300;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+/* Task Details */
+.task-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.state, .parent, .area-path {
+  display: flex;
+  justify-content: space-between;
+}
+
+.state-label, .parent-label, .area-path-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a4a4a;
+}
+
+.status-new {
+  background-color: #f44336;
+  color: white;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.status-active {
+  background-color: #ffb300;
+  color: white;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.status-completed {
+  background-color: #4caf50;
+  color: white;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.parent-name, .area-path-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333333;
+}
+
+/* Hover Effect for Task Cards */
+.card-content:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card-content {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
   }
 
-  .dashboard-container {
-    display: flex;
-    height: 100vh;
+  .assignee {
+    flex-direction: column;
+    gap: 10px;
   }
-  
-  .sidebar {
-    width: 240px;
-    background-color: #2a49e2;
-    color: #fff;
-    // padding: 20px;
-  
-    .project-name {
-      h2 {
-        font-size: 1.5em;
-        margin: 0;
-      }
-    }
-  
-    nav {
-      margin-top: 20px;
-      ul {
-        list-style: none;
-        padding: 0;
-        li {
-          margin-bottom: 15px;
-          a {
-            color: #fff;
-            text-decoration: none;
-            &.active {
-              font-weight: bold;
-            }
-          }
-        }
-      }
-    }
-  
-    .teams {
-      margin-top: auto;
-      h3 {
-        font-size: 1.2em;
-      }
-      .team-members {
-        display: flex;
-        margin: 10px 0;
-        /* Style for team members' avatars */
-      }
-      .invite-button {
-        display: block;
-        color: #fff;
-        text-decoration: none;
-        margin-top: 10px;
-      }
-    }
+
+  .story-points {
+    align-self: flex-end;
   }
-  
+}

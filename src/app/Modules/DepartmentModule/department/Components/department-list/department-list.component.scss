@@ -145,11 +145,43 @@
   align-items: center;
 }
 
+.reset:disabled{
+  background-color: grey;
+  color: white;
+  position: relative;
+  top: 15px;
+  bottom: 4px;
+  left: 5px;
+  right: 5px;
+  font:bold;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 7px;
+  box-shadow: #ccc;
+  cursor:not-allowed;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.reset{
+  background-color: rgb(236, 192, 82);
+  color: white;
+  position: relative;
+  top: 15px;
+  bottom: 4px;
+  left: 5px;
+  right: 5px;
+  font:bold;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 7px;
+  box-shadow: #ccc;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
 button{
   border: none;
-  padding: 12px;
-  margin: 5px;
-  background-color: rgb(218, 240, 185);
+  margin: 7px;
+  background-color: rgb(150, 245, 77);
   border-radius: 1rem;
 }
 
@@ -247,8 +279,32 @@ button{
 
 .submit{
   position: relative;
-  top: 2px;
+  top: 15px;
   bottom: 4px;
+  left: 5px;
+  right: 5px;
+  font:bold;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 7px;
+  box-shadow: #ccc;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.submit:disabled{
+  cursor: not-allowed;
+  background-color: rgb(118, 168, 118);
+  color: white;
+  position: relative;
+  top: 15px;
+  bottom: 4px;
+  left: 5px;
+  right: 5px;
+  font:bold;
+  padding: 0.5rem 1rem;
+  border-radius: 7px;
+  box-shadow: #ccc;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .icon-btn{
@@ -363,7 +419,7 @@ select{
 
 .employeeNo{
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 // option{

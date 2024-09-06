@@ -4,15 +4,25 @@
 </div>
 </div>
 <div class="parent" *ngIf="progressSpinner === false">
-    <div class="subParent">
-      <table>
+  <div class="subParent">
+    <div *ngIf="projectList.length == 0" style=" display: flex; align-items: center; justify-content: center;">
+      <div style="color: red; margin: 7px">
+      No Project Present
+  </div>
+    <div>
+        <!-- <button class="taskBtn" (click)="openAddTaskDialog()">Create Task</button> -->
+    </div>
+
+    </div>
+    <div *ngIf="projectList.length != 0">
+      <table >
         <thead>
           <tr>
             <th>Name</th>
             <th>Description</th>
             <th>Status</th>
             <th>Created On</th>
-            <!-- <th>Add Task</th> -->
+            <th>View Task</th>
           </tr>
         </thead>
         <tbody>
@@ -22,7 +32,7 @@
             <td class="project-status">{{project.status | status}}</td>
             <td class="project-date">{{project.createdOn | date: 'dd/MM/yyyy'}}</td>
             <td>
-                <!-- <button (click)="openAddTask(project.id)" class="addBtn">Add Task</button> -->
+                <button class="addBtn" (click)="openTaskListDialog(project.id)">View Task</button>
                 <!-- <button (click)="openAddTaskDialog()" class="addBtn">Add Task</button> -->
             </td>
           </tr>
@@ -30,4 +40,5 @@
       </table>
     </div>
   </div>
+</div>
   

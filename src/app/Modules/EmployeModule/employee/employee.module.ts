@@ -21,6 +21,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { EmployeeProjectComponent } from './Components/employee-project/employee-project.component';
 import { EmployeeTasksComponent } from './Components/employee-tasks/employee-tasks.component';
 import { StatusPipe } from './Pipes/status.pipe';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { StatusPipe } from './Pipes/status.pipe';
     MatProgressSpinnerModule,
     CommonModule,
     EmployeeRoutingModule,
+    MatDatepickerModule,
     SharedModule,
     FormsModule,
     ReactiveFormsModule,

@@ -413,17 +413,25 @@
   
   .parentDiv{
     display: flex;
+    border-radius: 1rem;
   }
   
   .div1{
-    background-color: rgb(155, 156, 157);
+    background-color: rgb(203, 203, 204);
     padding: 2rem;
+    border: none;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem; 
+    display: flex;
+    align-items: center;
   }
   
   .div2{
     padding: 2rem;
-    background-color: #84aef2;
+    background-color: #3784ff;
     margin: 1px;
+    border-bottom-left-radius: 7px ;
+    border-bottom-right-radius: 7px ;
   }
   
   .ImageSec{
