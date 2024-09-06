@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { DeleteDialogService } from '../../../../SharedModule/shared/Services/delete-dialog.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { EmployeServiceService } from '../../Service/employe-service.service';
@@ -7,19 +7,20 @@ import { ToastService } from '../../../../SharedModule/shared/Services/toast.ser
 import { EmployeeForProjects } from '../../../../ProjectModule/project/Models/Project.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-employe-list',
   templateUrl: './employe-list.component.html',
   styleUrl: './employe-list.component.scss'
 })
-export class EmployeListComponent implements OnInit {
+export class EmployeListComponent implements OnInit, OnDestroy {
 
   public employeeList: Employee[] | null= [];
   public searchQuery: string = '';
   public filteredEmployeeData: Employee[] | null = [];
   public totalPagesList!: number[];
-  public addedMembersList: EmployeeAddedList[]=[];
+  public addedMembersList!: Observable<EmployeeAddedList[]>;
   public employeeListLength!: number;
   public searchEmployee!: string;
   public totalPages!: number;
@@ -27,11 +28,12 @@ export class EmployeListComponent implements OnInit {
   public deafultBtn: boolean = false;
   public toggleBtn: boolean = false;
   public progressSpinner!: boolean;
-  public projectEmployees: EmployeeForProjects[]=[] ;
+  public projectEmployees:EmployeeForProjects[] = [];
   public currentPage: number = 1;
   public range!: FormGroup;
   // public membersList!: EmployeeForProjects[];
   public pagedItemsCount: number = 10;
+  private destroy$ = new Subject<void>();
   public dataPage: DataPage = {
     "pageIndex": 1,
     "pagedItemsCount": 10,
@@ -58,12 +60,17 @@ export class EmployeListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.loadEmployeeData();
     this.getEmployeeData();
 
-    this.range.valueChanges.subscribe((value) => {
+    this.range.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
       this.updateDateRange(value);
     });
+  }
+
+  ngOnDestroy(): void {
+    console.log("Destroyed");
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   public updateDateRange(value: any) {
@@ -85,7 +92,7 @@ export class EmployeListComponent implements OnInit {
   // Fetch department data and display it
   public getEmployeeData(): void {
     this.progressSpinner = true;
-    this.employeService.getEmployeeList().subscribe({
+    this.employeService.getEmployeeList().pipe(takeUntil(this.destroy$)).subscribe({
       next: (response: EmployeeResponse) => {
         this.progressSpinner = false;
         this.employeeList = response.data;
@@ -136,23 +143,9 @@ export class EmployeListComponent implements OnInit {
       });
   }
 
-  public onPrevious(): void {
-    if (this.dataPage.pageIndex > 1) {
-      this.dataPage.pageIndex--;
-      this.FilterChange();
-    }
-  }
   public onPrevious2(pageNumber: number): void {
     this.dataPage.pageIndex = pageNumber;
       this.FilterChange();
-  }
-
-  public onNext(): void {
-    const totalPages = this.getTotalPages();
-    if (this.dataPage.pageIndex < totalPages) {
-      this.dataPage.pageIndex++;
-      this.FilterChange();
-    }
   }
 
   public onNext2(pageNumber: number): void {
@@ -163,15 +156,6 @@ export class EmployeListComponent implements OnInit {
     //   this.dataPage.pageIndex++;
     //   this.FilterChange();
     // }
-  }
-  
-  public onPageSizeChange(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement;
-    this.dataPage.pagedItemsCount = Number(selectElement.value);
-    this.dataPage.pageIndex = 1; 
-    this.currentPage = 1;
-    this.pagedItemsCount = Number(selectElement.value);
-    this.FilterChange(); 
   }
 
   public onPageSizeChange2(pageSize: number): void {
@@ -184,7 +168,7 @@ export class EmployeListComponent implements OnInit {
   }
 
   public FilterChange(): void {
-    this.employeService.paginationOnEmployee(this.dataPage).subscribe({
+    this.employeService.paginationOnEmployee(this.dataPage).pipe(takeUntil(this.destroy$)).subscribe({
       next: (data) => {
         this.employeeList = data.data.data;
         this.filteredEmployeeData = this.employeeList;
@@ -289,10 +273,6 @@ public removeEmployeeInProject(id: number) {
 public existInArray(id: number): boolean {
   return this.projectEmployees.some(emp => emp.employeeId === id);
 }
-
-// public newExistInArray(id: number): void{
-//   // return this.membersList.some(emp => emp.employeeId === id);
-// }
 
 public handlePageSizeChange(newPageSize: number): void{
   console.log("New Page ISze",newPageSize);

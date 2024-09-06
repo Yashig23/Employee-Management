@@ -30,7 +30,7 @@ export const customInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next
         toaster.showWarning(errorMessage);
         toastr.warning(errorMessage, 'Client Error');
       } else {
-        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+        errorMessage = `Unknown Error Occured`;
         toaster.showWarning(errorMessage);
       }
 
@@ -44,8 +44,7 @@ export const customInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next
       }
 
       if (error.status === 404) {
-        console.log("Toaster 404")
-        toaster.showWarning('You have entered wrong data.');
+        toaster.showWarning('Data Already Exist.');
       }
 
       if (error.status === 500) {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DepartmentServiceService } from '../../../../../DepartmentModule/department/Service/department-service.service';
@@ -6,6 +6,7 @@ import { Department, DepartmentResponse } from '../../../../../DepartmentModule/
 import { EmployeServiceService } from '../../../Service/employe-service.service';
 import { ToastService } from '../../../../../SharedModule/shared/Services/toast.service';
 import { GetEmployeeResponseById, OnlyEmployeeData } from '../../../Models/Employee.model';
+import { Subject, takeUntil } from 'rxjs';
 
 export enum EmployeeRole {
   Admin = 1,
@@ -18,7 +19,7 @@ export enum EmployeeRole {
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.scss']
 })
-export class EmployeeComponent implements OnInit {
+export class EmployeeComponent implements OnInit, OnDestroy {
   public employeeForm!: FormGroup;
   public isEdit = false;
   public paramId!: number;
@@ -28,6 +29,7 @@ export class EmployeeComponent implements OnInit {
   public departmentList: Department[]=[];
   public adminNameList: OnlyEmployeeData[]=[];
   public disableSubmitBtn: boolean = false;
+  private destroy$ = new Subject<void>();
   constructor(public router: Router, private activatedRoute: ActivatedRoute, private departmentService: DepartmentServiceService, private employeeService: EmployeServiceService,
     public toaster: ToastService
   ) {}
@@ -53,7 +55,7 @@ export class EmployeeComponent implements OnInit {
       role: new FormControl(0)
     });
 
-    this.activatedRoute.paramMap.subscribe(paramMap => {
+    this.activatedRoute.paramMap.pipe(takeUntil(this.destroy$)).subscribe(paramMap => {
       console.log(paramMap);
       this.paramId = Number(paramMap.get('id'));
       if(this.paramId){
@@ -64,11 +66,18 @@ export class EmployeeComponent implements OnInit {
         console.log("Edit Value", this.isEdit);
       }
     });
-    this.employeeForm.valueChanges.subscribe((formValues) => {
+    this.employeeForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((formValues) => {
       console.log(this.employeeForm.valid);
     });
     
   }
+ 
+  ngOnDestroy(): void {
+      console.log("destroyed");
+      this.destroy$.next();
+      this.destroy$.complete();
+  }
+  
 
   public onSubmit(): void {
     this.disableSubmitBtn = true;
@@ -86,7 +95,7 @@ export class EmployeeComponent implements OnInit {
     if(this.isEdit == true){
       this.employeeForm.removeControl('username');
       this.employeeForm.removeControl('password');
-        this.employeeService.updatedEmployee(body, this.paramId).subscribe({
+        this.employeeService.updatedEmployee(body, this.paramId).pipe(takeUntil(this.destroy$)).subscribe({
           next: (data)=>{
             this.toaster.showSuccess("Employee updated successfully");
             this.employeeForm.reset();
@@ -130,7 +139,7 @@ export class EmployeeComponent implements OnInit {
           })
       }
       else{
-        this.employeeService.addEmployee(body).subscribe({
+        this.employeeService.addEmployee(body).pipe(takeUntil(this.destroy$)).subscribe({
           next: (data)=>{
             console.log(data);
             this.toaster.showSuccess('Employee added successfully');
@@ -170,7 +179,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   public getDepartmentData(): void {
-    this.departmentService.getDepartmentList().subscribe({
+    this.departmentService.getDepartmentList().pipe(takeUntil(this.destroy$)).subscribe({
       next: (response: DepartmentResponse) => {
         this.departmentList = response.data || [];
       },
@@ -194,7 +203,7 @@ export class EmployeeComponent implements OnInit {
 
   public getEditData(): void {
     // this.progressSpinner = true;
-    this.employeeService.getEmployeeById(this.paramId).subscribe({
+    this.employeeService.getEmployeeById(this.paramId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (response: GetEmployeeResponseById)=>{
         // this.progressSpinner = false;
         const employeeDataOfId = response.data;
@@ -225,7 +234,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   public getManagerByDepartment(data: number): void{
-    this.employeeService.getDepartmentDetailsByName(data).subscribe({
+    this.employeeService.getDepartmentDetailsByName(data).pipe(takeUntil(this.destroy$)).subscribe({
       next: (response)=>{
         console.log(response)
         if(this.adminNameList == null){
@@ -240,7 +249,7 @@ export class EmployeeComponent implements OnInit {
   }
 
 public getEmployeeNamesById(id: number): void{
-  this.employeeService.getEmployeeNamesByDepartmentId(id).subscribe({
+  this.employeeService.getEmployeeNamesByDepartmentId(id).pipe(takeUntil(this.destroy$)).subscribe({
     next: (data) =>{
       this.showManagerList = true;
       const Data = data.data;

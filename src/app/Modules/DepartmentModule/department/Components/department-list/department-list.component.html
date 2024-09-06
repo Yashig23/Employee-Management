@@ -1,8 +1,5 @@
 <div ngSkipHydration>
    <div class="dashboard-container">
-    <!-- <div style="background-color: #2a49e2; position: sticky;">
-      <app-side-bar></app-side-bar>
-    </div> -->
     <div *ngIf="progressSpinner === true" class="spinner"  style="width: 14px; height: 14px">
       <div class="spinner-section"  style="width: 14px; height: 14px">
       <mat-spinner  [diameter]="50"></mat-spinner>
@@ -68,8 +65,8 @@
       </div>
       <footer>
         <div>
-        <app-pagination [pagedItemsCount]="dataPage.pagedItemsCount" [pageIndex]="dataPage.pageIndex" [totalPagesList]="totalPagesList" (pageSizeChange)="onPageSizeChange2($event)"
-      (onPreviousClick)="onPrevious2($event)" (onNextClick)="onNext2($event)" (goToPageValue)="loadPageData2($event)" [totalLength]="departmentListLength"></app-pagination>
+        <app-pagination [pagedItemsCount]="dataPage.pagedItemsCount" [pageIndex]="dataPage.pageIndex" [totalPagesList]="totalPagesList" (pageSizeChange)="onPageSizeChange($event)"
+      (onPreviousClick)="onPrevious($event)" (onNextClick)="onNext($event)" (goToPageValue)="loadPageData($event)" [totalLength]="departmentListLength"></app-pagination>
     </div>
       </footer>
   

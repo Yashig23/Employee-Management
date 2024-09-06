@@ -6,6 +6,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DepartmentComponent } from '../department/department.component';
 import {ToastService} from '../../../../SharedModule/shared/Services/toast.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-department-list',
@@ -23,6 +24,7 @@ export class DepartmentListComponent implements OnInit {
   public pagedItemsCount = 10;
   public totalPagesList!: number[];
   public range!: FormGroup;
+  private destroy$ = new Subject<void>();
    public dataPage: DataPage = {
     "pageIndex": 1,
     "pagedItemsCount": 10,
@@ -48,51 +50,50 @@ export class DepartmentListComponent implements OnInit {
   ngOnInit(): void {
     this.getDepartmentData();
     this.FilterChange();
-    this.range.valueChanges.subscribe((value) => {
+    this.range.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
       this.updateDateRange(value);
     });
+  }
+
+  ngOnDestroy(): void {
+    console.log("destroyed")
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   // Fetch department data and display it
   public getDepartmentData(): void {
     this.progressSpinner = true;
-    this.departmentService.getDepartmentList().subscribe({
+    this.departmentService.getDepartmentList().pipe(takeUntil(this.destroy$)).subscribe({
       next: (response: DepartmentResponse) => {
         this.progressSpinner = false;
         this.departmentList = response.data || [];
         this.departmentListLength = this.departmentList.length
         this.filteredDepartmentData = this.departmentList; 
-        console.log(this.departmentList);
-        console.log(response);
       },
       error: (err: string) => {
         this.progressSpinner = false;
-        console.log('Error occurred', err);
+        this.toaster.showWarning("Error occured while fetching Department List");
       }
     });
   }
 
-  public loadPageData2(pageNumber: number): void {
+  public loadPageData(pageNumber: number): void {
     this.dataPage.pageIndex = pageNumber;
     this.FilterChange();
   }
 
-  public onPrevious2(pageNumber: number): void {
+  public onPrevious(pageNumber: number): void {
     this.dataPage.pageIndex = pageNumber;
       this.FilterChange();
   }
 
-  public onNext2(pageNumber: number): void {
-    // const totalPages = this.getTotalPages();
+  public onNext(pageNumber: number): void {
     this.dataPage.pageIndex = pageNumber;
     this.FilterChange();
-    // if (this.dataPage.pageIndex < totalPages) {
-    //   this.dataPage.pageIndex++;
-    //   this.FilterChange();
-    // }
   }
 
-  public onPageSizeChange2(pageSize: number): void {
+  public onPageSizeChange(pageSize: number): void {
     const newPageSize = pageSize;
     this.dataPage.pagedItemsCount = Number(newPageSize);
     this.dataPage.pageIndex = 1; 
@@ -102,17 +103,14 @@ export class DepartmentListComponent implements OnInit {
   }
 
   public updateDateRange(value: any) {
-    console.log(value);
     const { start, end } = value;
     if (start) {
       this.dataPage.dateRange = {
         startDate: new Date(start).toISOString(),
         endDate: end ? new Date(end).toISOString(): new Date(Date.now()).toISOString(),
       };
-      console.log(this.dataPage);
       this.FilterChange();
     } else {
-      console.error("Invalid date range");
       this.toaster.showWarning("Invalid Date Range");
     }
   }
@@ -121,14 +119,10 @@ export class DepartmentListComponent implements OnInit {
   public openAddDepartment(): void{
     const dialogRef = this.dialog.open(DepartmentComponent);
     dialogRef.afterClosed().subscribe({
-      next: (data)=>{
-        console.log(data);
-        // this.toaster.showSuccess("New Department Added");
-        console.log("added new Department");
+      next: ()=>{
         this.getDepartmentData();
       },
       error: (err)=>{
-        console.log("Error occured whilee adding");
         this.toaster.showWarning("Error occured while Adding Department");
       }
     })
@@ -144,7 +138,6 @@ export class DepartmentListComponent implements OnInit {
           if (id !== null && id !== undefined) {
             this.departmentService.deleteDepartment(id).subscribe({
               next: () => {
-                console.log('Department deleted successfully.');
                 this.toaster.showSuccess('Department deleted successfully');
                 this.getDepartmentData(); 
               },
@@ -165,14 +158,13 @@ export class DepartmentListComponent implements OnInit {
 
   // function for adding a new department
   public addNewDepartment(): void {
-    console.log("addNewDepartment");
+    ("addNewDepartment");
     const dialogRef = this.dialog.open(DepartmentComponent, {
       width: '400px'
     });
     dialogRef.afterClosed().subscribe({
       next: (result) => {
         if (result) {
-          console.log('Find find');
           this.getDepartmentData();
           this.toaster.showSuccess('Department added successfully');
         }
@@ -180,13 +172,12 @@ export class DepartmentListComponent implements OnInit {
       error: (err) => {
         console.error("Error:", err);
         this.toaster.showWarning("An error occured while adding the department");
-        // window.alert("An error occurred while adding the department.");
       }
     });
   }
 
   public FilterChange(): void {
-    this.departmentService.paginationOnDepartments(this.dataPage).subscribe({
+    this.departmentService.paginationOnDepartments(this.dataPage).pipe(takeUntil(this.destroy$)).subscribe({
       next: (data) => {
         this.departmentList = data.data.data;
         this.filteredDepartmentData = this.departmentList;
@@ -194,42 +185,13 @@ export class DepartmentListComponent implements OnInit {
         this.totalPages = this.getTotalPages(); 
         // this.totalPagesList.push(this.totalPages);
         this.totalPagesList = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-        console.log(this.filteredDepartmentData);
+        (this.filteredDepartmentData);
       },
       error: (err) => {
-        console.log(err);
         this.toaster.showWarning("Error occurred while Filtering");
         // alert("Error occurred");
       }
     });
-  }
-
-  // deleteDepartment(id: number): void{
-  //   console.log("deletd");
-  // }
-
-  public onPrevious(): void {
-    if (this.dataPage.pageIndex > 1) {
-      this.dataPage.pageIndex--;
-      this.FilterChange();
-    }
-  }
-
-  public onNext(): void {
-    const totalPages = this.getTotalPages();
-    if (this.dataPage.pageIndex < totalPages) {
-      this.dataPage.pageIndex++;
-      this.FilterChange();
-    }
-  }
-  
-  public onPageSizeChange(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement;
-    this.dataPage.pagedItemsCount = Number(selectElement.value);
-    this.dataPage.pageIndex = 1; 
-    this.pagedItemsCount = Number(selectElement.value);
-    this.currentPage = 1;
-    this.FilterChange(); 
   }
 
   public getTotalPages(): number {
@@ -245,20 +207,7 @@ export class DepartmentListComponent implements OnInit {
     this.FilterChange();
   }
     
-    public goToPage(pageNumber: number): void {
-      this.currentPage = pageNumber;
-      this.loadPageData(pageNumber);
-    }
-    
-    public loadPageData(pageNumber: number): void {
-      console.log(`Loading data for page ${pageNumber}`);
-      this.dataPage.pageIndex = pageNumber;
-      this.FilterChange();
-    }
-    
     public sortData(event: any): void {
-      console.log(event.active);
-      console.log(event.direction);
       this.dataPage.orderKey = event.active;
   
       if (event.direction === 'asc') {

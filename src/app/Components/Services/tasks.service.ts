@@ -8,15 +8,15 @@ import { TaskIdPostResquest, taskRequest, taskResponse } from '../Models/Tasks.m
   providedIn: 'root'
 })
 export class TasksService {
-  public url = environment1.apiUrl.Task;
+  public url = environment1.apiUrl.apiUrl;
 
   constructor(private httpClient: HttpClient) { }
 
   public addTasks(data: taskRequest): Observable<taskResponse>{
-    return this.httpClient.post<taskResponse>(this.url, data);
+    return this.httpClient.post<taskResponse>(`${this.url}/Task`, data);
   }
 
   public getTasksById(id: number): Observable<TaskIdPostResquest>{
-    return this.httpClient.get<TaskIdPostResquest>(`${this.url}${id}`)
+    return this.httpClient.get<TaskIdPostResquest>(`${this.url}/Task${id}`)
   }
 }
