@@ -375,10 +375,38 @@ textarea {
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-textarea {
-  min-height: 100px;
+.parentListOptions{
+   background-color: #e1e1e1;
+   border-radius: 9px;
+   border: none;
+   margin: 6px;
+   padding: 7px;
+   color: grey;
 }
 
+.parentInfo{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.parentInfo:hover{
+  border-bottom:1px solid #888;
+  color: grey;
+  font-size: larger;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.textAreaSec{
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+  font-size: 16px;
+  height: 350px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 /* Responsive Design */
 @media (max-width: 768px) {
   .parentDiv {
@@ -393,4 +421,24 @@ textarea {
 
 .buttonCancle{
   margin: 7px;
+}
+
+.cancleBtn{
+  padding: 7px;
+  margin: 3px;
+  background-color: rgb(238, 144, 144);
+  color: white;
+}
+
+.updateBtn{
+  padding: 7px;
+  margin: 5px;
+  background-color:#2575d7;
+  color: white;
+  cursor: pointer;
+}
+
+.updateBtn:disabled{
+  background-color: rgb(213, 211, 211);
+  cursor: not-allowed;
 }

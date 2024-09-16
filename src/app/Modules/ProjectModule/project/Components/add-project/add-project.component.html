@@ -10,16 +10,17 @@
          <input type="text" placeholder="Project Name" formControlName="name">
          <div *ngIf="ProjectForm.controls['name'].invalid && (ProjectForm.controls['name'].touched || ProjectForm.controls['name'].dirty)"
            class="error-message">
-           <div *ngIf="ProjectForm.controls['name'].errors?.['required']">Project Name is required.</div>
-           <div *ngIf="ProjectForm.controls['name'].errors?.['minlength']">Project Name must be at least 3 characters long.</div>
-         </div>
- 
+           <div appShowError [appShowFormError]="ProjectForm.controls['name']" class="error-message">
+          </div>
+           <!-- <div *ngIf="ProjectForm.controls['name'].errors?.['minlength']">Project Name must be at least 3 characters long.</div> -->
+          </div>
+
          <h3>Project Description: </h3>
          <input type="text" placeholder="Project Description" formControlName="description">
          <div *ngIf="ProjectForm.controls['description'].invalid && (ProjectForm.controls['description'].touched || ProjectForm.controls['description'].dirty)"
            class="error-message">
-           <div *ngIf="ProjectForm.controls['description'].errors?.['required']">Project Description is required.</div>
-           <div *ngIf="ProjectForm.controls['description'].errors?.['minlength']">Project Description must be at least 15 characters long.</div>
+           <div appShowError [appShowFormError]="ProjectForm.controls['description']" class="error-message">
+          </div>
          </div>
 
         <div>

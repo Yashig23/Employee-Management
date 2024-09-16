@@ -59,33 +59,33 @@ export class ProjectListComponent implements OnInit {
 
   // function for adding a new department
   public addNewProject(): void {
-    console.log("addNewDepartment");
+    // console.log("addNewDepartment");
     const dialogRef = this.dialog.open(AddProjectComponent, {
       width: '800px'
     });
     dialogRef.afterClosed().subscribe({
       next: (result) => {
         if (result) {
-          console.log('Find find');
+          // console.log('Find find');
           this.toaster.showSuccess("Project added successfully");
         }
       },
       error: (err) => {
-        console.error("Error:", err);
+        // console.error("Error:", err);
         this.toaster.showWarning("An error occurred while adding the Project.")
       }
     });
   }
 
   public updateDateRange(value: any) {
-    console.log(value);
+    // console.log(value);
     const { start, end } = value;
     if (start) {
       this.dataPage.dateRange = {
         startDate: new Date(start).toISOString(),
         endDate: end ? new Date(end).toISOString(): new Date(Date.now()).toISOString(),
       };
-      console.log(this.dataPage);
+      // console.log(this.dataPage);
       this.FilterChange();
     } else {
       console.error("Invalid date range");
@@ -98,7 +98,7 @@ export class ProjectListComponent implements OnInit {
     this.progressSpinner = true;
     this.projectService.getProject().subscribe({
       next: (data: ProjectResponse)=>{
-          console.log(data.data);
+          // console.log(data.data);
           this.progressSpinner = false;
           if(data.data == null || data.data == undefined){
             this.toaster.showInfo("No projects found")
@@ -122,10 +122,10 @@ export class ProjectListComponent implements OnInit {
         this.totalPages = this.getTotalPages(); 
         // this.totalPagesList.push(this.totalPages);
         this.totalPagesList = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-        console.log(this.filteredProjectData);
+        // console.log(this.filteredProjectData);
       },
       error: (err) => {
-        console.log(err);
+        // console.log(err);
         this.toaster.showWarning("Error occurred while Filtering");
         // alert("Error occurred");
       }
@@ -212,14 +212,14 @@ export class ProjectListComponent implements OnInit {
     }
     
     public loadPageData(pageNumber: number): void {
-      console.log(`Loading data for page ${pageNumber}`);
+      // console.log(`Loading data for page ${pageNumber}`);
       this.dataPage.pageIndex = pageNumber;
       this.FilterChange();
     }
     
     public sortData(event: any): void {
-      console.log(event.active);
-      console.log(event.direction);
+      // console.log(event.active);
+      // console.log(event.direction);
       this.dataPage.orderKey = event.active;
   
       if (event.direction === 'asc') {
@@ -244,11 +244,11 @@ export class ProjectListComponent implements OnInit {
    DialogRef.componentInstance.projectData = data;
    DialogRef.afterClosed().subscribe({
     next: (data)=>{
-      console.log(data);
+      // console.log(data);
       // this.toaster.showSuccess("Task Added successfully");
     },
     error: (err)=>{
-      console.log(err);
+      // console.log(err);
       this.toaster.showWarning("Error while adding Task");
     }
    })
@@ -265,12 +265,12 @@ export class ProjectListComponent implements OnInit {
           if (id !== null && id !== undefined) {
             this.projectService.deleteProject(id).subscribe({
               next: () => {
-                console.log('Project deleted successfully.');
+                // console.log('Project deleted successfully.');
                 this.toaster.showSuccess("Project deleted successfully");
                 this.getProjectData(); 
               },
               error: err => {
-                console.error('Error deleting Project:', err);
+                // console.error('Error deleting Project:', err);
                 this.toaster.showWarning("Error while deleting Project");
               },
               complete: () => {

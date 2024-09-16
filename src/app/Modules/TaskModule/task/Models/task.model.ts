@@ -213,9 +213,33 @@ export interface taskByIdResponse{
   }
 
   export interface DataForPagination{
-   data: Data[],
+   data: paginationDAta,
    totalPages: number,
    totalItems: number
+  }
+
+  export interface paginationDAta{
+    tasks: TaskData[],
+    count: TypeCount
+  }
+
+  export interface TypeCount{
+    typeCount: {
+      epic: number,
+      feature: number,
+      userStory: number,
+      task: number,
+      bug: number
+    },
+    statusCount: {
+      active: number,
+      pending: number,
+      completed: number
+    },
+    assignCount: {
+      assigned: number,
+      unAssigned: number
+    }
   }
 
   export interface Data{
@@ -228,6 +252,22 @@ export interface taskByIdResponse{
     assignerName: string,
     assigneeName: string;
     createdOn: string,
+  }
+
+  export interface TaskData{
+    id: number,
+    name: string,
+    description: string,
+    status: Status,
+    projectId: number,
+    taskType: number,
+    assignedTo: number,
+    assignerName: string,
+    assigneeName: string;
+    createdOn: string,
+    sprintId: number,
+    originalEstimateHours: number,
+    remainingEstimateHours: number
   }
 
   export interface subtask{
@@ -343,7 +383,10 @@ export interface taskByIdResponse{
   success: boolean,
   status: number,
   message: string,
-  data: DataForTaskLog[];
+  data: {
+    remaining: number,
+    logs: DataForTaskLog[];
+  };
  }
 
  export interface DataForTaskLog{

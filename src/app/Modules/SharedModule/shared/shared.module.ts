@@ -16,6 +16,9 @@ import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { LoadingComponent } from './Components/loading/loading.component';
 import { PaginationComponent } from './Components/pagination/pagination.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { MaxLengthPipe } from './max-length.pipe';
+import { ShowErrorDirective } from './Directive/show-form-error.directive';
 
 
 @NgModule({
@@ -24,6 +27,9 @@ import { PaginationComponent } from './Components/pagination/pagination.componen
     SideBarComponent,
     LoadingComponent,
     PaginationComponent,
+    PageNotFoundComponent,
+    MaxLengthPipe,
+    ShowErrorDirective
   ],
   imports: [
     CommonModule,
@@ -41,7 +47,10 @@ import { PaginationComponent } from './Components/pagination/pagination.componen
   exports: [
     SideBarComponent,
     MatIconModule,
-    PaginationComponent
+    PaginationComponent,
+    MaxLengthPipe,
+    PageNotFoundComponent,
+    ShowErrorDirective
     // ProfilePageComponent
   ]
 })

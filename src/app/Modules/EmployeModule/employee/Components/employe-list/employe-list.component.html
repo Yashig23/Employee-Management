@@ -1,8 +1,8 @@
 <div class="dashboard-container"> 
-    <div *ngIf="progressSpinner === true" class="spinner">
+  <div *ngIf="progressSpinner === true" class="spinner">
     <div class="spinner-section">
-      <mat-spinner [diameter]="50"></mat-spinner>
-    </div>
+    <mat-spinner  [diameter]="50"></mat-spinner>
+  </div>
   </div>
 
   <div class="main-content" *ngIf="progressSpinner === false">
@@ -48,40 +48,48 @@
           <div class="length" style=" color: rgb(117, 116, 116); padding: 2px">{{employeeListLength}}</div>
         </div>
       </div>
+      <div *ngIf="data?.isActive">
+        Select All <mat-checkbox (change)="selectAllEmployees($event)"></mat-checkbox>
+      </div>
     </header>
 
     <div class="table-container">
-      <table mat-table matSort (matSortChange)="sortData($event)" class="sales-table">
+      <table mat-table matSort (matSortChange)="sortData($event)" class="sales-table" matSortActive="CreatedOn" matSortDirection="desc">
         <thead>
           <tr>
-            <th>Serial No.</th>
+            <th *ngIf="!data?.isActive">Serial No.</th>
+            <th *ngIf="data?.isActive">CheckBoxes</th>
             <th mat-sort-header="Name">Employee Name</th>
             <th mat-sort-header="CreatedOn">Created On</th>
             <th mat-sort-header="DepartmentName">Department Name</th>
             <th mat-sort-header="Salary">Salary</th>
             <th mat-sort-header="Role">Role</th>
-            <th>Actions</th>
+            <th *ngIf="!data?.isActive">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let employee of filteredEmployeeData; let i = index">
-            <td>{{ (currentPage - 1) * pagedItemsCount + (i + 1) }}</td>
+          <tr *ngFor="let employee of employeeList; let i = index">
+            <td *ngIf="!data?.isActive">{{ (currentPage - 1) * pagedItemsCount + (i + 1) }}</td>
+            <td *ngIf="data?.isActive">
+              <mat-checkbox [checked]="employee.isChecked" (change)="onCheckboxChange($event, employee)">
+              </mat-checkbox>
+            </td>
             <td>{{ employee.name }}</td>
             <td>{{ employee.createdOn | date: 'dd/MM/yyyy' }}</td>
             <td>{{ employee.departmentName }}</td>
             <td>{{ employee.salary }}</td>
             <td>{{ employee.role | role }}</td>
-            <td>
-              <button *ngIf="data?.isActive && !existInArray(employee.id)"
+            <td *ngIf="!data?.isActive">
+              <!-- <button *ngIf="data?.isActive && !existInArray(employee.id)"
                 (click)="addEmployeeInProject(employee.id, employee.name)">
                 <mat-icon class="small-icon">add</mat-icon>
               </button>
               <button *ngIf="data?.isActive && existInArray(employee.id)" (click)="removeEmployeeInProject(employee.id)"
                 class="small-icond">
                 <mat-icon class="small-icond">remove</mat-icon>
-              </button>
+              </button> -->
               <button [routerLink]="['edit', employee.id]" *ngIf="!data?.isActive">
-                <mat-icon class="small-icon">update</mat-icon></button>
+                <mat-icon class="small-icon">edit</mat-icon></button>
               <button [routerLink]="['view', employee.id]" class="viewBtn" *ngIf="!data?.isActive">
                 <mat-icon class="small-icon">visibility</mat-icon>
               </button>
@@ -96,7 +104,7 @@
      <footer>
       <div>
             <app-pagination [pagedItemsCount]="dataPage.pagedItemsCount" [pageIndex]="dataPage.pageIndex" [totalPagesList]="totalPagesList" (pageSizeChange)="onPageSizeChange2($event)"
-      (onPreviousClick)="onPrevious2($event)" (onNextClick)="onNext2($event)" (goToPageValue)="loadPageData2($event)" [totalLength]="employeeListLength"></app-pagination>
+      (onPreviousClick)="onPrevious2($event)"  [totalPages]="totalPages" (onNextClick)="onNext2($event)" (goToPageValue)="loadPageData2($event)" [totalLength]="employeeListLength"></app-pagination>
     </div>
       <div style="display: flex; justify-content: end;">
         <div class="import-export" *ngIf="data?.isActive">

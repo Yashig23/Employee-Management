@@ -17,38 +17,42 @@
     </div>
     <main class="mainSection">
       <!-- New Tasks Section -->
-      <div class="example-container">
-        <h2>New Tasks</h2>
-        <div cdkDropList #newList="cdkDropList" id="newList" [cdkDropListData]="NewTasks"
-          [cdkDropListConnectedTo]="[activeList, completedList]" class="example-list"
-          (cdkDropListDropped)="drop($event)">
-          <div *ngFor="let task of NewTasks" class="example-box" cdkDrag>
-            <app-tasks-card [task]="task"></app-tasks-card>
-          </div>
-        </div>
-      </div>
+      <!-- New Tasks Section -->
+<div class="example-container">
+  <h2>New Tasks</h2>
+  <div cdkDropList #newList="cdkDropList" id="newList" [cdkDropListData]="NewTasks"
+    [cdkDropListConnectedTo]="[activeList, completedList]" class="example-list"
+    (cdkDropListDropped)="drop($event)">
+    <div *ngFor="let task of NewTasks" class="example-box" cdkDrag>
+      <app-tasks-card [task]="task"></app-tasks-card>
+    </div>
+  </div>
+</div>
 
-      <!-- Active Tasks Section -->
-      <div class="example-container">
-        <h2>Active Tasks</h2>
-        <div cdkDropList #activeList="cdkDropList" id="activeList" [cdkDropListData]="ActivatedTasks"
-          [cdkDropListConnectedTo]="[newList, completedList]" class="example-list" (cdkDropListDropped)="drop($event)">
-          <div *ngFor="let task of ActivatedTasks" class="example-box" cdkDrag>
-            <app-tasks-card [task]="task"></app-tasks-card>
-          </div>
-        </div>
-      </div>
+<!-- Active Tasks Section -->
+<div class="example-container">
+  <h2>Active Tasks</h2>
+  <div cdkDropList #activeList="cdkDropList" id="activeList" [cdkDropListData]="ActivatedTasks"
+    [cdkDropListConnectedTo]="[newList, completedList]" class="example-list" 
+    (cdkDropListDropped)="drop($event)">
+    <div *ngFor="let task of ActivatedTasks" class="example-box" cdkDrag>
+      <app-tasks-card [task]="task"></app-tasks-card>
+    </div>
+  </div>
+</div>
 
-      <!-- Completed Tasks Section -->
-      <div class="example-container">
-        <h2>Completed Tasks</h2>
-        <div cdkDropList #completedList="cdkDropList" id="completedList" [cdkDropListData]="CompletedTasks"
-          [cdkDropListConnectedTo]="[newList, activeList]" class="example-list" (cdkDropListDropped)="drop($event)">
-          <div *ngFor="let task of CompletedTasks" class="example-box" cdkDrag>
-            <app-tasks-card [task]="task"></app-tasks-card>
-          </div>
-        </div>
-      </div>
+<!-- Completed Tasks Section -->
+<div class="example-container">
+  <h2>Completed Tasks</h2>
+  <div cdkDropList #completedList="cdkDropList" id="completedList" [cdkDropListData]="CompletedTasks"
+    [cdkDropListConnectedTo]="[newList, activeList]" class="example-list" 
+    (cdkDropListDropped)="drop($event)">
+    <div *ngFor="let task of CompletedTasks" class="example-box" cdkDrag>
+      <app-tasks-card [task]="task"></app-tasks-card>
+    </div>
+  </div>
+</div>
+
     </main>
   </section>
 </div>

@@ -4,6 +4,9 @@
 </div>
 </div>
 <section class="task-log-container" *ngIf="progressSpinner === false">
+  <div style="display: flex; justify-content: flex-end; align-items: center;">
+    <button style="color: white; background-color: rgb(58, 144, 250); padding: 7px; margin: 5px; border-radius: 7px" (click)="showMoreLogs()">Show More</button>
+  </div>
   <div *ngIf="logList.length > 0; else noLogs">
     <h2>Task Log List</h2>
     <table class="task-log-table">

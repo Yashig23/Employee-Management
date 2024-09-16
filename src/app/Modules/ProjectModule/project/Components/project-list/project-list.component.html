@@ -45,7 +45,7 @@
         </div>
       </header>
       <div class="table-container">
-        <table mat-table matSort (matSortChange)="sortData($event)" class="sales-table">
+        <table mat-table matSort (matSortChange)="sortData($event)" class="sales-table" matSortActive="CreatedOn" matSortDirection="desc">
           <tr>
             <th>Serial No.</th>
             <th mat-sort-header="Name">Project Name</th>
@@ -60,7 +60,7 @@
             </div> -->
             <td>{{ (currentPage - 1) * pagedItemsCount + (i + 1) }}</td>
             <td class="projectName">{{ project.name }}</td>
-            <td class="projectName">{{project.description}}</td>
+            <td class="projectName">{{project.description | maxLength: 60}}</td>
             <td>{{ project.createdOn | date: 'dd/MM/yyyy' }}</td>
             <td>
               <button [routerLink]="['view', project.id]">
@@ -79,7 +79,7 @@
   
       <footer>
         <div>
-          <app-pagination [pagedItemsCount]="dataPage.pagedItemsCount" [pageIndex]="dataPage.pageIndex" [totalPagesList]="totalPagesList" (pageSizeChange)="onPageSizeChange2($event)"
+          <app-pagination [pagedItemsCount]="dataPage.pagedItemsCount"  [totalPages]="totalPages" [pageIndex]="dataPage.pageIndex" [totalPagesList]="totalPagesList" (pageSizeChange)="onPageSizeChange2($event)"
     (onPreviousClick)="onPrevious2($event)" (onNextClick)="onNext2($event)" (goToPageValue)="loadPageData2($event)" [totalLength]="projectListLength"></app-pagination>
   </div>
          <!-- <div class="pagination-controls">

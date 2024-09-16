@@ -27,21 +27,15 @@ import {
 } from '@angular/material/dialog';
 import { ViewProjectComponent } from './Components/ViewProject/view-project/view-project.component';
 import { MatSortModule } from '@angular/material/sort';
-import { EditProjectComponent } from './Components/edit-project/edit-project.component';
 import { TaskModule } from "../../TaskModule/task/task.module";
-import { AddReviewComponent } from './Components/add-review/add-review.component';
 import { AddSprintComponent } from './Components/add-sprint/add-sprint.component';
-import { ViewMembersProjectComponent } from './Components/view-members-project/view-members-project.component';
 
 @NgModule({
   declarations: [
     ProjectListComponent,
     AddProjectComponent,
     ViewProjectComponent,
-    EditProjectComponent,
-    AddReviewComponent,
     AddSprintComponent,
-    ViewMembersProjectComponent,
   ],
   imports: [
     CommonModule,

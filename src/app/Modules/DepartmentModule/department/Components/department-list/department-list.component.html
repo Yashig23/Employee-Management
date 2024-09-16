@@ -43,7 +43,7 @@
         <div class="length" style=" color: rgb(117, 116, 116); padding: 2px">{{departmentListLength}}</div>
       </div>
       <div class="table-container">
-        <table mat-table matSort (matSortChange)="sortData($event)" class="sales-table">
+        <table mat-table matSort (matSortChange)="sortData($event)" class="sales-table" matSortActive="CreatedOn" matSortDirection="desc">
           <tr>
             <th>Serial No.</th>
             <th mat-sort-header="Name">Department Name</th>
@@ -66,7 +66,7 @@
       <footer>
         <div>
         <app-pagination [pagedItemsCount]="dataPage.pagedItemsCount" [pageIndex]="dataPage.pageIndex" [totalPagesList]="totalPagesList" (pageSizeChange)="onPageSizeChange($event)"
-      (onPreviousClick)="onPrevious($event)" (onNextClick)="onNext($event)" (goToPageValue)="loadPageData($event)" [totalLength]="departmentListLength"></app-pagination>
+      (onPreviousClick)="onPrevious($event)" [totalPages]="totalPages" (onNextClick)="onNext($event)" (goToPageValue)="loadPageData($event)" [totalLength]="departmentListLength"></app-pagination>
     </div>
       </footer>
   

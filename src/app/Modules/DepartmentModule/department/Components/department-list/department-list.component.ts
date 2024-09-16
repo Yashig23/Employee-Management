@@ -7,13 +7,14 @@ import { DepartmentComponent } from '../department/department.component';
 import {ToastService} from '../../../../SharedModule/shared/Services/toast.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+import { BaseService } from '../../../../SharedModule/shared/SharedClass/BaseComponentClass';
 
 @Component({
   selector: 'app-department-list',
   templateUrl: './department-list.component.html',
   styleUrls: ['./department-list.component.scss'] 
 })
-export class DepartmentListComponent implements OnInit {
+export class DepartmentListComponent  extends BaseService implements OnInit {
   public departmentList: Department[] = [];
   public searchQuery: string = '';
   public filteredDepartmentData: Department[] = []; 
@@ -24,7 +25,6 @@ export class DepartmentListComponent implements OnInit {
   public pagedItemsCount = 10;
   public totalPagesList!: number[];
   public range!: FormGroup;
-  private destroy$ = new Subject<void>();
    public dataPage: DataPage = {
     "pageIndex": 1,
     "pagedItemsCount": 10,
@@ -41,6 +41,7 @@ export class DepartmentListComponent implements OnInit {
     private toaster: ToastService,
     private fb: FormBuilder
   ) {
+    super();
     this.range = this.fb.group({
       start: [null, Validators.required],
       end: [null, Validators.required],
@@ -50,21 +51,15 @@ export class DepartmentListComponent implements OnInit {
   ngOnInit(): void {
     this.getDepartmentData();
     this.FilterChange();
-    this.range.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+    this.range.valueChanges.pipe(this.takeUntilDestroy()).subscribe((value) => {
       this.updateDateRange(value);
     });
-  }
-
-  ngOnDestroy(): void {
-    console.log("destroyed")
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   // Fetch department data and display it
   public getDepartmentData(): void {
     this.progressSpinner = true;
-    this.departmentService.getDepartmentList().pipe(takeUntil(this.destroy$)).subscribe({
+    this.departmentService.getDepartmentList().pipe(this.takeUntilDestroy()).subscribe({
       next: (response: DepartmentResponse) => {
         this.progressSpinner = false;
         this.departmentList = response.data || [];
@@ -118,7 +113,7 @@ export class DepartmentListComponent implements OnInit {
   // opening add department dialog
   public openAddDepartment(): void{
     const dialogRef = this.dialog.open(DepartmentComponent);
-    dialogRef.afterClosed().subscribe({
+    dialogRef.afterClosed().pipe(this.takeUntilDestroy()).subscribe({
       next: ()=>{
         this.getDepartmentData();
       },
@@ -133,10 +128,11 @@ export class DepartmentListComponent implements OnInit {
     this.dialogService
       .openConfirmDialog('Are you sure to delete this department?')
       .afterClosed()
+      .pipe(this.takeUntilDestroy())
       .subscribe(res => {
         if (res) {
           if (id !== null && id !== undefined) {
-            this.departmentService.deleteDepartment(id).subscribe({
+            this.departmentService.deleteDepartment(id).pipe(this.takeUntilDestroy()).subscribe({
               next: () => {
                 this.toaster.showSuccess('Department deleted successfully');
                 this.getDepartmentData(); 
@@ -146,7 +142,7 @@ export class DepartmentListComponent implements OnInit {
                 console.error('Error deleting department:', err);
               },
               complete: () => {
-                console.log('Deletion process completed.');
+                // console.log('Deletion process completed.');
               }
             });
           } else {
@@ -162,7 +158,7 @@ export class DepartmentListComponent implements OnInit {
     const dialogRef = this.dialog.open(DepartmentComponent, {
       width: '400px'
     });
-    dialogRef.afterClosed().subscribe({
+    dialogRef.afterClosed().pipe(this.takeUntilDestroy()).subscribe({
       next: (result) => {
         if (result) {
           this.getDepartmentData();
@@ -177,7 +173,7 @@ export class DepartmentListComponent implements OnInit {
   }
 
   public FilterChange(): void {
-    this.departmentService.paginationOnDepartments(this.dataPage).pipe(takeUntil(this.destroy$)).subscribe({
+    this.departmentService.paginationOnDepartments(this.dataPage).pipe(this.takeUntilDestroy()).subscribe({
       next: (data) => {
         this.departmentList = data.data.data;
         this.filteredDepartmentData = this.departmentList;

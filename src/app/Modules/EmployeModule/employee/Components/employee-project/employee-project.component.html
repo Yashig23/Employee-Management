@@ -22,19 +22,22 @@
             <th>Description</th>
             <th>Status</th>
             <th>Created On</th>
-            <th>View Task</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let project of projectList" class="project-row">
-            <td class="project-name">{{project.name}}</td>
-            <td class="project-description">{{project.description}}</td>
-            <td class="project-status">{{project.status | status}}</td>
-            <td class="project-date">{{project.createdOn | date: 'dd/MM/yyyy'}}</td>
+          <tr *ngFor="let items of projectList" class="project-row">
+            <td class="project-name">{{items.project.name}}</td>
+            <td class="project-description">{{items.project.description | maxLength: 60}}</td>
+            <td class="project-status">{{items.project.status | status}}</td>
+            <td class="project-date">{{items.project.createdOn | date: 'dd/MM/yyyy'}}</td>
             <td>
-                <button class="addBtn" (click)="openTaskListDialog(project.id)">View Task</button>
-                <!-- <button (click)="openAddTaskDialog()" class="addBtn">Add Task</button> -->
-            </td>
+              <div style="display: flex;">
+                <button class="viewBtn" (click)="openTaskListDialog(items.project.id)" *ngIf="items.tasks != 0 && items.tasks != null && items.tasks != undefined">View Task</button> 
+                 <!-- <button (click)="openAddTaskDialog()" class="addBtn">Add Task</button> -->
+                <button class="addBtn" (click)="openAddTaskDialog(items.project.id, items.project.name)">Add Task</button> 
+              </div>
+           </td>
           </tr>
         </tbody>
       </table>

@@ -353,16 +353,16 @@
 }
 
 /* Add Members Button */
-button {
-  background-color: #3683f6;
-  border: none;
-  padding: 12px 20px;
-  color: white;
-  font-size: 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+// button {
+//   background-color: #3683f6;
+//   border: none;
+//   padding: 12px 20px;
+//   color: white;
+//   font-size: 16px;
+//   border-radius: 8px;
+//   cursor: pointer;
+//   transition: all 0.3s ease;
+// }
 
 .cancelButton{
   background-color: #f66d36;
@@ -375,9 +375,9 @@ button {
   transition: all 0.3s ease;
 }
 
-button:hover {
-  background-color: #2975db;
-}
+// button:hover {
+//   background-color: #2975db;
+// }
 
 .cancelButton:hover{
   background-color: #db6729;

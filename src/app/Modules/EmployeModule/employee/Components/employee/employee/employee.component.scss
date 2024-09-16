@@ -71,9 +71,13 @@ nav ul li a.active {
 }
 
 .main-content {
-  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #fff;
   padding: 20px;
-  width: calc(100% - 260px);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
 header {

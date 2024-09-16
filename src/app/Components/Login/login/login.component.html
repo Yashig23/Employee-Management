@@ -11,17 +11,13 @@
               name="username"
               id="username"
               class="input"
-              placeholder="abc123"
               required
               formControlName="username"
+              required
             />
-            <div class="error-message" *ngIf="SignupForm.controls['username']!.invalid && (SignupForm.controls['username']!.dirty || SignupForm.controls['username']!.touched)">
-              <div *ngIf="SignupForm.controls['username']!.errors?.['required']">Username is required.</div>
-              <div *ngIf="SignupForm.controls['username']!.errors?.['minlength']">Username must be at least 4 characters long.</div>
-              <div *ngIf="SignupForm.controls['username']!.errors?.['pattern']">Username can only contain letters, numbers, and underscores.</div>
-            </div>
+            <div class="error-message" appShowError [appShowFormError]="SignupForm.controls['username']"></div>
           </div>
-          
+
           <div class="form-group">
             <label for="password" class="label">Password</label>
             <input
@@ -29,14 +25,11 @@
               name="password"
               id="password"
               class="input"
-              placeholder="••••••••"
               required
               formControlName="password"
+              required
             />
-            <div class="error-message" *ngIf="SignupForm.controls['password']!.invalid && (SignupForm.controls['password']!.dirty || SignupForm.controls['password'].touched)">
-              <div *ngIf="SignupForm.controls['password']!.errors?.['required']">Password is required.</div>
-              <div *ngIf="SignupForm.controls['password']!.errors?.['minlength']">Password must be at least 4 characters long.</div>
-            </div>
+            <div class="error-message" appShowError [appShowFormError]="SignupForm.controls['password']"></div>
           </div>
 
           <button class="submit-btn" [disabled]="!SignupForm.valid" (click)="onSubmit()">Login</button>

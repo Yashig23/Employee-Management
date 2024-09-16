@@ -45,8 +45,8 @@ export class ProjectService {
   }
 
   public updateSprint(data: PostSprintRequest, id: number): Observable<updateProjectByIdResponse>{
-    console.log(data, id);
-    console.log("entered");
+    // console.log(data, id);
+    // console.log("entered");
     return this.httpClient.post<updateProjectByIdResponse>(`${this.url}/api/Sprint/${id}`, data)
   }
 

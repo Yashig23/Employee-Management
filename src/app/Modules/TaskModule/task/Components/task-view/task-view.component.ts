@@ -7,9 +7,6 @@ import { ProjectService } from '../../../../ProjectModule/project/Service/projec
 import { Parent, subTasks, taskData, TaskReviewData, TaskTypeDialogData, AssignedTo, DataForEmployee, PaginatedEpicTask2, TaskType, Data, DataOfParent } from '../../Models/task.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TaskComponent } from '../task/task.component';
-import { ProjectListOfEmployee } from '../../../../ProjectModule/project/Models/Project.model';
-import { MatSelectChange } from '@angular/material/select';
-import { TaskDetails } from '../../../../EmployeModule/employee/Models/Employee.model';
 
 @Component({
   selector: 'app-task-view',
@@ -24,18 +21,19 @@ export class TaskViewComponent {
   public subTasks: subTasks[] = [];
   public openReviewBox: boolean = false;
   public reviewContent!: string;
+  public projectId!: number;
   public taskData!: { taskId: number };
   public progressSpinner!: boolean;
   public taskForm!: FormGroup;
   public ParentInfo!: Parent;
   public disableSubmitBtn!: boolean;
-  public projectId!: number;
   public taskTypeDialog!: TaskTypeDialogData;
   public originalEstimatedTime!: number | null;
   public remainingEstimatedTime!: number | null;
   public previousOriginalEstimate!: number | null;
   public previousRemainingEstimate!: number | null;
   public EmployeeList: DataForEmployee[] | null = [];
+  public toggleTaskParentSec: boolean = false;
   public originalName!: string;
   public previousName!: string;
   public description!: string | null;
@@ -65,24 +63,35 @@ export class TaskViewComponent {
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(paramMap => {
-      console.log(paramMap);
+      // console.log(paramMap);
+      this.taskId = Number(paramMap.get('taskId'));
+      this.projectId = Number(paramMap.get('projectId'));
       this.paramId = Number(paramMap.get('id'));
       if (this.paramId) {
         this.isEdit = true;
-        console.log(this.paramId);
+        // console.log(this.paramId);
         this.getDetailsOfTask();
         this.getEmployeeList();
         this.initializeTaskForm();
         this.EmployeeName = localStorage.getItem('EmployeeName');
-        console.log("EmployeeName", this.EmployeeName);
+        // console.log("EmployeeName", this.EmployeeName);
       }
     });
+
+    if (!this.taskForm) {
+      this.initializeTaskForm(); 
+    }
+
+    this.taskForm.valueChanges.subscribe(() => {
+      console.log("Form changed!");
+    });
+    console.log("Project Id", this.projectId);
   }
 
   public initializeTaskForm(): void {
     this.taskForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      description: new FormControl(''),
+      description: new FormControl('', [Validators.required, Validators.minLength(10)]),
       assignedTo: new FormControl(''),
       assigneeName: new FormControl(''),
       assignerName: new FormControl(''),
@@ -116,23 +125,20 @@ export class TaskViewComponent {
         this.description = this.taskDetails.description;
         this.originalName = this.taskForm.get('name')?.value;
         const ProjectId = data.data.task.projectId;
-        // console.log("Project Id", ProjectId);
         const ParentType = data.data.parent?.taskType;
         this.taskId = data.data.task.id;
-
-        this.getParentList1(ProjectId, ParentType);
+        if(ParentType != 0 && ParentType != null && ParentType != undefined){
+              this.getParentList1(ProjectId, ParentType);
+        }
         this.taskForm.patchValue(this.taskDetails);
-        console.log(this.taskForm.value);
       },
       error: (err) => {
-        console.log(err);
         this.progressSpinner = false;
       }
     })
   }
 
   public addReviews() {
-    console.log("add");
     this.openReviewBox = !this.openReviewBox;
   }
 
@@ -143,13 +149,12 @@ export class TaskViewComponent {
       content: this.taskReviewForm.controls['reviewDescription']?.value ?? ''
     };
 
-    console.log(TaskData);
     if (TaskData.content) {
-      console.log('Submitting Task Review:', TaskData);
+      // console.log('Submitting Task Review:', TaskData);
 
       this.taskService.postTaskReview(TaskData, this.paramId).subscribe({
         next: (data) => {
-          console.log(data);
+          // console.log(data);
           this.toaster.showSuccess('Added review successfully');
           this.taskReviewForm.reset();
           this.getDetailsOfTask();
@@ -166,8 +171,6 @@ export class TaskViewComponent {
   }
 
   public checkAndUpdateTask(type: string): void {
-    console.log(this.taskForm.value);
-    console.log("Changes detected");
 
     if (type === 'original' && this.originalEstimatedTime !== this.previousOriginalEstimate) {
       this.previousOriginalEstimate = this.originalEstimatedTime;
@@ -187,13 +190,7 @@ export class TaskViewComponent {
     }
   }
 
-
-  oninput() {
-    console.log("input has entered");
-  }
-
   public updateTask(): void {
-    console.log("enter into upadte function..")
     setTimeout(() => {
       const body = {
         name: this.taskForm.controls['name'].value,
@@ -207,17 +204,15 @@ export class TaskViewComponent {
         remainingEstimateHours: Number(this.taskForm.controls['remainingEstimateHours'].value),
         sprintId: Number(this.taskForm.controls['sprintId'].value),
       };
-      // console.log(this.taskForm.value.taskType);
-      console.log("body of request", body);
       if (this.isEdit == true) {
         this.taskService.updatedTask(body, this.paramId).subscribe({
           next: (data) => {
-            console.log(data);
+            // console.log(data);
             this.toaster.showSuccess('Task Updated successfully');
             this.getDetailsOfTask();
           },
           error: (err) => {
-            console.log(err);
+            // console.log(err);
             this.toaster.showWarning("Error occured while updating the task");
           }
         })
@@ -225,7 +220,7 @@ export class TaskViewComponent {
       else {
         this.toaster.showWarning("Unable to fetch the is of task");
       }
-    }, 1000)
+    }, 0)
   }
 
   public openAddTaskDialog(Type: number, Id: number): void {
@@ -247,7 +242,7 @@ export class TaskViewComponent {
 
     const taskDialog: TaskTypeDialogData = { taskType: this.newTaskType, taskId: Id, projectId: this.projectId, isEdit: false }
 
-    console.log(taskDialog);
+    // console.log(taskDialog);
     const dialogRef = this.dialog.open(TaskComponent, {
       width: '1000px',
       height: '700px',
@@ -258,11 +253,11 @@ export class TaskViewComponent {
     dialogRef.afterClosed().subscribe({
       next: (data) => {
         // console.log("Task added successfully");
-        console.log(data)
+        // console.log(data)
         this.getDetailsOfTask();
       },
       error: (err) => {
-        console.log(err);
+        // console.log(err);
       }
     })
   }
@@ -273,16 +268,18 @@ export class TaskViewComponent {
   }
 
   public getEmployeeList(): void {
-    this.taskService.getProjectEmployeeList(this.paramId).subscribe({
+    const projectId = this.projectId;
+    console.log("Project id", this.projectId);
+    this.taskService.getProjectEmployeeList(this.projectId).subscribe({
       next: (data) => {
-        console.log(data);
+        // console.log(data);
         const Data = data.data;
         this.EmployeeList = Data;
-        console.log(data);
-        console.log("Employee List", Data);
+        // console.log(data);
+        // console.log("Employee List", Data);
       },
       error: (err) => {
-        console.log(err);
+        // console.log(err);
         this.toaster.showInfo("Error while fetching details of Employee");
       }
     })
@@ -291,18 +288,19 @@ export class TaskViewComponent {
   public employeeUpdate(e: Event) {
     const selectElement = e.target as HTMLSelectElement;
     const selectedEmployee = Number(selectElement.value);
-    console.log(selectedEmployee);
+    // console.log(selectedEmployee);
     this.taskDetails.assignedTo = selectedEmployee;
     this.updateTask();
 
-    console.log(this.taskDetails);
+    // console.log(this.taskDetails);
   }
 
   public getParentList1(ProjectId: number, ParentType: number): void {
+    console.log(ProjectId, ParentType);
     this.taskService.getParentList(ProjectId, ParentType).subscribe({
       next: (data) => {
         this.ParentList = data.data;
-        console.log("Parent List Upate", this.ParentList);
+        // console.log("Parent List Upate", this.ParentList);
       },
       error: (err) => {
         console.log(err);
@@ -318,17 +316,23 @@ export class TaskViewComponent {
   public updateTaskParent(data: string, id: number): void {
     this.taskService.updateTask(this.taskDetails.id, id, data).subscribe({
       next: (data) => {
-        console.log(data);
-        console.log("Task Updated successfully");
+        // console.log(data);
+        // console.log("Task Updated successfully");
         this.toaster.showSuccess("Task Updated successfully");
         this.getDetailsOfTask();
       },
       error: (err) => {
-        console.log(err);
-        console.log("error while updating the task");
+        // console.log(err);
+        // console.log("error while updating the task");
         this.toaster.showWarning("error while updating the task");
       }
     })
+  }
+
+  public toggleTaskParent(): void{
+    console.log("clicked");
+    this.toggleTaskParentSec = !this.toggleTaskParentSec;
+    console.log(this.toggleTaskParentSec);
   }
 
   public onStatusChange(newStatus: number) {
@@ -343,7 +347,7 @@ export class TaskViewComponent {
   public updateReviews(reviewDescription: string, reviewId: number): void {
     this.taskService.updateReview(reviewDescription, reviewId).subscribe({
       next: (response) => {
-        console.log('Review updated:', response);
+        // console.log('Review updated:', response);
         this.getDetailsOfTask();
         this.editBoolean = false;
         this.taskReviewId = null; 

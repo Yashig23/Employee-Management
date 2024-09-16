@@ -62,20 +62,20 @@ export class AddProjectComponent implements OnInit {
     this.projectService.getProjectById(this.paramId).subscribe({
       next: (data) => {
         this.progressSpinner = false;
-        console.log(data)
+        // console.log(data)
         const Data = data.data;
         this.ProjectForm.patchValue(Data);
       },
       error: (err) => {
         this.progressSpinner = false;
-        console.log(err);
+        // console.log(err);
         this.toaster.showInfo("Error occured while fetching project details");
       }
     })
   }
 
   public submit(): void {
-    console.log("Submitted");
+    // console.log("Submitted");
     this.disableSubmitBtn = true;
     const formValue = this.ProjectForm.value;
     const members1 = formValue.members;
@@ -88,16 +88,16 @@ export class AddProjectComponent implements OnInit {
         members: employeeId,
       };
       if (this.isEdit == true) {
-        console.log(body);
+        // console.log(body);
         this.projectService.updateProjectById(body, this.paramId).subscribe({
           next: (data) => {
-            console.log("updated successfully");
+            // console.log("updated successfully");
             this.toaster.showSuccess("Project updated successfully");
             this.ProjectForm.reset();
             this.router.navigateByUrl(`/projects/view/${this.paramId}`);
           },
           error: (err) => {
-            console.log(err);
+            // console.log(err);
             this.toaster.showWarning("Error while updating the Project");
           }
         })
@@ -106,7 +106,7 @@ export class AddProjectComponent implements OnInit {
         this.requesting = true;
         this.projectService.AddProject(body).subscribe({
           next: (response) => {
-            console.log(response);
+            // console.log(response);
             this.disableSubmitBtn = false;
             this.ProjectForm.reset();
             this.toaster.showSuccess("Submitted successfully");
@@ -114,7 +114,7 @@ export class AddProjectComponent implements OnInit {
             this.router.navigateByUrl(`/projects`);
           },
           error: (err) => {
-            console.log(err);
+            // console.log(err);
             this.disableSubmitBtn = false;
             this.ProjectForm.reset();
             this.addedMembersList = [];
@@ -127,6 +127,7 @@ export class AddProjectComponent implements OnInit {
 
   public addMembers(): void {
     this.DialogDataFlag = true;
+    const currentMembers = this.ProjectForm.controls['members'].value || [];
     const dialogData: DialogService = { isActive: this.DialogDataFlag };
   
     const dialogRef = this.dialog.open(EmployeListComponent, {
@@ -136,38 +137,28 @@ export class AddProjectComponent implements OnInit {
     });
   
     dialogRef.componentInstance.data = dialogData; 
+    dialogRef.componentInstance.currentMembersInProject = currentMembers;
     dialogRef.afterClosed().subscribe({
       next: (data: EmployeeForProjects[])=>{
-        // if(data === null){
-        //   this.toaster.showInfo("Members required in Project");
-        //   redirect('')
-        // }
-        // else{
-        // const memberIds = data.map(employee => ({ employeeId: employee.employeeId}));
-        // this.addedMembersList = data.map(employee => employee.employeeName);
-
-        // this.ProjectForm.controls['members'].setValue(memberIds);
-        // console.log(data);
-        // }
         if (Array.isArray(data) && data.length > 0) {
           const currentMembers = this.ProjectForm.controls['members'].value || [];
-          this.ProjectForm.controls['members'].setValue([...currentMembers, ...data]);
-          this.addedMembersList = [...currentMembers, ...data];
 
-          console.log(this.addedMembersList);
-        } else {
-          this.toaster.showInfo("No members selected or data is empty");
+          const newMembers = data.filter(newMember => 
+            !currentMembers.some((member: { employeeId: number; employeeName: string}) => member.employeeId === newMember.employeeId)
+          );
+
+          if(newMembers.length>0){
+               this.ProjectForm.controls['members'].setValue([...currentMembers, ...data]);
+          this.addedMembersList = [...currentMembers, ...data];
+          }
         }
       },
       error: (err)=>{
         this.toaster.showWarning("Error occured while getting members list")
-        console.log(err);
+        // console.log(err);
       }
     })
   }
-  // public removeMember(index: number): void {
-  //   this.addedMembersList.splice(index, 1);
-  // }
 
   public removeMember(employeeId: number, employeeName: string): void {
     const currentMembers = this.ProjectForm.controls['members'].value || [];

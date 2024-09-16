@@ -22,6 +22,7 @@ import { EmployeeProjectComponent } from './Components/employee-project/employee
 import { EmployeeTasksComponent } from './Components/employee-tasks/employee-tasks.component';
 import { StatusPipe } from './Pipes/status.pipe';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     EmployeeRoutingModule,
     MatDatepickerModule,
     SharedModule,
+    MatCheckboxModule,
     FormsModule,
     ReactiveFormsModule,
     MatPaginatorModule,

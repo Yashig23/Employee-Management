@@ -53,7 +53,7 @@ export class EmployeServiceService {
   }
 
   public paginationOnEmployee(data: DataPage): Observable<EmployeeResponsePagination>{
-    console.log(data);
+    // console.log(data);
     return this.httpClient.post<EmployeeResponsePagination>(`${this.url}/Employee/pagination`, data)
   }
 

@@ -40,7 +40,7 @@ export class ProfilePageComponent implements OnInit{
 
  ngOnInit(): void {
   this.paramId = Number(localStorage.getItem('userId'));
-  console.log(this.paramId);
+  // console.log(this.paramId);
   if(this.paramId){
     this.isEdit = true;
       this.getEmployeeByID();
@@ -53,7 +53,7 @@ export class ProfilePageComponent implements OnInit{
         next: (data: GetEmployeeResponseById) => {
             this.progressSpinner = false;
             const Data = data.data;
-            console.log(Data);
+            // console.log(Data);
             this.EmployeeData.name = Data.name;
             // this.EmployeeData.departmentName = Data.departmentName;
             // this.EmployeeData.managerName = Data.managerName;
@@ -69,7 +69,7 @@ export class ProfilePageComponent implements OnInit{
         },
         error: (err) => {
           this.progressSpinner = false;
-            console.log("Error while getting the employee data by id");
+            // console.log("Error while getting the employee data by id");
         }
     });
 }

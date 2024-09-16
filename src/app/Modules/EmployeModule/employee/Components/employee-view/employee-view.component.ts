@@ -6,13 +6,14 @@ import { EmployeeDto } from '../../../../../Components/Models/Login.model';
 import { GetEmployeeResponseById, GetEmployeeResponseById2 } from '../../Models/Employee.model';
 import { ToastService } from '../../../../SharedModule/shared/Services/toast.service';
 import { MatDialog } from '@angular/material/dialog';
+import { BaseService } from '../../../../SharedModule/shared/SharedClass/BaseComponentClass';
 
 @Component({
   selector: 'app-employee-view',
   templateUrl: './employee-view.component.html',
   styleUrl: './employee-view.component.scss'
 })
-export class EmployeeViewComponent implements OnInit{
+export class EmployeeViewComponent extends BaseService implements OnInit{
   public paramId!: number;
   public isEdit!: boolean;
   public avatarUrl!: string;
@@ -33,11 +34,13 @@ export class EmployeeViewComponent implements OnInit{
     imageUrl: ''
   }
  
-  constructor(public router: Router, private activatedRoute: ActivatedRoute, private employeeService: EmployeServiceService, private toster: ToastService,   public dialog: MatDialog,){}
+  constructor(public router: Router, private activatedRoute: ActivatedRoute, private employeeService: EmployeServiceService, private toster: ToastService,   public dialog: MatDialog,){
+    super();
+  }
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe(paramMap => {
-      console.log(paramMap);
+    this.activatedRoute.paramMap.pipe(this.takeUntilDestroy()).subscribe(paramMap => {
+      // console.log(paramMap);
       this.paramId = Number(paramMap.get('id'));
       if(this.paramId){
         this.isEdit = true;
@@ -49,7 +52,7 @@ export class EmployeeViewComponent implements OnInit{
 
   public getEmployeeByID(): void {
     this.progressSpinner = true;
-    this.employeeService.getEmployeeByIdDetailsOnView(this.paramId).subscribe({
+    this.employeeService.getEmployeeByIdDetailsOnView(this.paramId).pipe(this.takeUntilDestroy()).subscribe({
         next: (data: GetEmployeeResponseById2) => {
             this.progressSpinner = false;
             const Data = data.data;

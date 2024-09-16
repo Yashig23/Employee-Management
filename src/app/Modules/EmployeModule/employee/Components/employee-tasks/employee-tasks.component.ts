@@ -25,10 +25,10 @@ export class EmployeeTasksComponent {
 
   ngOnInit(): void {
   this.activatedRoute.paramMap.subscribe(paramMap => {
-    console.log(paramMap);
+    // console.log(paramMap);
     this.paramId = Number(paramMap.get('id'));
     if(this.paramId){
-      console.log(this.paramId);
+      // console.log(this.paramId);
       this.isEdit = true;
       this.getTasksListOfEmployee(this.paramId);
       // this.getEditData();
@@ -43,11 +43,10 @@ export class EmployeeTasksComponent {
         this.progressSpinner = false;
         const Data = data.data;
         this.taskList = Data;
-        console.log(data);
+        // console.log(data);
       },
       error: (err)=>{
         this.progressSpinner = false;
-      console.log(err);
       }
     })
   }

@@ -29,9 +29,11 @@
                 <input id="username" type="text" formControlName="username" placeholder="Employee Username"
                   class="input-field"
                   [ngClass]="{ 'is-invalid': employeeForm.controls['username'].invalid && employeeForm.controls['username'].touched }">
-                <div *ngIf="employeeForm.controls['username'].invalid && employeeForm.controls['username'].touched"
+                <!-- <div *ngIf="employeeForm.controls['username'].invalid && employeeForm.controls['username'].touched"
                   class="error-message">
                   Username is required
+                </div> -->
+                <div appShowError [appShowFormError]="employeeForm.controls['username']" class="error-message">
                 </div>
               </td>
             </tr>
@@ -43,9 +45,26 @@
                 <input id="password" type="password" formControlName="password" placeholder="Employee Password"
                   class="input-field"
                   [ngClass]="{ 'is-invalid': employeeForm.controls['password'].invalid && employeeForm.controls['password'].touched }">
-                <div *ngIf="employeeForm.controls['password'].invalid && employeeForm.controls['password'].touched"
+                <!-- <div *ngIf="employeeForm.controls['password'].invalid && employeeForm.controls['password'].touched"
                   class="error-message">
                   Password is required
+                </div> -->
+                <div appShowError [appShowFormError]="employeeForm.controls['password']" class="error-message">
+                </div>
+              </td>
+            </tr>
+
+            <!-- Confirm Password -->
+            <tr *ngIf="isEdit == false">
+              <td><label for="password">Confirm Password:</label></td>
+              <td>
+                <input id="password" type="password" formControlName="confirmPassword" placeholder="Confirm Password"
+                  class="input-field"
+                  [ngClass]="{ 'is-invalid': employeeForm.controls['confirmPassword'].invalid && employeeForm.controls['confirmPassword'].touched }">
+                  <div appShowError [appShowFormError]="employeeForm.controls['confirmPassword']" class="error-message">
+                  </div>
+                <div *ngIf="employeeForm.controls['password'].value != employeeForm.controls['confirmPassword'].value && employeeForm.controls['confirmPassword'].dirty" class="error-message">
+                  Password and Confirm password should be same
                 </div>
               </td>
             </tr>
@@ -56,11 +75,11 @@
               <td>
                 <input id="name" type="text" formControlName="name" placeholder="Employee Name" class="input-field"
                   [ngClass]="{ 'is-invalid': employeeForm.controls['name'].invalid && employeeForm.controls['name'].touched }">
-                <div *ngIf="employeeForm.controls['name'].errors?.['required'] && employeeForm.controls['name'].touched"
+                <!-- <div *ngIf="employeeForm.controls['name'].errors?.['required'] && employeeForm.controls['name'].touched"
                   class="error-message">
                   Name is required
-                </div>
-                <div
+                </div> -->
+                <!-- <div
                   *ngIf="employeeForm.controls['name'].errors?.['minlength'] && employeeForm.controls['name'].touched"
                   class="error-message">
                   Name must be at least 2 characters
@@ -73,6 +92,8 @@
                 <div *ngIf="employeeForm.controls['name'].errors?.['pattern'] && employeeForm.controls['name'].touched"
                   class="error-message">
                   Name can only contain letters and spaces
+                </div> -->
+                <div appShowError [appShowFormError]="employeeForm.controls['name']" class="error-message">
                 </div>
               </td>
             </tr>
@@ -83,7 +104,7 @@
               <td>
                 <input id="email" type="text" formControlName="email" placeholder="Employee Email" class="input-field"
                   [ngClass]="{ 'is-invalid': employeeForm.controls['email'].invalid && employeeForm.controls['email'].touched }">
-                <div
+                <!-- <div
                   *ngIf="employeeForm.controls['email'].errors?.['required'] && employeeForm.controls['email'].touched"
                   class="error-message">
                   Email is required
@@ -92,6 +113,8 @@
                   *ngIf="employeeForm.controls['email'].errors?.['pattern'] && employeeForm.controls['email'].touched"
                   class="error-message">
                   Enter a valid email address
+                </div> -->
+                <div appShowError [appShowFormError]="employeeForm.controls['email']" class="error-message">
                 </div>
               </td>
             </tr>
@@ -103,7 +126,7 @@
                 <input id="phone" type="text" formControlName="phone" placeholder="Employee Phone Number"
                   class="input-field"
                   [ngClass]="{ 'is-invalid': employeeForm.controls['phone'].invalid && employeeForm.controls['phone'].touched }" />
-                <div
+                <!-- <div
                   *ngIf="employeeForm.controls['phone'].errors?.['required'] && employeeForm.controls['phone'].touched"
                   class="error-message">
                   Phone Number is required
@@ -122,11 +145,11 @@
                   *ngIf="employeeForm.controls['phone'].errors?.['minlength'] && employeeForm.controls['phone'].touched"
                   class="error-message">
                   Phone number should be exactly 10 digits
+                </div> -->
+                <div appShowError [appShowFormError]="employeeForm.controls['phone']" class="error-message">
                 </div>
               </td>
             </tr>
-
-
 
             <!-- Address -->
             <tr>
@@ -135,7 +158,7 @@
                 <input id="address" type="text" formControlName="address" placeholder="Employee Address"
                   class="input-field"
                   [ngClass]="{ 'is-invalid': employeeForm.controls['address'].invalid && employeeForm.controls['address'].touched }">
-                <div
+                <!-- <div
                   *ngIf="employeeForm.controls['address'].errors?.['required'] && employeeForm.controls['address'].touched"
                   class="error-message">
                   Address is required
@@ -144,6 +167,8 @@
                   *ngIf="employeeForm.controls['address'].errors?.['maxlength'] && employeeForm.controls['address'].touched"
                   class="error-message">
                   Address must be no more than 200 characters
+                </div> -->
+                <div appShowError [appShowFormError]="employeeForm.controls['address']" class="error-message">
                 </div>
               </td>
             </tr>
@@ -154,14 +179,16 @@
               <td>
                 <input id="salary" type="number" formControlName="salary" placeholder="Salary" class="input-field"
                   [ngClass]="{ 'is-invalid': employeeForm.controls['salary'].invalid && employeeForm.controls['salary'].touched }">
-                <div
+                <!-- <div
                   *ngIf="employeeForm.controls['salary'].errors?.['required'] && employeeForm.controls['salary'].touched"
                   class="error-message">
                   Salary is required
                 </div>
-                <div *ngIf="employeeForm.controls['salary'].errors?.['min'] && employeeForm.controls['salary'].touched"
+                <div *ngIf="employeeForm.controls['salary'].errors?.['minlength'] && employeeForm.controls['salary'].touched"
                   class="error-message">
                   Salary must be at least 1
+                </div> -->
+                <div appShowError [appShowFormError]="employeeForm.controls['salary']" class="error-message">
                 </div>
               </td>
             </tr>
@@ -202,26 +229,31 @@
             </tr>
 
             <!-- Submit Button -->
-            <tr>
-              <td colspan="2" class="form-buttons">
-                <button [disabled]="!employeeForm.valid " class="submit-button" *ngIf="isEdit == false"
-                  style="margin-right: 1rem; margin-top: 7px" (click)="onSubmit()" [ngStyle]="{
-            'background-color': (!employeeForm.valid ) ? '#d6d6d6' : '#007bff',
-            'color': (!employeeForm.valid ) ? '#a1a1a1' : 'white',
-            'cursor': (!employeeForm.valid ) ? 'not-allowed' : 'pointer'
-          }" style="margin-right: 1rem; margin-top: 7px">
-                 Submit
-                </button>
-                <button *ngIf="isEdit == true" class="submit-button" [disabled]="employeeForm.pristine || !employeeForm.valid"
-                style="margin-right: 1rem; margin-top: 7px" (click)="onSubmit()" [ngStyle]="{
-                    'background-color': (!employeeForm.pristine || !employeeForm.valid) ? '#d6d6d6' : '#007bff',
-            'color': (!employeeForm.pristine || !employeeForm.valid) ? '#a1a1a1' : 'white',
-            'cursor': (!employeeForm.pristine || !employeeForm.valid) ? 'not-allowed' : 'pointer'
-        }" style="margin-right: 1rem; margin-top: 7px">
-               Update
-              </button>
-              </td>
-            </tr>
+        <!-- Submit Button -->
+<tr>
+  <td colspan="2" class="form-buttons">
+    <!-- Submit Button for non-edit mode -->
+    <button 
+      *ngIf="!isEdit" 
+      [disabled]="!employeeForm.valid" 
+      class="submit-button" 
+      (click)="onSubmit()" 
+      [ngStyle]="getButtonStyles(employeeForm.valid)">
+      Submit
+    </button>
+
+    <!-- Update Button for edit mode -->
+    <button 
+      *ngIf="isEdit" 
+      [disabled]="!employeeForm.dirty" 
+      class="submit-button" 
+      (click)="onSubmit()" 
+      [ngStyle]="getButtonStyles(employeeForm.dirty)">
+      Update
+    </button>
+  </td>
+</tr>
+
           </tbody>
         </table>
       </form>

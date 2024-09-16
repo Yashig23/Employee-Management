@@ -149,13 +149,13 @@
   align-items: center;
 }
 
-button{
-  border: none;
-  padding: 10px;
-  margin: 3px;
-  background-color: rgb(218, 240, 185);
-  border-radius: 1rem;
-}
+// button{
+//   border: none;
+//   padding: 10px;
+//   margin: 3px;
+//   background-color: rgb(218, 240, 185);
+//   border-radius: 1rem;
+// }
 
 .deleteBtn{
   border: none;
@@ -437,11 +437,150 @@ select{
 }
 
 .updateBtn{
-  background-color: rgb(80, 255, 78);
+  background-color: rgb(255, 175, 78);
   color: white;
   padding: 10px;
   margin: 5px;
   border-radius: 7px;
+}
+
+.update:disabled{
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+  background-color: rgb(212, 209, 209);
+  cursor: not-allowed;
+}
+
+.update{
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+  background-color: rgb(30, 168, 30);
+  color: white;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+.noData{
+  background-color: whitesmoke;
+  padding: 1rem;
+  border-radius: 7px;
+  margin: 5px;
+}
+
+.updateBtn2{
+  background-color: rgb(168, 243, 155);
+  color: white;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 7px;
+}
+
+.containerSec{
+  display: flex;
+  justify-content: space-around;
+  // align-items: center;
+  margin: 1rem;
+}
+
+.container{
+  border-radius: 7px;
+  background-color: #ffffff;
+  border: 1px solid grey;
+  color: rgb(59, 59, 59);
+  font-size:24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  font-weight: bold;
+  margin: 5px;
+  box-shadow: 5px 5px 5px rgb(37, 117, 238);
+}
+
+.container:hover{
+  cursor: pointer;
+  font-size: 30px;
+  color: black;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+  box-shadow: 7px 7px 5px grey;
+}
+
+.sprint-details{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: grey;
+  margin: 1px;
+
+}
+
+.sprints-container {
+  margin: 2px;
+  width: 100%
+}
+
+.sprint-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  background-color: #f9f9f9;
+
+  .sprint-info {
+    display: flex;
+    flex-direction: row;
+
+    .sprint-id {
+      font-weight: bold;
+    }
+
+    .sprint-name {
+      font-size: 16px;
+      margin-left: 5px;
+      margin-right: 5px;
+      color: #333;
+    }
+  }
+
+  .removeBtn{
+    background-color: rgb(240, 136, 136);
+    color: white;
+    padding: 7px;
+    margin: 5px;
+  }
+
+  .addMember1{
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #2a49e2;
+    color: white;
+    font-size:medium;
+    margin: 5px;
+  }
+
+  .sprint-actions {
+    display: flex;
+    gap: 10px; // Spacing between the action buttons
+
+    .action-icon {
+      background-color: transparent;
+      color: #555;
+      cursor: pointer;
+
+      &:hover {
+        color: #1976d2; // Change color on hover for better interaction feedback
+      }
+
+      mat-icon {
+        font-size: 24px; // Control the size of the icons
+      }
+    }
+  }
 }
 
 .ImageSec{

@@ -4,35 +4,30 @@ import { LoginService } from '../../../../Components/Services/login.service';
 import { CanActivateFn } from '@angular/router';
 import { inject } from '@angular/core';
 
-export const roleGuard: CanActivateFn = (
-  route: ActivatedRouteSnapshot, 
-  state: RouterStateSnapshot
-): boolean | UrlTree => {
-  
-  const loginService = inject(LoginService);
-  const router = inject(Router);
+@Injectable({
+  providedIn: 'root'
+})
+export class RoleGuard {
+  constructor(private loginService: LoginService, private router: Router) {}
 
-  const isLoggedIn = loginService.isLoggedIn();
-  const isAdmin = loginService.isAdmin();
-  const isSuperAdmin = loginService.isSuperAdmin1();
-  const isEmployee = loginService.isEmployee1();
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean | UrlTree {
+    const isLoggedIn = this.loginService.isLoggedIn();
+    const isAdmin = this.loginService.isAdmin();
+    const isSuperAdmin = this.loginService.isSuperAdmin();
+    const isEmployee = this.loginService.isEmployee();
 
-  if (!isLoggedIn) {
-    return router.createUrlTree(['/login']);
+    if (!isLoggedIn) {
+      return this.router.createUrlTree(['/login']);
+    }
+
+    const restrictedRoutes = ['/employeeList', '/departmentList'];
+    if (isAdmin || isSuperAdmin || (isEmployee && restrictedRoutes.includes(state.url))) {
+      return this.router.createUrlTree(['/projects']);
+    }
+
+    return true;
   }
-
-  const restrictedRoutes = ['/employeeList', '/departmentList'];
-  if (isAdmin) {
-    return router.createUrlTree(['/projectList']);
-  }
-
-  if (isSuperAdmin) {
-    return router.createUrlTree(['/projectList']);
-  }
-
-  if (isEmployee && restrictedRoutes.includes(state.url)) {
-    return router.createUrlTree(['/projectList']);
-  }
-
-  return router.createUrlTree(['/projectList']);
-};
+}

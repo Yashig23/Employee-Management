@@ -15,7 +15,7 @@
     updatedOn: string,
     id: number,
     name: string | null,
-    description: string | null
+    description: string ;
   }
 
   export interface PostProjectResponse{
@@ -154,7 +154,7 @@ export interface ProjectListOfEmployee{
 }
 
 export interface employeeUpdate{
-  employeeId: number
+  employeeId: number | null;
 }
 
 export interface updateProjectByIdRequest{

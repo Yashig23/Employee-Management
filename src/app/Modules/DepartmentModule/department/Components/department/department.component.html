@@ -1,24 +1,29 @@
-    <section class="department-section">
-      <div class="container">
-        <div class="header">
-          <h1>Add New Department</h1>
+<section class="department-section">
+  <div class="container">
+    <div class="header">
+      <h1>Add New Department</h1>
+    </div>
+    <form [formGroup]="departmentForm">
+      <div class="input-field">
+        <input type="text" placeholder="Department Name" formControlName="name">
+        <div appShowError [appShowFormError]="departmentForm.controls['name']" class="error-message">
         </div>
-        <form [formGroup]="departmentForm" >
-          <div class="input-field">
-            <input type="text" placeholder="Department Name" formControlName="name">
-            <div *ngIf="departmentForm.controls['name']!.invalid && departmentForm.controls['name']!.touched"
-              class="error-message">
-              Department Name is required
-            </div>
-          </div>
-          <div class="submit-button">
-            <button type="button" mat-button mat-dialog-close class="cancle">Cancel</button>
-            <button type="submit" (click)="submit()" mat-dialog-close="true" [ngStyle]="{
-              'background-color': (!departmentForm.valid || disableSubmitBtn) ? '#d6d6d6' : '#007bff',
-              'color': (!departmentForm.valid || disableSubmitBtn) ? '#a1a1a1' : 'white',
-              'cursor': (!departmentForm.valid || disableSubmitBtn) ? 'not-allowed' : 'pointer'
-            }">Submit</button>
-          </div>
-        </form>
       </div>
-    </section>
+      
+      <div class="submit-button">
+        <button type="button" mat-button mat-dialog-close class="cancel">Cancel</button>
+        
+        <button type="submit" 
+          (click)="submit()" 
+          mat-dialog-close="true" 
+          [ngStyle]="{
+            'background-color': (!departmentForm.valid || disableSubmitBtn) ? '#d6d6d6' : '#007bff',
+            'color': (!departmentForm.valid || disableSubmitBtn) ? '#a1a1a1' : 'white',
+            'cursor': (!departmentForm.valid || disableSubmitBtn) ? 'not-allowed' : 'pointer'
+          }">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

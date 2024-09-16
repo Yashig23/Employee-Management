@@ -32,18 +32,19 @@
             <tr *ngIf="!taskTypeDialog">
               <td>
                 <label for="taskType">Select Type:</label>
-                <select id="taskType" formControlName="taskType" class="input-field">
+                <select id="taskType" formControlName="taskType" class="input-field"  style="width: 250px">
                   <option [ngValue]="0">Epic</option>
                   <option [ngValue]="1">Feature</option>
                   <option [ngValue]="2">User Story</option>
                   <option [ngValue]="3">Task</option>
                   <option [ngValue]="4">Bug</option>
                 </select>
-                <div
+                <!-- <div
                   *ngIf="taskForm.controls['taskType']!.invalid && (taskForm.controls['taskType']!.touched || taskForm.controls['taskType']?.dirty)">
                   <div *ngIf="taskForm.controls['taskType']?.errors?.['required']" class="warn">Task Type is required.
                   </div>
-                </div>
+                </div> -->
+                <div appShowError [appShowFormError]="taskForm.controls['taskType']"  class="warn"></div>
               </td>
               <td>
               </td>
@@ -53,7 +54,7 @@
                 <div>
                   <mat-form-field>
                     <mat-label>Select Sprint</mat-label>
-                    <mat-select formControlName="sprintId">
+                    <mat-select formControlName="sprintId" style="width: 400px">
                       <mat-option *ngFor="let sprint of sprintList" [value]="sprint.id">
                         {{ sprint.name }}
                       </mat-option>
@@ -66,13 +67,14 @@
             <tr>
               <td><label for="name">Name:</label></td>
               <td>
-                <input id="name" type="text" formControlName="name" placeholder="Add Name" class="input-field">
-                <div
+                <input id="name" type="text" formControlName="name" placeholder="Add Name" class="input-field" style="width: 570px">
+                <!-- <div
                   *ngIf="taskForm.controls['name']?.invalid && (taskForm.controls['name']?.touched || taskForm.controls['name']?.dirty)">
                   <div *ngIf="taskForm.controls['name']?.errors?.['required']" class="warn">Name is required.</div>
                   <div *ngIf="taskForm.controls['name']?.errors?.['minlength']" class="warn">Name must be at least 3
                     characters long.</div>
-                </div>
+                </div> -->
+                <div appShowError [appShowFormError]="taskForm.controls['name']"  class="warn"></div>
               </td>
             </tr>
             <tr>
@@ -81,7 +83,7 @@
                 <textarea id="description" type="text" formControlName="description" placeholder="Description"
                   class="input-field">
                 </textarea>
-                <div
+                <!-- <div
                   *ngIf="taskForm.controls['description']!.invalid && (taskForm.controls['description']!.touched || taskForm.controls['description']?.dirty)">
                   <div *ngIf="taskForm.controls['description']?.errors?.['required']" class="warn">Description is
                     required.
@@ -89,7 +91,8 @@
                   <div *ngIf="taskForm.controls['description']?.errors?.['minlength']" class="warn">Description must be
                     at
                     least 15 characters long.</div>
-                </div>
+                </div> -->
+                <div appShowError [appShowFormError]="taskForm.controls['description']"  class="warn"></div>
               </td>
             </tr>
             <tr>

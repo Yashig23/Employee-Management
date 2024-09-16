@@ -19,28 +19,33 @@ export class TaskListComponent implements OnInit {
   public logList: DataForTaskLog[]=[];
   public progressSpinner!: boolean;
   public paramId!: number;
+  private showLogsNumber: number = 0;
 
   constructor(public taskService: TaskServiceService, public activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(paramMap => {
-      console.log(paramMap);
+      // console.log(paramMap);
       this.paramId = Number(paramMap.get('id'));
       if(this.paramId){
-        this.getTaskLogList();
+        this.showMoreLogs();
       }
     });
     
   }
 
-  public getTaskLogList(): void {
+  showMoreLogs(): void {
+    this.showLogsNumber += 10; 
+    this.getTaskLogList(); 
+  }
+
+  getTaskLogList(): void {
     this.progressSpinner = true;
-    this.taskService.getTaskLog(this.paramId).subscribe({
+    this.taskService.getTaskLog(this.paramId, this.showLogsNumber).subscribe({
       next: (data) => {
         this.progressSpinner = false;
-        const Data = data.data;
-        this.logList = Data;
-        console.log(data);
+        const newLogs = data.data.logs; 
+        this.logList = [...this.logList, ...newLogs]; 
       },
       error: (err) => {
         this.progressSpinner = false;

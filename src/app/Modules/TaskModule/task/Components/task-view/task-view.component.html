@@ -11,21 +11,18 @@
 
                 <div class="taskDetailsSec" style="border-left: 6px solid rgb(155, 155, 58); margin: 1rem">
                     <section style="margin: 1rem;">
+                        <div style="display: flex; justify-content: flex-end; align-items: center;">
+                            <button [disabled]="taskForm.pristine || taskForm.invalid" class="updateBtn" (click)="updateTask()">Update</button>
+                          </div>                          
                         <div style="font-size: 20px; margin: 7px; padding: 5px">Task {{taskDetails.id}}</div>
-                        <span style="font-size: 20px; margin: 7px; padding: 5px">{{taskDetails.id}}</span>
-                        <input type="text" style="font-size: 20px; color: grey" formControlName="name"
-                            (input)="checkAndUpdateTask('name')">
-                        <!-- <input type="text" style="font-size: 20px; color: grey" formControlName="taskForm.name" (ngModelChange)="checkAndUpdateTask('name')" > -->
+                        <input type="text" style="font-size: 20px; color: grey" formControlName="name">
                         <div style="margin-top: 12px;margin-bottom: 12px; padding: 5px">
                             <label style="font-size: 17px; margin-bottom: 7px; padding: 5px"><strong>Assigned
                                     To:</strong></label>
-                            <select (change)="employeeUpdate($event)" formControlName="assignedTo">
+                            <select formControlName="assignedTo">
                                 <option *ngFor="let employee of EmployeeList" [value]="employee.id">
                                     {{EmployeeName==employee.name ? 'Me': employee.name}}</option>
                             </select>
-                            <!-- <select (change)="employeeUpdate($event)" [(ngModel)]="taskDetails.assignedTo">
-                    <option *ngFor="let employee of EmployeeList" [value]="employee.id">{{EmployeeName==employee.name ? 'Me': employee.name}}</option>
-                  </select> -->
                         </div>
                     </section>
 
@@ -34,14 +31,15 @@
                     style="background-color: rgb(222, 220, 220); margin: 1rem; padding: 1rem; display: flex; justify-content: space-between;">
                     <div>
                         <p><strong style="color: grey;">Status:</strong></p>
-                        <mat-select formControlName="status" (selectionChange)="onStatusChange($event.value)" style="width: 8rem">
+                        <mat-select formControlName="status" 
+                            style="width: 8rem">
                             <mat-option [value]="0"> New </mat-option>
                             <mat-option [value]="1"> Active </mat-option>
                             <mat-option [value]="2"> Completed </mat-option>
                         </mat-select>
                     </div>
                     <div [routerLink]="['/tasks/log', paramId]">
-                        <button><mat-icon>update</mat-icon></button>
+                        <button><mat-icon>view_list</mat-icon></button>
                     </div>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
@@ -51,14 +49,16 @@
                         <div>
                             <section class="task-details-section">
                                 <div
-                                    style="font-size: large; font-weight: 500; padding: 1rem; border-bottom: 1px solid grey; width: 500px">
+                                    style="font-size: large; font-weight: 500; padding: 1rem; border-bottom: 1px solid grey; width: 500px;">
                                     Description:</div>
                                 <!-- <div>
                             <textarea [(ngModel)]="taskDetails.description"(ngModelChange)="checkAndUpdateTask('description')"></textarea>
                         </div> -->
                                 <div>
-                                    <textarea formControlName="description"
-                                        (input)="checkAndUpdateTask('description')"></textarea>
+                                    <textarea formControlName="description" class="textAreaSec"></textarea>
+                                </div>
+                                <div *ngIf="taskForm.controls['description'].invalid  && taskForm.controls['description'].touched">
+                                    <div style="color: red">Descrption is required</div>
                                 </div>
                             </section>
 
@@ -97,7 +97,8 @@
                                                 <form [formGroup]="taskReviewForm">
                                                     <div>
                                                         <p *ngIf="EmployeeName === review.reviewedBy">
-                                                            <strong>Me</strong></p>
+                                                            <strong>Me</strong>
+                                                        </p>
                                                         <p *ngIf="EmployeeName !== review.reviewedBy"><strong>{{
                                                                 review.reviewedBy }}</strong></p>
                                                         <div *ngIf="taskReviewId !== review.id">
@@ -115,8 +116,8 @@
                                                 <div>
                                                     <mat-icon *ngIf="!editBoolean && taskReviewId !== review.id"
                                                         (click)="editReviewContent(review.id, review.content)">edit</mat-icon>
-                                                    <button *ngIf="editBoolean  && taskReviewId === review.id" class="buttonCancle"
-                                                        (click)="cancleUpdate()">Cancel</button>
+                                                    <button *ngIf="editBoolean  && taskReviewId === review.id"
+                                                        class="buttonCancle" (click)="cancleUpdate()">Cancel</button>
                                                     <button *ngIf="editBoolean  && taskReviewId === review.id"
                                                         (click)="updateReviews(taskReviewForm.controls['reviewDescription'].value, review.id)">Update</button>
                                                 </div>
@@ -138,42 +139,33 @@
                     <section class="task-view-container"
                         style="margin-left: 1rem; margin-right: 0.5rem; height: 800px; width: 550px"
                         *ngIf="taskDetails.taskType == 3 || taskDetails.taskType == 4">
-                        <!-- Subtasks Section -->
                         <section class="task-subtasks-section">
                             <div>
                                 <h3 style="border-bottom: 1px solid grey;">Planning</h3>
-                                <div>
                                     <div style="padding: 5px; margin: 5px">Priority</div>
-                                    <div>2</div>
-                                    <div style="padding: 5px; margin: 5px">Activity</div>
-                                    <div>Development</div>
-                                </div>
+                                    <div style="padding: 5px; margin: 5px">2</div>
                             </div>
                             <div>
                                 <h3 style="border-bottom: 1px solid grey;">Effort</h3>
                                 <div>
                                     <div style="padding: 5px; margin: 5px">Original Estimate</div>
                                     <div *ngIf="taskDetails.originalEstimateHours != null">
-                                        <input type="number" formControlName="originalEstimateHours"
-                                            (change)="checkAndUpdateTask('original')">
+                                        <input type="number" formControlName="originalEstimateHours">
                                     </div>
                                     <div *ngIf="taskDetails.originalEstimateHours == null">
-                                        <input type="number" formControlName="originalEstimateHours"
-                                            (change)="checkAndUpdateTask('original')">
+                                        <input type="number" formControlName="originalEstimateHours">
                                     </div>
                                     <div style="padding: 5px; margin: 5px">Remaining</div>
                                     <div *ngIf="taskDetails.remainingEstimateHours != null">
-                                        <input type="number" formControlName="remainingEstimateHours"
-                                            (change)="checkAndUpdateTask('remaining')">
+                                        <input type="number" formControlName="remainingEstimateHours">
                                     </div>
                                     <div *ngIf="taskDetails.remainingEstimateHours == null">
-                                        <input type="number" formControlName="remainingEstimateHours"
-                                            (change)="checkAndUpdateTask('remaining')">
+                                        <input type="number" formControlName="remainingEstimateHours">
+                                    </div>
+                                    <div *ngIf="originalEstimatedTime! < remainingEstimatedTime!" style="color: red; margin-top: 10px;">
+                                        Original Estimate Hours should be greater than or equal to Remaining Estimate Hours.
                                     </div>
                                 </div>
-                            </div>
-                            <div>
-                                <h3 style="border-bottom: 1px solid grey;">Implementation</h3>
                             </div>
                         </section>
                     </section>
@@ -183,26 +175,28 @@
                         <section class="task-view-container" *ngIf="ParentInfo != null">
                             <!-- Subtasks Section -->
                             <section class="task-subtasks-section">
+                                <div style="display: flex; justify-content: space-between;">
                                 <div>
                                     <h3>Parent</h3>
                                 </div>
+                                <div *ngIf="toggleTaskParentSec == false"><mat-icon (click)="toggleTaskParent()">edit</mat-icon></div>
+                                <div *ngIf="toggleTaskParentSec == true"><button (click)="toggleTaskParent()" class="cancleBtn">cancle</button></div>
+                            </div>
                                 <!-- Debugging -->
                                 <div *ngIf="ParentList!.length === 0">No parents available</div>
                                 <div *ngIf="ParentList!.length > 0">
-                                    <div  style="display: flex; justify-content: flex-start; align-items: center;">
-                                    <div>{{ParentInfo.id}}</div>
-                                    <div>{{ParentInfo.name}}</div>
-                                    <div>({{ParentInfo.taskType | taskType}})</div>
-                                </div>
-                                <div>
-                                    <mat-select (selectionChange)="onParentChange($event.value)">
-                                        <mat-option *ngFor="let parent of ParentList"
-                                            [value]="parent.id">{{parent.name}}</mat-option>
-                                    </mat-select>
-                                    <div><button><mat-icon
-                                        [routerLink]="['/tasks/view', ParentInfo.id]">visibility</mat-icon></button>
-                            </div>
-                        </div>
+                                    <div
+                                        class="parentInfo" [routerLink]="['/tasks/view', ParentInfo.id]">
+                                        <!-- <div>{{ParentInfo.id}}</div> -->
+                                        <div>{{ParentInfo.name}}</div>
+                                        <div>({{ParentInfo.taskType | taskType}})</div>
+                                    </div>
+                                    <div *ngIf="toggleTaskParentSec== true" class="parentListOptions">
+                                        <mat-select formControlName="parentId">
+                                            <mat-option *ngFor="let parent of ParentList"
+                                                [value]="parent.id">{{parent.name}}</mat-option>
+                                        </mat-select>
+                                    </div>
                                 </div>
                             </section>
                         </section>

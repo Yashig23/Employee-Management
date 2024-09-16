@@ -21,8 +21,8 @@ export const customInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next
 
   return next(cloneRequest).pipe(
     catchError((error: HttpErrorResponse) => {
-      debugger;
-      console.log('Error entered');
+      // debugger;
+      // console.log('Error entered');
       let errorMessage = '';
       if (error.error instanceof ErrorEvent) {
 

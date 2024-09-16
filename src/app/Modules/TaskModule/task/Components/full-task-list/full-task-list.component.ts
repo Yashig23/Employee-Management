@@ -43,10 +43,38 @@ export class FullTaskListComponent implements OnInit {
     });
   }
 
+  // drop(event: CdkDragDrop<taskData[]>) {
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //   } else {
+  //     transferArrayItem(
+  //       event.previousContainer.data,
+  //       event.container.data,
+  //       event.previousIndex,
+  //       event.currentIndex,
+  //     );
+  
+  //     const movedTask = event.container.data[event.currentIndex]; 
+      
+
+  //     if (event.container.id === 'newList') {
+  //       movedTask.status = 0; 
+  //     } else if (event.container.id === 'activeList') {
+  //       movedTask.status = 1;  // Active Task
+  //     } else if (event.container.id === 'completedList') {
+  //       movedTask.status = 2;  // Completed Task
+  //     }
+
+  //     // console.log(`Task ID: ${movedTask.id}, New Status: ${movedTask.status}`);
+  //     this.updateTaskStatus(movedTask.id, movedTask.status);
+  //   }
+  // }
   drop(event: CdkDragDrop<taskData[]>) {
+    // If the task is dropped within the same list, just reorder the items
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
+      // If the task is moved to a different list, transfer it
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -54,21 +82,22 @@ export class FullTaskListComponent implements OnInit {
         event.currentIndex,
       );
   
-      const movedTask = event.container.data[event.currentIndex]; 
-      
+      // Get the moved task
+      const movedTask = event.container.data[event.currentIndex];
 
       if (event.container.id === 'newList') {
-        movedTask.status = 0; 
+        movedTask.status = 0; // New Task
       } else if (event.container.id === 'activeList') {
-        movedTask.status = 1;  // Active Task
+        movedTask.status = 1; // Active Task
       } else if (event.container.id === 'completedList') {
-        movedTask.status = 2;  // Completed Task
+        movedTask.status = 2; // Completed Task
       }
-
-      console.log(`Task ID: ${movedTask.id}, New Status: ${movedTask.status}`);
+  
+      // Call updateTaskStatus() to persist the status update
       this.updateTaskStatus(movedTask.id, movedTask.status);
     }
   }
+  
   
   public getTaskListOfSprint(id: number): void {
     this.progressSpinner = true;
@@ -77,7 +106,7 @@ export class FullTaskListComponent implements OnInit {
         this.progressSpinner = false;
         const Data = data.data;
         this.sprintTaskList = Data;
-        console.log(this.sprintTaskList);
+        // console.log(this.sprintTaskList);
         this.NewTasks = [];
         this.ActivatedTasks = [];
         this.CompletedTasks = [];
@@ -93,13 +122,13 @@ export class FullTaskListComponent implements OnInit {
           }
         });
 
-        console.log("Completed Tasks", this.CompletedTasks);
-        console.log("Active Tasks", this.ActivatedTasks);
-        console.log("New Tasks", this.NewTasks);
+        // console.log("Completed Tasks", this.CompletedTasks);
+        // console.log("Active Tasks", this.ActivatedTasks);
+        // console.log("New Tasks", this.NewTasks);
       },
       error: (err) => {
         this.progressSpinner = false;
-        console.log(err);
+        // console.log(err);
         this.toaster.showWarning("Error occured while feteching details of sprint tasks");
       }
     });
@@ -109,12 +138,12 @@ export class FullTaskListComponent implements OnInit {
     console.log(id, status);
     this.taskService.taskStatusUpdate(id, status).subscribe({
       next: (data) => {
-        console.log("Task updated successfully", data);
-        this.toaster.showSuccess("Task updated successfully");
+        // console.log("Task updated successfully", data);
+        // this.toaster.showSuccess("Task updated successfully");
         this.getTaskListOfSprint(this.paramId);
       },
       error: (err) => {
-        console.log("Error occurred while updating task", err);
+        // console.log("Error occurred while updating task", err);
         this.toaster.showWarning("Error occurred while updating task")
       }
     });

@@ -4,17 +4,17 @@
   </div> -->
   <div *ngIf="progressSpinner === true" class="spinner">
     <div class="spinner-section">
-    <mat-spinner  [diameter]="50"></mat-spinner>
-  </div>
+      <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
   </div>
 
-  <div class="main-content"  *ngIf="progressSpinner === false">
+  <div class="main-content" *ngIf="progressSpinner === false">
     <section class="Formsection">
       <div class="ParentDiv">
         <div class="div1">
           <div>
             <div class="departmentName">Project Name: {{ProjectData.name}}</div>
-            <div class="departmentName">Project Description: {{ProjectData.description}}</div>
+            <div class="departmentName">Project Description: {{ProjectData.description | maxLength:60}}</div>
             <div class="departmentName">Created By : {{ProjectData.createdBy}}
               <div *ngIf="ProjectData.createdBy === null">null</div>
             </div>
@@ -23,16 +23,16 @@
             </div>
           </div>
           <div class="btnsection">
-            <div>
+            <!-- <div>
               <button (click)="viewMembers()" class="updateBtn">View Members</button>
+            </div> -->
+            <div>
+              <button (click)="openAddTaskDialog()" class="addNewBtn">Add New Task</button>
             </div>
-          <div>
-            <button (click)="openAddTaskDialog()" class="addNewBtn">Add New Task</button>
+            <div *ngIf="!(role == 0 || role == 1)">
+              <button [routerLink]="['/projects/edit', this.paramId]" class="updateBtn2">Update</button>
+            </div>
           </div>
-          <div *ngIf="!(role == 0 || role == 1)">
-            <button [routerLink]="['/projects/edit', this.paramId]" class="updateBtn">Update</button>
-          </div>
-        </div>
         </div>
         <div class="div2">
 
@@ -52,8 +52,19 @@
               <div class="data1">No member Assigned</div>
             </span>
           </div> -->
+          <div class="containerSec">
+            <div class="container" (click)="taskListToggle()">
+              <h3>Task List</h3>
+            </div>
+            <div class="container" (click)="sprintListToggle()">
+              <h3>Sprint List</h3>
+            </div>
+            <div class="container" (click)="memberListToggle()">
+              <h3>Members List</h3>
+            </div>
+          </div>
           <div class="NameSec">
-            <div *ngIf="ProjectData.totalTask"  class="DivSec">
+            <div *ngIf="ProjectData.totalTask" class="DivSec">
               <div> Total Task</div>
               <div>{{ProjectData.totalTask}}</div>
             </div>
@@ -61,10 +72,64 @@
               <div> Pending Task</div>
               <div>{{ProjectData.pendingTask}}</div>
             </div>
-            <div class="newnew">
+            <div class="newnew" *ngIf="tasksListToggleValue==true">
               <div class="data">
                 <app-tasks-list *ngIf="projectId" [projectId]="projectId" [openReviewBox]="openReviewBox"
-                  (taskArrayLengthChanged)="handleTaskLength($event)" ngSkipHydration></app-tasks-list>
+                  (taskArrayLengthChanged)="handleTaskLength($event)" (sprintListEmitter)="handleSprintList($event)"
+                  ngSkipHydration></app-tasks-list>
+              </div>
+            </div>
+
+            <!--Sprint Container-->
+            <div class="sprints-container" *ngIf="sprintsListToggleValue == true">
+              <div *ngIf="sprintList == null || sprintList.length == 0 || sprintList == undefined" class="noData">
+                <div style="color: rgb(245, 123, 114); font-size: medium; ">No sprints available</div>
+              </div>
+              <div *ngIf="sprintList.length != 0 || sprintList != null">
+              <div class="sprint-item" *ngFor="let sprint of sprintList; let i = index" >
+                <div class="sprint-info">
+                  <!-- <span class="sprint-id">ID: {{ sprint.id }}</span> -->
+                   <span class="sprint-name">{{i+1}}</span>
+                  <span class="sprint-name">{{ sprint.name }}</span>
+                </div>
+                <div class="sprint-actions">
+                  <button mat-icon-button class="action-icon" (click)="updateSprint(sprint.id)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button class="action-icon" [routerLink]="['/tasks/sprint/tasks', sprint.id]">
+                    <mat-icon>info</mat-icon>
+                  </button>
+                  <button mat-icon-button class="action-icon" (click)="deleteSprint(sprint.id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <!--Member list section-->
+            <div class="noData" *ngIf="membersListToggleValue && (addedMembersList!.length <= 0 || addedMembersList == undefined || addedMembersList == null)">
+              <div style="color: rgb(245, 123, 114); font-size: medium; ">No sprints available</div>
+            </div>
+
+            <div class="sprints-container" *ngIf="membersListToggleValue && addedMembersList!.length > 0">
+              <div style="display: flex; justify-content: flex-end;">
+              <div>
+                <button class="update" (click)="updateEmployeeData()" [disabled]="!(prevoiusMemberListLength != addedMembersList.length)">Update</button>
+              </div>
+              <div style="display: flex; align-items: center;">
+                <button (click)="addMembers()" style="background-color: rgb(29, 93, 232); color: white; padding: 7px; border-radius: 5px">Add New Members</button>
+              </div>
+            </div>
+              <div class="sprint-item" *ngFor="let member of addedMembersList">
+                <div class="sprint-info">
+                  <span class="sprint-name">{{ member.employeeName }}</span>
+                </div>
+                <div class="sprint-actions">
+                  <button class="removeBtn" (click)="removeMember(member.employeeId, member.employeeName)">
+                    remove
+                  </button>
+                </div>
               </div>
             </div>
           </div>

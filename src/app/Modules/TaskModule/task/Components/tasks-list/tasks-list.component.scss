@@ -74,6 +74,14 @@
     color: white
   }
 
+  .data{
+    background-color: white;
+    color: grey;
+    padding: 1rem;
+    margin: 7px;
+    border-radius: 7px;
+  }
+
   .type, .status{
     width: 3rem;
     margin: 2px;
@@ -252,8 +260,8 @@
     top: 2px;
     bottom: 4px;
     border-radius: 7px;
-    background-color: #fff;
-    color: rgb(29, 29, 189);
+    background-color:#0079dc;
+    color:white;
     padding: 10px;
     margin: 1rem;
   }

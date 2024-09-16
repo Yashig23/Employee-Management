@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment1, environment2 } from '../../../../../environment/environment';
+import { environment1} from '../../../../../environment/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse, DataForSubTask, DataPost, deleteTaskResponse, getTaskDetailsById, getTaskReviewResponse, PaginatedEpicTask, PaginatedEpicTask2, PaginatedEpicTaskResponse, PaginationTaskResponse, ParentListResponse, PostReviewRequest, ProjectListEmployeeData, taskByIdResponse, TaskCountResponse, taskData, TaskList, TaskLogResponse, taskOfSprintResponse, TaskPostRequest, TaskPostResponse, TaskType, updateTaskRequest, updateTaskResponse } from '../Models/task.model';
@@ -12,7 +12,6 @@ export class TaskServiceService {
   public url = environment1.apiUrl.apiUrl;
 
   constructor(private httpClient: HttpClient) { }
-  public token = environment1.token;
 
   public getTasksList(): Observable<TaskList>{
     return this.httpClient.get<TaskList>(`${this.url}/Tasks`);
@@ -27,12 +26,12 @@ export class TaskServiceService {
    }
 
   public updatedTask(data: updateTaskRequest, id: number): Observable<updateTaskResponse>{
-    console.log("Data ",data);
+    // console.log("Data ",data);
     return this.httpClient.put<updateTaskResponse>(`${this.url}/Tasks/${id}`, data);
   }
 
   public paginationOnTask(data: DataPost): Observable<PaginationTaskResponse>{
-    console.log(data);
+    // console.log(data);
     return this.httpClient.post<PaginationTaskResponse>(`${this.url}/Tasks/pagination`, data)
   }
 
@@ -64,8 +63,8 @@ export class TaskServiceService {
     return this.httpClient.get<ProjectListEmployeeData>(`${this.url}/api/ProjectEmployee/${id}`);
   }
 
-  public getTaskLog(id: number): Observable<TaskLogResponse>{
-    return this.httpClient.get<TaskLogResponse>(`${this.url}/api/Tasklog/${id}`)
+  public getTaskLog(id: number, skipNumber: number): Observable<TaskLogResponse>{
+    return this.httpClient.get<TaskLogResponse>(`${this.url}/api/Tasklog/${id}/${skipNumber}`)
   }
 
   public getTaskListOfSprintId(id: number): Observable<taskOfSprintResponse>{
@@ -95,14 +94,9 @@ export class TaskServiceService {
         "value": data
       }
     ];
+    // console.log(patchData);
   
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json-patch+json',
-      'Authorization': `Bearer ${this.token}`
-    });
-    console.log(patchData);
-  
-    return this.httpClient.patch<deleteTaskResponse>(`${this.url}/Tasks/${taskId}`, patchData, { headers })
+    return this.httpClient.patch<deleteTaskResponse>(`${this.url}/Tasks/${taskId}`, patchData)
   }
 
   public getCounts(id: number): Observable<TaskCountResponse>{

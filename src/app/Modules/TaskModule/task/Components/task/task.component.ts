@@ -47,7 +47,7 @@ export class TaskComponent implements OnInit{
       this.getProjectMembersById();
     }
     else if(this.updateData?.projectId){
-      console.log(this.updateData);
+      // console.log(this.updateData);
       this.projectId = this.updateData.projectId;
       if(this.updateData.isEdit == true){
       this.getTaskDetails();
@@ -58,7 +58,7 @@ export class TaskComponent implements OnInit{
     this.initializeTaskForm();
     // this.getProjectMembersById();
     this.activatedRoute.paramMap.subscribe(paramMap => {
-      console.log(paramMap);
+      // console.log(paramMap);
       this.paramId = Number(paramMap.get('id'));
       this.isEdit = true;
       // if(this.isEdit == true){
@@ -88,8 +88,8 @@ export class TaskComponent implements OnInit{
       next: (data)=>{
         const Data = data.data.task;
         this.taskForm.patchValue(Data);
-        console.log(Data);
-        console.log(Data);
+        // console.log(Data);
+        // console.log(Data);
         
       },
       error: (err)=>{
@@ -102,23 +102,23 @@ export class TaskComponent implements OnInit{
     this.projectService.getProjectById(this.projectId).subscribe({
       next: (data)=>{
         this.employeeList = data.data.members;
-        console.log(data);
+        // console.log(data);
       },
       error: (err)=>{
-        console.log(err)
+        // console.log(err)
       }
     })
   }
 
   public submit(): void{
     this.disableSubmitBtn = true;
-    console.log("submitted");
+    // console.log("submitted");
     // debugger;
-    console.log(this.taskForm.value)
+    // console.log(this.taskForm.value)
     if(this.taskForm.valid){
     if (this.taskForm.value.name) {
       const  formValue = this.taskForm.value;
-      console.log(formValue);
+      // console.log(formValue);
       const body = {
         name: String(this.taskForm.value.name),
         description: String(this.taskForm.value.description),
@@ -130,20 +130,19 @@ export class TaskComponent implements OnInit{
         originalEstimateHours: Number(this.taskForm.value.originalEstimateHours),
         sprintId: Number(this.taskForm.value.sprintId)
       };
-      console.log(this.taskForm.value.taskType);
+      // console.log(this.taskForm.value.taskType);
       if(this.isEdit == false){
         this.taskService.updatedTask(body, this.paramId).subscribe({
           next: (data)=>{
-            console.log(data);
-            console.log(this.taskForm.value);
+        //  /   console.log(data);
+        //     console.log(this.taskForm.value);
             this.disableSubmitBtn = false;
             this.toaster.showSuccess("Task updated successfully");
             this.taskForm.reset();
             this.dialogRef.close();
-            console.log("task form", "Upadted successfully");
           },
           error: (err)=>{
-            console.log(err);
+            // console.log(err);
             this.disableSubmitBtn = false;
             this.toaster.showWarning("Error while updating the Task");
             this.dialogRef.close();
@@ -153,14 +152,14 @@ export class TaskComponent implements OnInit{
       else{
       this.taskService.addTask(body).subscribe({
         next: (data)=>{
-          console.log(data);
+          // console.log(data);
           this.disableSubmitBtn = false;
           this.toaster.showSuccess('Task added successfully');
            this.taskForm.reset();
            this.dialogRef.close();
         },
         error: (err)=>{
-          console.log(err);
+          // console.log(err);
           this.disableSubmitBtn = false;
           this.toaster.showWarning('Error while adding Task')
         }
@@ -173,13 +172,13 @@ export class TaskComponent implements OnInit{
   public getSprintListOfProject(id: number): void{
     this.projectService.getSprintListsByProject(id).subscribe({
      next: (data)=>{
-       console.log(data);
+      //  console.log(data);
        const Data = data.data;
        this.sprintList = Data;
-       console.log(Data);
+      //  console.log(Data);
      },
      error: (err)=>{
-       console.log(err);
+      //  console.log(err);
        this.toaster.showInfo("Erorr occured while fetching the details of sprint list");
      }
     })

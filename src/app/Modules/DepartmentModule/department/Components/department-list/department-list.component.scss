@@ -53,6 +53,14 @@
   }
 }
 
+mat-form-field.mat-form-field-appearance-fill.mat-form-field-should-float {
+  border: 1px solid #ccc; /* Default border color */
+}
+
+mat-form-field.mat-form-field-appearance-fill.mat-form-field-should-float.ng-invalid {
+  border-color: #ccc; /* Prevent red border color */
+}
+
 .main-content {
   // flex: 1;
   background-color: #f4f5f7;

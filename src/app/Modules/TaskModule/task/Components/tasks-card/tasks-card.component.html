@@ -1,6 +1,6 @@
 <div class="card-header">
     <span class="task-id">{{task.id}}</span>
-    <span class="task-title">{{task.name}}</span>
+    <span class="task-title" [routerLink]="['/tasks/view', task.id]" class="task-title">{{task.name}}</span>
 </div>
 
 <div class="card-content">
@@ -9,7 +9,7 @@
             <span class="AssigneeName">{{assigneeInitials}}</span>
         </div>
         <span class="assignee-name">{{task.assigneeName}}</span>
-        <span class="story-points">8</span>
+        <!-- <span class="story-points">8</span> -->
     </div>
 
     <div class="task-details">
@@ -30,8 +30,8 @@
         </div>
     
         <div class="area-path">
-            <span class="area-path-label">Area Path</span>
-            <span class="area-path-value">{{task.taskType}}</span>
+            <span class="area-path-label">Task Type</span>
+            <span class="area-path-value">{{task.taskType | taskType}}</span>
         </div>
     </div>
 </div>

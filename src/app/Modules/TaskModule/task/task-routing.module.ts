@@ -10,7 +10,7 @@ const routes: Routes = [
   {path:'', component: TaskListComponent},
   {path:'add', component: TaskComponent},
   {path:"edit/:id", component: TaskComponent},
-  {path:"view/:id", component: TaskViewComponent},
+  {path:"view/:id/:projectId", component: TaskViewComponent},
   {path:"sprint/tasks/:id", component: FullTaskListComponent},
   {path:"log/:id", component:TaskListComponent},
 ];

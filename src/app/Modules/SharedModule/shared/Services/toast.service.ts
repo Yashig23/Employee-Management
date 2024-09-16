@@ -17,7 +17,7 @@ export class ToastService{
     }
 
     public showSuccess(msg: string) {
-        console.log("entered inside toaster");
+        // console.log("entered inside toaster");
         this.toastr.success(msg, 'Success', this.info);
       }
 

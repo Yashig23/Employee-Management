@@ -22,7 +22,7 @@ export class AddSprintComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-    console.log(this.projectIdByTask);
+    // console.log(this.projectIdByTask);
     this.AddSprintForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(3)]),
       startDate: new FormControl('', [Validators.required]),
@@ -31,8 +31,6 @@ export class AddSprintComponent implements OnInit {
     })
 
     if(this.projectIdByTask.projectId != null && this.data.sprintId !=null){
-      console.log("Project Id", this.projectIdByTask.projectId)
-      console.log("sprint Id", this.data.sprintId);
       this.isEdit = true;
       this.getSprintIdDetails();
     }
@@ -50,17 +48,17 @@ export class AddSprintComponent implements OnInit {
       endDate: endDate,
       projectId: formValue.projectId
     };
-     console.log(this.AddSprintForm.value);
+    //  console.log(this.AddSprintForm.value);
      if(this.isEdit == true){
       this.projectService.updateSprint(sprintData, this.data.sprintId).subscribe({
         next: (data)=>{
-          console.log(data);
+          // console.log(data);
           this.toaster.showSuccess("Sprint updated successfully");
-          console.log("Sprint updated successfully");
+          // console.log("Sprint updated successfully");
           this.dialog.close();
         },
         error: (err)=>{
-          console.log(err);
+          // console.log(err);
           this.toaster.showWarning("Error occured while adding sprint");
         }
       })
@@ -68,12 +66,11 @@ export class AddSprintComponent implements OnInit {
      else{
     this.projectService.addSprint(sprintData).subscribe({
       next: (data)=>{
-        console.log(data);
+        // console.log(data);
         this.toaster.showSuccess("Sprint added successfully");
         this.dialog.close();
       },
       error: (err)=>{
-        console.log(err);
         this.toaster.showWarning("Error occured while adding sprint");
       }
     })
@@ -84,7 +81,7 @@ export class AddSprintComponent implements OnInit {
   getSprintIdDetails(): void{
     this.projectService.getSprintById(this.data.sprintId).subscribe({
       next: (data)=>{
-        console.log(data);
+        // console.log(data);
         const Data = data.data;
         if (Data.startDate) {
           Data.startDate = this.formatDate(new Date(Data.startDate));
@@ -93,7 +90,7 @@ export class AddSprintComponent implements OnInit {
           Data.endDate = this.formatDate(new Date(Data.endDate));
         }
         this.AddSprintForm.patchValue(Data);
-        console.log(Data);
+        // console.log(Data);
       },
       error: (err)=>{
         console.log("Invalid Id of sprint", err);

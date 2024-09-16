@@ -32,6 +32,7 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { RatingModule } from 'primeng/rating';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LayoutModuleModule } from './Modules/layout-module/layout-module.module';
 
 @NgModule({
   declarations: [
@@ -64,8 +65,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SharedModule,
     MatProgressSpinnerModule,
     MatIconModule,
+    LayoutModuleModule,
     BrowserAnimationsModule,
-    // SideBarComponent,
     ToastrModule.forRoot({
       positionClass: 'toast-upper-right',
       timeOut: 3000,

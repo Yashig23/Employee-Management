@@ -34,8 +34,8 @@ export class LoginComponent {
 
   public onSubmit(): void {
     const formData = this.SignupForm.value;
-    console.log(formData);
-    debugger;
+    // console.log(formData);
+    // debugger;
 
     const body = {
       username: this.SignupForm.value.username,
@@ -44,7 +44,7 @@ export class LoginComponent {
   
     this.loginService.postLogin(body).subscribe({
       next: (response: ApiResponse) => {
-        console.log(response);
+        // console.log(response);
         const user = response.data!.employee;
         this.EmployeeDetails = user;
   
@@ -65,6 +65,4 @@ export class LoginComponent {
       }
     });
   }
-  
-
 }

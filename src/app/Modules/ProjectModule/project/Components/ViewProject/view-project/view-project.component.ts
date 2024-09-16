@@ -6,12 +6,14 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastService } from '../../../../../SharedModule/shared/Services/toast.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskComponent } from '../../../../../TaskModule/task/Components/task/task.component';
-import { DialogService, Employee, projectDialogData } from '../../../../../EmployeModule/employee/Models/Employee.model';
+import { DialogService, Employee, EmployeeAddedList, projectDialogData } from '../../../../../EmployeModule/employee/Models/Employee.model';
 import { DialogRef } from '@angular/cdk/dialog';
 import { EmployeListComponent } from '../../../../../EmployeModule/employee/Components/employe-list/employe-list.component';
 import { Data, PaginatedEpicTask, Task, TaskReviewData } from '../../../../../TaskModule/task/Models/task.model';
 import { TaskServiceService } from '../../../../../TaskModule/task/Services/task-service.service';
 import { ViewMembersProjectComponent } from '../../view-members-project/view-members-project.component';
+import { AddSprintComponent } from '../../add-sprint/add-sprint.component';
+import { DeleteDialogService } from '../../../../../SharedModule/shared/Services/delete-dialog.service';
 
 @Component({
   selector: 'app-view-project',
@@ -34,6 +36,10 @@ export class ViewProjectComponent implements OnInit {
   public taskArrayLength!: number;
   public sprintList: SprintData2[]=[];
   public role!: number;
+  public tasksListToggleValue: boolean = true;
+  public sprintsListToggleValue: boolean = false;
+  public membersListToggleValue: boolean = false;
+  public prevoiusMemberListLength!: number;
   public addedMembersList: EmployeeForProjects[]=[];
   public EpicTaskData: PaginatedEpicTask = {
     pageIndex: 1,
@@ -58,7 +64,7 @@ export class ViewProjectComponent implements OnInit {
   }
 
   constructor(private projectService: ProjectService, private activatedRoute: ActivatedRoute, private toaster: ToastService,
-    public dialog: MatDialog, private taskService: TaskServiceService,
+    public dialog: MatDialog, private taskService: TaskServiceService, private dialogService: DeleteDialogService
   ) {
     // console.log("Param id", this.paramId);
     // console.log(this.taskArrayLength);
@@ -80,9 +86,9 @@ export class ViewProjectComponent implements OnInit {
     this.progressSpinner = true;
        this.projectService.getProjectById(this.paramId).subscribe({
         next: (data: ProjectByIdResponse) => {
-          console.log("Dtaaaaa",data);
-          console.log(data.data.pendingTask);
-          console.log(data.data.totalTask);
+          // console.log("Dtaaaaa",data);
+          // console.log(data.data.pendingTask);
+          // console.log(data.data.totalTask);
           this.progressSpinner = false;
           const Data = data.data 
           this.ProjectData.name = Data.name,
@@ -93,10 +99,14 @@ export class ViewProjectComponent implements OnInit {
           this.ProjectData.tasks = Data.tasks
           this.projectName = Data.name;
           this.addedMembersList = Data.members;
+          if(this.addedMembersList.length>0){
+            this.prevoiusMemberListLength = this.addedMembersList.length
+          }
           this.ProjectData.totalTask = Data.totalTask;
           this.ProjectData.pendingTask = Data.pendingTask;
           this.taskList = Data.tasks;
           this.projectId = this.paramId;
+          console.log(this.addedMembersList);
           // console.log(Data.tasks);
         },
         error: (err) => {
@@ -120,11 +130,11 @@ export class ViewProjectComponent implements OnInit {
       next: (data)=>{
         // this.getTaskEpicList();
         // this.toaster.showSuccess("Task added successfully");
-        console.log("Task added successfully");
+        // console.log("Task added successfully");
         this.openReviewBox = !this.openReviewBox;
         // this.taskUpdateService.reloadTaskList == true;
         // this.taskList = data;
-        console.log(data)
+        // console.log(data)
       },
       error: (err)=>{
         console.log(err);
@@ -133,8 +143,6 @@ export class ViewProjectComponent implements OnInit {
   }
 
   public removeMember(id: number, name: string): void {
-    console.log(id);
-    console.log(this.ProjectData.members);
     if (this.ProjectData.members && Array.isArray(this.ProjectData.members)) {
       const index = this.ProjectData.members.findIndex(member =>
         member.employeeId === id && member.employeeName === name
@@ -142,9 +150,29 @@ export class ViewProjectComponent implements OnInit {
       if (index !== -1) {
         this.ProjectData.members.splice(index, 1);
         this.addedMembersList = [...this.ProjectData.members];
-        // this.projectService.updateProjectById(this.ProjectData, id)
       }
     }
+  }
+
+  public updateEmployeeData(): void{
+    if(this.prevoiusMemberListLength != this.addedMembersList.length){
+      const members1 = this.ProjectData.members;
+      const employeeId = members1!.map((item: EmployeeAddedList) => ({ employeeId: item.employeeId }));
+      const body = {
+        name: this.ProjectData.name,
+        description: this.ProjectData.description,
+        status: this.ProjectData.status,
+        members: employeeId,
+      };
+        this.projectService.updateProjectById(body, this.paramId).subscribe({
+          next: (data) => {
+            this.toaster.showSuccess("Project updated successfully");
+          },
+          error: (err) => {
+            this.toaster.showWarning("Error while updating the Project");
+          }
+        })
+      }
   }
 
   public openEmployeeDialog(): void{
@@ -158,15 +186,15 @@ export class ViewProjectComponent implements OnInit {
     dialogRef.componentInstance.data = dialogData; 
     dialogRef.afterClosed().subscribe({
       next: (data: EmployeeForProjects[])=>{
-        console.log(data);
+        // console.log(data);
         if(data === null){
           this.toaster.showInfo("Members required in Project");
           // redirect('')
         }
         else{
           this.addedMembersList = [...(this.ProjectData.members || []), ...data];
-          console.log(this.addedMembersList)
-        console.log(data);
+          // console.log(this.addedMembersList)
+        // console.log(data);
         }
       },
       error: (err)=>{
@@ -178,25 +206,115 @@ export class ViewProjectComponent implements OnInit {
   public ProjectReviewList(): void{
     this.taskService.getTaskReviewList(this.projectId).subscribe({
       next: (data)=>{
-        console.log(data);
+        // console.log(data);
         const Data = data.data;
         this.taskReviewList = Data;
       },
       error: (err)=>{
-        console.log(err);
+        // console.log(err);
         this.toaster.showInfo(err);
       }
     })
   }
 
-  public viewMembers(): void{
-    const data = this.addedMembersList;
-    const DialogRef = this.dialog.open(ViewMembersProjectComponent, {
-      width: "800px",
-      height: "600px"
-    });
-    DialogRef.componentInstance.data = data;
+  public taskListToggle(): void{
+    this.tasksListToggleValue = !this.tasksListToggleValue;
+    this.sprintsListToggleValue = false;
+    this.membersListToggleValue = false;
+    console.log("Members",this.membersListToggleValue);
+    console.log("Sprints",this.sprintsListToggleValue);
+    console.log("Tasks",this.tasksListToggleValue);
   }
+
+  public sprintListToggle(): void{
+    this.sprintsListToggleValue = !this.sprintsListToggleValue;
+    this.membersListToggleValue = false;
+    this.tasksListToggleValue = false;
+    console.log("Members",this.membersListToggleValue);
+    console.log("Sprints",this.sprintsListToggleValue);
+    console.log("Tasks",this.tasksListToggleValue);
+  }
+
+  public memberListToggle():void{
+    this.membersListToggleValue  = !this.membersListToggleValue;
+    this.tasksListToggleValue = false;
+    this.sprintsListToggleValue = false;
+    console.log("Members",this.membersListToggleValue);
+    console.log("Sprints",this.sprintsListToggleValue);
+    console.log("Tasks",this.tasksListToggleValue);
+    console.log(this.addedMembersList);
+  }
+
+  public updateSprint(id: number){
+    // console.log(id);
+    const Dialog = this.dialog.open(AddSprintComponent);
+    const SprintId = {'sprintId': id};
+    const ProjectId = {'projectId': this.projectId};
+    Dialog.componentInstance.data = SprintId;
+    Dialog.componentInstance.projectIdByTask = ProjectId;
+    // console.log("Sprint Id", SprintId);
+    Dialog.afterClosed().subscribe({
+      next:()=>{
+        this.getSprintListOfProject(this.projectId);
+      },
+      error: (err)=>{
+        console.log(err);
+      }
+    })
+  }
+
+  public deleteSprint(id: number): void{
+    this.dialogService
+        .openConfirmDialog('Are you sure to delete this Sprint?')
+        .afterClosed()
+        .subscribe(res => {
+          if (res) {
+            if (id !== null && id !== undefined) {
+              this.taskService.deleteSprint(id).subscribe({
+                next: () => {
+                  // console.log('Sprint deleted successfully.');
+                  this.toaster.showSuccess('Sprint deleted successfully');
+                  this.getSprintListOfProject(this.projectId);
+                },
+                error: err => {
+                  this.toaster.showWarning('Error while deleting sprint');
+                  // console.error('Error deleting sprint:', err);
+                },
+                complete: () => {
+                  // console.log('Deletion process completed.');
+                }
+              });
+            } else {
+              console.error('Invalid ID');
+            }
+          }
+        });
+  }
+
+  public getSprintListOfProject(id: number): void{
+    this.projectService.getSprintListsByProject(id).subscribe({
+     next: (data)=>{
+      //  console.log(data);
+       const Data = data.data;
+       this.sprintList = Data;
+      //  this.sprintListEmitter.emit(this.sprintList);
+      //  console.log(Data);
+     },
+     error: (err)=>{
+      //  console.log(err);
+       this.toaster.showInfo("Erorr occured while fetching the details of sprint list");
+     }
+    })
+  }
+
+  // public viewMembers(): void{
+  //   const data = this.addedMembersList;
+  //   const DialogRef = this.dialog.open(ViewMembersProjectComponent, {
+  //     width: "800px",
+  //     height: "600px"
+  //   });
+  //   DialogRef.componentInstance.data = data;
+  // }
 
   public addMembers(): void {
     this.DialogDataFlag = true;
@@ -214,15 +332,15 @@ export class ViewProjectComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe({
       next: (data: EmployeeForProjects[] | null) => {
-        console.log(data);
+        // console.log(data);
         if (Array.isArray(data) && data.length > 0) {
           const currentMembers = this.addedMembersList || [];
           // this.Project[...currentMembers, ...data]);
           this.addedMembersList = [...currentMembers, ...data];
 
-          console.log(this.addedMembersList);
+          // console.log(this.addedMembersList);
         } else {
-          this.toaster.showInfo("No members selected or data is empty");
+          // this.toaster.showInfo("No members selected or data is empty");
         }
       },
       error: (err: any) => {
@@ -244,13 +362,20 @@ export class ViewProjectComponent implements OnInit {
   //   }
   // }
 
+  public  handleSprintList(sprintList: any): void {
+    this.sprintList = sprintList;
+    console.log("sprintList", this.sprintList);
+    console.log('Received Sprint List: ', sprintList);
+   
+  }
+
   public addReview(){
-    console.log("add");
+    // console.log("add");
     this.openReviewBox =! this.openReviewBox;
   }
 
   public handleTaskLength(length: number){
     this.taskArrayLength = length;
-    console.log('Length of taskArray:', length);
+    // console.log('Length of taskArray:', length);
   }
 }

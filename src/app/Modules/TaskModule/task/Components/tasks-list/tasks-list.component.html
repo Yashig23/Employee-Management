@@ -1,9 +1,4 @@
 
-<!-- <div *ngIf="progressSpinner === true" class="spinner">
-  <div class="spinner-section">
-  <mat-spinner></mat-spinner>
-</div>
-</div> -->
 <div class="dashboard-container">
   <div class="main-content">
     <header>
@@ -12,7 +7,7 @@
       </div>
       <div class="searchParent">
         <div class="inputSec" *ngIf="!EmployeeProjectData">
-          <input type="text" placeholder="Search" class="search-input" [(ngModel)]="EpicTaskData.search"
+          <input type="text" class="search-input" [(ngModel)]="EpicTaskData.search"
             (keydown.enter)="searchTaskNew()">
           <div><button (click)="searchTaskNew()" [disabled]="EpicTaskData.search?.length == 0" class="submit">Search</button></div>
         </div>
@@ -21,12 +16,11 @@
             <mat-form-field style="width: 170px; margin: 2px">
               <mat-label>TaskType</mat-label>
               <mat-select (selectionChange)="onTaskTypeChange($event)" multiple>
-                <mat-option [value]=0>Epic ({{TypeCountDetails.epic}})</mat-option>
-                <mat-option [value]=1>Feature ({{TypeCountDetails.feature}})</mat-option>
-                <mat-option [value]=2>Userstory ({{TypeCountDetails.userStory}})</mat-option>
-                <mat-option [value]=3>Task ({{TypeCountDetails.task}})</mat-option>
-                <mat-option [value]=4>Bug ({{TypeCountDetails.bug}})</mat-option>
-                <!-- <mat-option (click)="onTaskNone()">None</mat-option> -->
+                <mat-option [value]=0>Epic</mat-option>
+                <mat-option [value]=1>Feature</mat-option>
+                <mat-option [value]=2>Userstory</mat-option>
+                <mat-option [value]=3>Task</mat-option>
+                <mat-option [value]=4>Bug</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -34,10 +28,10 @@
             <mat-form-field style="width: 170px; margin: 2px">
               <mat-label>Status</mat-label>
               <mat-select (selectionChange)="onStatusChange($event)" multiple>
-                <mat-option [value]=0>Not Finalized ({{StatusDetails.pending}})</mat-option>
-                <mat-option [value]=1>Active ({{StatusDetails.active}})</mat-option>
-                <mat-option [value]=2>Completed ({{StatusDetails.completed}})</mat-option>
-                <!-- <mat-option [value]="null" class="no-checkbox-option">None</mat-option> -->
+                <mat-option [value]=0>New </mat-option>
+                <mat-option [value]=1>Active </mat-option>
+                <mat-option [value]=2>Completed </mat-option>
+                <mat-option [value]="null" class="no-checkbox-option">None</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -45,8 +39,8 @@
             <mat-form-field style="width: 170px; margin: 2px">
               <mat-label>Assign</mat-label>
               <mat-select (selectionChange)="onAssignBoolChange($event)">
-                <mat-option [value]="true">Assigned ({{AssignedDetails.assigned}})</mat-option>
-                <mat-option [value]="false">Unassigned ({{AssignedDetails.unAssigned}})</mat-option>
+                <mat-option [value]="true">Assigned </mat-option>
+                <mat-option [value]="false">Unassigned </mat-option>
                 <mat-option [value]="null">None</mat-option>
               </mat-select>
             </mat-form-field>
@@ -57,9 +51,9 @@
               <mat-select (selectionChange)="onAssignedChange($event)" multiple>
                 <mat-option *ngFor="let employee of EmployeeList" [value]="employee.id">
                   {{ EmployeeName==employee.name ? 'Me' : employee.name }}
-                </mat-option>
-                <!-- <mat-option (click)="onSprintNone()">None</mat-option> -->
-              </mat-select>
+                </mat-option> 
+                 <!-- <mat-option (click)="onSprintNone()">None</mat-option>  -->
+               </mat-select>
             </mat-form-field>
           </div>
           <div>
@@ -80,9 +74,6 @@
               <mat-select (selectionChange)="onSprintChange($event)">
                 <mat-option *ngFor="let sprint of sprintList" [value]="sprint.id">
                   {{ sprint.name }}
-                  <mat-icon [routerLink]="['/tasks/sprint/tasks', sprint.id]">info</mat-icon> 
-                  <mat-icon (click)="updateSprint(sprint.id)">update</mat-icon>
-                  <mat-icon (click)="deleteSprint(sprint.id)">delete</mat-icon>
                 </mat-option>
                 <mat-option [value]="0">None</mat-option>
               </mat-select>
@@ -90,12 +81,12 @@
           </div>
         </div>
         <div class="btnSection">
-          <div *ngIf="!EmployeeProjectData">
+          <!-- <div *ngIf="!EmployeeProjectData">
             <button (click)="SubmitChanges()" class="submit2" [disabled]="disableSubmitBtn"   [ngClass]="{'disabled': disableSubmitBtn}">Submit</button>
-          </div>
-          <!-- <div>
-            <button (click)="ResetChanges()" class="reset"  [disabled]="disableSubmitBtn"   [ngClass]="{'disabled': disableSubmitBtn}">Reset</button>
           </div> -->
+          <div>
+            <button (click)="ResetChanges()" class="reset"  [disabled]="disableSubmitBtn"   [ngClass]="{'disabled': disableSubmitBtn}">Reset</button>
+          </div>
         </div>
       </div>
       <div class="employeeNo" *ngIf="!EmployeeProjectData">
@@ -113,7 +104,7 @@
     <!-- </header> -->
 
     <div class="table-container">
-      <table mat-table matSort (matSortChange)="sortData($event)" class="sales-table">
+      <table mat-table matSort (matSortChange)="sortData($event)" class="sales-table" matSortActive="CreatedOn" matSortDirection="desc">
         <thead>
           <tr>
             <th>Serial No.</th>
@@ -140,7 +131,7 @@
                   <mat-icon>{{ isExpanded(task.id) ? 'expand_less' : 'expand_more' }}</mat-icon>
                 </button>
               </td>
-              <td class="taskName"><a [routerLink]="['/tasks/view', task.id]">{{ task.name }}</a></td>
+              <td class="taskName"><a [routerLink]="['/tasks/view', task.id, projectId]">{{ task.name }}</a></td>
               <td>{{ EmployeeName==task.assigneeName ? 'Me' : task.assigneeName|| 'Unassigned'}}</td>
               <!-- <td>{{ task.assigneeName || 'Unassigned'}}</td> -->
               <td>{{ task.createdOn | date: 'dd/MM/yyyy' }}</td>
@@ -176,7 +167,7 @@
             </button>
           </td>
           <td class="taskName">
-            <a [routerLink]="['/tasks/view', subtask.id]">{{ subtask.name }}</a>
+            <a [routerLink]="['/tasks/view', subtask.id, projectId]">{{ subtask.name }}</a>
           </td>
           <td>{{ subtask.assigneeName }}</td>
           <td>{{ subtask.createdOn | date: 'dd/MM/yyyy' }}</td>
@@ -198,12 +189,9 @@
       </ng-container>
     </ng-template>
 
-
-
-
     <footer>
       <div>
-        <app-pagination [pagedItemsCount]="EpicTaskData.pagedItemsCount" [pageIndex]="EpicTaskData.pageIndex" [totalPagesList]="totalPagesList" (pageSizeChange)="onPageSizeChange2($event)"
+        <app-pagination [pagedItemsCount]="EpicTaskData.pagedItemsCount"  [totalPages]="totalPages" [pageIndex]="EpicTaskData.pageIndex" [totalPagesList]="totalPagesList" (pageSizeChange)="onPageSizeChange2($event)"
   (onPreviousClick)="onPrevious2($event)" (onNextClick)="onNext2($event)" (goToPageValue)="loadPageData2($event)" [totalLength]="taskListLength"></app-pagination>
 </div>
     </footer>

@@ -16,6 +16,7 @@ export class PaginationComponent {
   @Input() pageIndex!: number;
   @Input() totalPagesList: number[] =[];
   @Input() totalLength!: number;
+  @Input() totalPages!: number;
   @Output() pageSizeChange = new EventEmitter<number>();
   @Output() onPreviousClick = new EventEmitter<number>();
   @Output() onNextClick = new EventEmitter<number>();
@@ -25,7 +26,7 @@ export class PaginationComponent {
   public filteredDepartmentData: Department[] = []; 
   public departmentListLength!: number;
   public currentPage: number = 1;
-  public totalPages!: number;
+  // public totalPages!: number;
   public progressSpinner!: boolean;
   // public totalPagesList!: number[];
   public range!: FormGroup;
@@ -52,21 +53,21 @@ export class PaginationComponent {
   }
 
   ngOnInit(): void {
-    console.log(this.pagedItemsCount);
-    console.log(this.pageIndex);
-    console.log(this.totalPagesList);
+    // console.log(this.pagedItemsCount);
+    // console.log(this.pageIndex);
+    // console.log(this.totalPagesList);
   }
 
   
   public updateDateRange(value: any) {
-    console.log(value);
+    // console.log(value);
     const { start, end } = value;
     if (start) {
       this.dataPage.dateRange = {
         startDate: new Date(start).toISOString(),
         endDate: end ? new Date(end).toISOString(): new Date(Date.now()).toISOString(),
       };
-      console.log(this.dataPage);
+      // console.log(this.dataPage);
       this.FilterChange();
     } else {
       console.error("Invalid date range");
@@ -83,10 +84,10 @@ export class PaginationComponent {
         this.totalPages = this.getTotalPages(); 
         // this.totalPagesList.push(this.totalPages);
         this.totalPagesList = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-        console.log(this.filteredDepartmentData);
+        // console.log(this.filteredDepartmentData);
       },
       error: (err) => {
-        console.log(err);
+        // console.log(err);
         this.toaster.showWarning("Error occurred while Filtering");
         // alert("Error occurred");
       }
@@ -128,15 +129,15 @@ export class PaginationComponent {
     }
     
     public loadPageData(pageNumber: number): void {
-      console.log(`Loading data for page ${pageNumber}`);
+      // console.log(`Loading data for page ${pageNumber}`);
       this.pageIndex = pageNumber;
       this.goToPageValue.emit(this.pageIndex);
       this.FilterChange();
     }
     
     public sortData(event: any): void {
-      console.log(event.active);
-      console.log(event.direction);
+      // console.log(event.active);
+      // console.log(event.direction);
       this.dataPage.orderKey = event.active;
   
       if (event.direction === 'asc') {

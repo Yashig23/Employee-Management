@@ -8,13 +8,16 @@ import { EmployeeForProjects } from '../../../../ProjectModule/project/Models/Pr
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
 import { Observable, Subject, takeUntil } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { BaseService } from '../../../../SharedModule/shared/SharedClass/BaseComponentClass'; 
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-employe-list',
   templateUrl: './employe-list.component.html',
   styleUrl: './employe-list.component.scss'
 })
-export class EmployeListComponent implements OnInit, OnDestroy {
+export class  EmployeListComponent extends BaseService implements OnInit, OnDestroy {
 
   public employeeList: Employee[] | null= [];
   public searchQuery: string = '';
@@ -31,9 +34,11 @@ export class EmployeListComponent implements OnInit, OnDestroy {
   public projectEmployees:EmployeeForProjects[] = [];
   public currentPage: number = 1;
   public range!: FormGroup;
+  public currentMembersInProject :{employeeName: string; employeeId: number}[]=[]
   // public membersList!: EmployeeForProjects[];
+  public myData$!: Observable<any>;
   public pagedItemsCount: number = 10;
-  private destroy$ = new Subject<void>();
+  // private destroy$ = new Subject<void>();
   public dataPage: DataPage = {
     "pageIndex": 1,
     "pagedItemsCount": 10,
@@ -50,38 +55,81 @@ export class EmployeListComponent implements OnInit, OnDestroy {
     public fb: FormBuilder
     // @Inject(MAT_DIALOG_DATA) public data: DialogService
   ) {
-    console.log("Moaded");
-    console.log(this.data?.isActive);
-    console.log(this.data); 
+     super();
     this.range = this.fb.group({
       start: [null, Validators.required],
       end: [null, Validators.required],
     });
   }
 
+  // ngOnInit(): void {
+  //   this.getEmployeeData();
+  //   this.myData$ = this.employeService.getEmployeeList().pipe(
+  //     this.takeUntilDestroy(),
+  //     tap((data) => {
+  //       this.employeeList = data.data;
+        
+  //       // Mark checkboxes for already selected members
+  //       this.employeeList.forEach((employee) => {
+  //         employee.isChecked = this.projectEmployees.some(
+  //           (member) => member.employeeId === employee.id
+  //         );
+  //         console.log(employee.isChecked);
+  //       });
+  //     })
+  //   );
+  //   // this.myData$ = this.employeService.getEmployeeList().pipe(
+  //   //   this.takeUntilDestroy(), 
+  //   //   tap(data => {
+  //   //     console.log('Data:', data);
+  //   //   })
+  //   // );
+
+  //   this.myData$.subscribe();
+
+  //   this.range.valueChanges.pipe(this.takeUntilDestroy()).subscribe((value) => {
+  //     this.updateDateRange(value);
+  //   });
+  // }
+
   ngOnInit(): void {
     this.getEmployeeData();
+  
+    this.myData$ = this.employeService.getEmployeeList().pipe(
+      this.takeUntilDestroy(),
+      tap((data) => {
+        this.employeeList = data.data;
+        this.employeeList.forEach((employee) => {
+          const isPresent = this.projectEmployees.some((mem) => {
+            // console.log("MemberID", mem.employeeId);
+            return mem.employeeId === employee.id;
+          });
 
-    this.range.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+          employee.isChecked = isPresent;
+        });
+  
+        this.filteredEmployeeData = [...this.employeeList];
+      })
+    );
+  
+    this.myData$.subscribe();
+  
+    // Handle range value changes
+    this.range.valueChanges.pipe(this.takeUntilDestroy()).subscribe((value) => {
       this.updateDateRange(value);
     });
   }
-
-  ngOnDestroy(): void {
-    console.log("Destroyed");
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+  
 
   public updateDateRange(value: any) {
-    console.log(value);
+    // console.log(value);
     const { start, end } = value;
     if (start) {
       this.dataPage.dateRange = {
         startDate: new Date(start).toISOString(),
         endDate: end ? new Date(end).toISOString(): new Date(Date.now()).toISOString(),
       };
-      console.log(this.dataPage);
+      // console.log(this.dataPage);
       this.FilterChange();
     } else {
       console.error("Invalid date range");
@@ -89,20 +137,33 @@ export class EmployeListComponent implements OnInit, OnDestroy {
     }
   }
 
+  public selectAllEmployees(event: MatCheckboxChange): void {
+    const isChecked = event.checked;
+    
+    if (isChecked) {
+      this.projectEmployees = []; 
+    }
+  
+    this.employeeList?.forEach((employee) => {
+      employee.isChecked = isChecked;
+  
+      if (employee.isChecked) {
+        this.projectEmployees.push({
+          employeeId: employee.id,
+          employeeName: employee.name,
+        });
+      }
+    });
+  }
+  
   // Fetch department data and display it
   public getEmployeeData(): void {
     this.progressSpinner = true;
-    this.employeService.getEmployeeList().pipe(takeUntil(this.destroy$)).subscribe({
+    this.employeService.getEmployeeList().pipe(this.takeUntilDestroy()).subscribe({
       next: (response: EmployeeResponse) => {
         this.progressSpinner = false;
         this.employeeList = response.data;
         this.filteredEmployeeData = this.employeeList; 
-        // this.filteredEmployeeData.forEach((employee) => {
-        //   employee.isMember = this.membersList.some(
-        //     (member) => member.employeeId === employee.id && member.employeeName === employee.name
-        //   );
-        //   this.existInArray(employee.id);
-        // });
         this.FilterChange();
         this.employeeListLength = this.employeeList.length;
       },
@@ -114,16 +175,16 @@ export class EmployeListComponent implements OnInit, OnDestroy {
 
   // Delete a employee and refresh the list
   public deleteEmployee(id: number): void {
-    debugger;
+    // debugger;
     this.dialogService
       .openConfirmDialog('Are you sure to delete this Employee?')
       .afterClosed()
       .subscribe(res => {
         if (res) {
           if (id !== null && id !== undefined) {
-            this.employeService.deleteEmployee(id).subscribe({
+            this.employeService.deleteEmployee(id).pipe(this.takeUntilDestroy()).subscribe({
               next: () => {
-                console.log('Employee deleted successfully.');
+                // console.log('Employee deleted successfully.');
                 this.toaster.showSuccess("Employee deleted successfully");
                 this.getEmployeeData();
               },
@@ -132,7 +193,7 @@ export class EmployeListComponent implements OnInit, OnDestroy {
                 this.toaster.showSuccess("Error while deleting employee");
               },
               complete: () => {
-                console.log('Deletion process completed.');
+                // console.log('Deletion process completed.');
               }
             });
           } else {
@@ -168,17 +229,16 @@ export class EmployeListComponent implements OnInit, OnDestroy {
   }
 
   public FilterChange(): void {
-    this.employeService.paginationOnEmployee(this.dataPage).pipe(takeUntil(this.destroy$)).subscribe({
+    this.employeService.paginationOnEmployee(this.dataPage).pipe(this.takeUntilDestroy()).subscribe({
       next: (data) => {
         this.employeeList = data.data.data;
         this.filteredEmployeeData = this.employeeList;
         this.employeeListLength = data.data.totalItems; 
         this.totalPages = this.getTotalPages(); 
         this.totalPagesList = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-        console.log(this.filteredEmployeeData);
       },
       error: (err) => {
-        console.log(err);
+        // console.log(err);
         this.toaster.showWarning("Error occurred while Filtering");
       }
     });
@@ -194,13 +254,13 @@ export class EmployeListComponent implements OnInit, OnDestroy {
       dateRange: null
     };
 
-    this.employeService.paginationOnEmployee(ResetData).subscribe({
+    this.employeService.paginationOnEmployee(ResetData).pipe(this.takeUntilDestroy()).subscribe({
       next: (data) => {
         this.employeeList = data.data.data;
         this.filteredEmployeeData = this.employeeList;
       },
       error: (err) => {
-        console.log(err);
+        // console.log(err);
         this.toaster.showWarning("Error occured while Filtering");
       }
     })
@@ -212,6 +272,21 @@ export class EmployeListComponent implements OnInit, OnDestroy {
     this.currentPage = 1;
     this.pagedItemsCount = 10;
     this.FilterChange();
+  }
+
+  public onCheckboxChange(event: any, employee: any): void{
+    if (event.checked) {
+      if (!this.existInArray(employee.id)) {
+        this.projectEmployees.push({
+          employeeId: employee.id,
+          employeeName: employee.name
+        });
+      }
+    } else {
+      this.projectEmployees = this.projectEmployees.filter(
+        (e) => e.employeeId !== employee.id
+      );
+    }
   }
 
   public getTotalPages(): number {
@@ -257,7 +332,7 @@ public addEmployeeInProject(id: number, name: string) {
   });
   }
   // this.addMembers(id); 
-  console.log(this.projectEmployees);
+  // console.log(this.projectEmployees);
 }
 
 // Remove employee from the project
@@ -266,7 +341,7 @@ public removeEmployeeInProject(id: number) {
   if (index > -1) {
     this.projectEmployees.splice(index, 1);
   }
-  console.log(this.projectEmployees);
+  // (this.projectEmployees);console.log
 }
 
 // Check if employee exists in the array
@@ -275,7 +350,7 @@ public existInArray(id: number): boolean {
 }
 
 public handlePageSizeChange(newPageSize: number): void{
-  console.log("New Page ISze",newPageSize);
+  // console.log("New Page ISze",newPageSize);
 }
 
 public reset(): void{

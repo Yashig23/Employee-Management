@@ -24,7 +24,7 @@ export enum Role {
   // Define the LoginUserDto interface
   export interface LoginUserDto {
     employee: EmployeeDto1;
-    token?: string | null;
+    token?: string|null;
   }
 
   export interface EmployeeDto1{

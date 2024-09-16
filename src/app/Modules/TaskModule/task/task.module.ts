@@ -20,6 +20,7 @@ import { FullTaskListComponent } from './Components/full-task-list/full-task-lis
 import {MatTreeModule} from '@angular/material/tree';
 import { TasksListComponent } from './Components/tasks-list/tasks-list.component';
 import { TaskTypePipe } from './Pipes/task-type.pipe';
+// import { MaxLengthPipe } from '../../SharedModule/shared/max-length.pipe';
 import { SubChildTasksComponent } from './Components/sub-child-tasks/sub-child-tasks.component';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -36,6 +37,7 @@ import { ToastService } from '../../SharedModule/shared/Services/toast.service';
     FullTaskListComponent,
     TasksListComponent,
     TaskTypePipe,
+    // MaxLengthPipe,
     SubChildTasksComponent,
     TasksCardComponent,
   ],

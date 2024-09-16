@@ -1,5 +1,4 @@
-import { Department } from '../../../DepartmentModule/department/Models/department.model';
-import { FormControl, FormArray, FormGroup } from '@angular/forms';
+import { FormControl} from '@angular/forms';
 
 ///////////////////Interface for Prince ///////////////////////////////////
 export enum EmployeeRole {
@@ -9,26 +8,26 @@ export enum EmployeeRole {
   }
 
   export interface Employee {
-    createdBy: number// Nullable integer
-    updatedBy: number | null; // Nullable integer
-    createdOn: string // Nullable date-time string
-    updatedOn: string | null; // Nullable date-time string
-    id: number 
+    createdBy: number;
+    updatedBy: number | null; 
+    createdOn: string;
+    updatedOn: string | null; 
+    id: number ;
     name: string ;
-    departmentName: string | null; // Nullable string
-    managerName: string | null; // Nullable string
+    departmentName: string | null; 
+    managerName: string | null; 
     // email: string;
-    role: EmployeeRole; // Enum
-    salary: number; // Double
-    departmentID: number | null; // Nullable integer
-    managerID: number | null; // Nullable integer
-    isMember?: boolean;
+    role: EmployeeRole; 
+    salary: number; 
+    departmentID: number | null; 
+    managerID: number | null; 
+    isChecked: boolean;
   }
   
   export interface EmployeeResponse {
     success: boolean;
-    status: number; // integer($int32)
-    message: string;// Nullable string
+    status: number;
+    message: string;
     data: Employee[];
   }
 
@@ -72,6 +71,10 @@ export enum EmployeeRole {
     message: string,
     data: OnlyEmployeeData[]
   }
+
+  export interface CanComponentDeactivate {
+    canDeactivate: () => boolean | Promise<boolean>;
+  }  
 
   export interface EmployeeIdData{ 
     name: string ;
@@ -126,8 +129,6 @@ export interface OnlyEmployeeData{
 }
 
 export interface UpdateEmployeeRequest{
-  // username: string,
-  // password: string,
   name: string,
   phone: string,
   email: string,
@@ -228,6 +229,11 @@ export enum SortedOrder {
   }
 
   export interface ProjectDetails{
+    project: ProjectDetails2;
+    tasks: number
+  }
+
+  export interface ProjectDetails2{
     id: number,
     name: string,
     description: string,
